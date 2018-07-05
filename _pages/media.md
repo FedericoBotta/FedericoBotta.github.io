@@ -4,7 +4,6 @@ title: "Media coverage"
 excerpt: "Media coverage"
 author_profile: true
 redirect_from: 
-  - /media/
   - /media.html
 ---
 Selected articles:
