@@ -18,7 +18,18 @@ Selected articles:
 
 <a href="http://uk.businessinsider.com/afp-smartphones-twitter-help-gauge-crowd-size-2015-5?r=US" target="_blank" rel="noopener">Business Insider: Here's how Twitter can help first responders in an emergency</a>
 
-A <strong>live TV interview</strong> broadcasted worldwide on <em>BBC World News</em> and <strong>live radio interviews</strong> on<em> BBC Radio Wales</em> and <em>BBC Radio Scotland</em> can be found at <a href="http://www.fedebotta.com/?page_id=128">my research</a> page.
+I have given <strong>live TV interview</strong> broadcasted worldwide on <em>BBC World News</em> about my <a href = "https://federicobotta.github.io/publication/2015-10-01-paper-title-number-3" target = "_blank" rel="noopener"> work </a>:
+
+<iframe width="420" height="315"
+src="https://www.youtube.com/watch?v=TY59bJIZs2s&t=2s">
+</iframe>
+
+You can also listen to <strong>live radio interviews</strong> on<em> BBC Radio Wales</em> and <em>BBC Radio Scotland</em> here:
+
+<audio controls>
+  <source src="http://federicobotta.github.io/files/Counting Crowds Radio Wales 27-05-2015.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
 
 <audio controls>
   <source src="http://federicobotta.github.io/files/Counting Crowds Radio Scotland 27-05-2015.mp3" type="audio/mpeg">
