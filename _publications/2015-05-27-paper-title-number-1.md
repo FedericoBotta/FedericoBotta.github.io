@@ -1,7 +1,7 @@
 ---
 title: "Quantifying crowd size with mobile phone and Twitter data"
 collection: publications
-permalink: /publication/2009-10-01-paper-title-number-1
+permalink: /publication/2015-05-27-paper-title-number-1
 excerpt: 'Being able to infer the number of people in a specific area is of extreme importance for the 
 avoidance of crowd disasters and to facilitate emergency evacuations. Here, using a football 
 stadium and an airport as case studies, we present evidence of a strong relationship 

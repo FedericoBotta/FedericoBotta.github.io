@@ -12,7 +12,7 @@ title_separator          : "-"
 name                     : &name "Federico Botta"
 description              : &description "Researcher in computational social science"
 url                      : https://federicobotta.github.io # the base hostname & protocol for your site e.g. "https://federicobotta.github.io"
-baseurl                  : "" # the subpath of your site, e.g. "/blog"
+baseurl                  : "" # the subpath of your site, e.g. "/federicobotta"
 repository               : "FedericoBotta/FedericoBotta.github.io"
 teaser                   :  # filename of teaser fallback teaser image placed in /images/, .e.g. "500x300.png"
 breadcrumbs              : false # true, false (default)
@@ -79,7 +79,7 @@ analytics:
 # Site Author
 author:
   name             : "Federico Botta"
-  avatar           : "profile.png"
+  avatar           : "Federico-photo.jpg"
   bio              : "Researcher in data science"
   location         : "Data Science Lab"
   employer         :
