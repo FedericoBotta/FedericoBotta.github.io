@@ -55,7 +55,7 @@ yandex_site_verification :
 
 # Social Sharing
 twitter:
-  username               : &twitter "@Fede_Botta"
+  username               : &twitter
 facebook:
   username               :
   app_id                 :
@@ -80,10 +80,10 @@ analytics:
 author:
   name             : "Federico Botta"
   avatar           : "profile.png"
-  bio              : "Your biography for the left-hand sidebar"
-  location         : "Data Science Lab - Warwick Business School"
+  bio              : "Researcher in data science"
+  location         : "Data Science Lab"
   employer         :
-  googlescholar    : "http://yourfullgooglescholarurl.com"
+  googlescholar    : "https://scholar.google.co.uk/citations?user=M9kv6n8AAAAJ&hl=en&oi=ao"
   email            :
   uri              :
   bitbucket        :
@@ -92,19 +92,19 @@ author:
   flickr           :
   facebook         :
   foursquare       :
-  github           : "academicpages"
+  github           : "federicobotta"
   google_plus      :
   keybase          :
   instagram        :
   lastfm           :
   linkedin         :
-  orcid            : "http://orcid.org/yourorcidurl"
+  orcid            : "https://orcid.org/0000-0002-5681-4535"
   pinterest        :
   soundcloud       :
   stackoverflow    : # http://stackoverflow.com/users/123456/username
   steam            :
   tumblr           :
-  twitter          : "replacethistwitterhandle"
+  twitter          : "@Fede_Botta"
   vine             :
   weibo            :
   xing             :
