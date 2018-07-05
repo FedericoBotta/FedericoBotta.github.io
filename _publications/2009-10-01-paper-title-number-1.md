@@ -9,7 +9,7 @@ between the number of people in restricted areas and activity recorded by mobile
 providers and the online service Twitter. Our findings suggest that data generated through 
 our interactions with mobile phone networks and the Internet may allow us to gain valuable 
 measurements of the current state of society.'
-date: 2015
+date: 2015-05-27
 venue: 'Royal Society Open Science'
 paperurl: '10.1098/rsos.150162'
 citation: 'Botta, F., Moat, H. S., & Preis, T. (2015). Quantifying crowd size with mobile phone and Twitter data. Royal Society open science, 2(5), 150162.'
