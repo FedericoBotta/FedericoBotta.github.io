@@ -1,11 +1,11 @@
 ---
-layout: archive
-permalink: /mediacoverage/
+permalink: /
 title: "Media coverage"
+excerpt: "Media coverage"
 author_profile: true
 redirect_from: 
-  - /mediacoverage/
-  - /mediacoverage.html
+  - /media/
+  - /media.html
 ---
 Selected articles:
 
