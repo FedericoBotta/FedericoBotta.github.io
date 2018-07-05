@@ -21,7 +21,7 @@ Selected articles:
 A <strong>live TV interview</strong> broadcasted worldwide on <em>BBC World News</em> and <strong>live radio interviews</strong> on<em> BBC Radio Wales</em> and <em>BBC Radio Scotland</em> can be found at <a href="http://www.fedebotta.com/?page_id=128">my research</a> page.
 
 <audio controls>
-  <source src="files/Counting Crowds Radio Scotland 27-05-2015.mp3" type="audio/mpeg">
+  <source src="http://federicobotta.github.io/files/Counting Crowds Radio Scotland 27-05-2015.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
 
