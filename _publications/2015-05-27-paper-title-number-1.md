@@ -11,7 +11,7 @@ our interactions with mobile phone networks and the Internet may allow us to gai
 measurements of the current state of society.'
 date: 2015-05-27
 venue: 'Royal Society Open Science'
-paperurl: '10.1098/rsos.150162'
+paperurl: 'http://federicobotta.github.io/files/paper1.pdf'
 citation: 'Botta, F., Moat, H. S., & Preis, T. (2015). Quantifying crowd size with mobile phone and Twitter data. Royal Society open science, 2(5), 150162.'
 ---
 Being able to infer the number of people in a specific area is of extreme importance for the 
