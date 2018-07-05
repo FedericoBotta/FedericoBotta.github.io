@@ -1,7 +1,7 @@
 ---
-permalink: /
+layout: archive
+permalink: /mediacoverage/
 title: "Media coverage"
-excerpt: "Media coverage"
 author_profile: true
 redirect_from: 
   - /mediacoverage/
