@@ -1,5 +1,5 @@
 ---
-permalink: /
+permalink: /media/
 title: "Media coverage"
 excerpt: "Media coverage"
 author_profile: true
