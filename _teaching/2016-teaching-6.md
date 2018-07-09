@@ -7,12 +7,3 @@ venue: "Warwick Business School"
 date: 2016-01-01
 location: "Coventry, UK"
 ---
-
-Heading 1
-======
-
-Heading 2
-======
-
-Heading 3
-======
