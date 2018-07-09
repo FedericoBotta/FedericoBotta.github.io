@@ -11,8 +11,8 @@ redirect_from:
 
 Education
 ======
-* BSc in Physics, Universit\`{a} degli Studi di Milano-Bicocca, 2006-2009, graded 108/110
-* MSc in Theoretical Physics, Universit\`{a} degli Studi di Milano-Bicocca, 2009-2012, graded 109/110
+* BSc in Physics, Università degli Studi di Milano-Bicocca, 2006-2009, graded 108/110
+* MSc in Theoretical Physics, Università degli Studi di Milano-Bicocca, 2009-2012, graded 109/110
 * MSc in Complexity Science, University of Warwick, 2012-2013, awarded with distinction
 * PhD in Complexity Science, University of Warwick, 2013-2016
 
@@ -25,10 +25,10 @@ Work experience
 Skills
 ======
 * Computer programming
-  *R
-  *Python
-  *Matlab
-  *C
+  * R
+  * Python
+  * Matlab
+  * C
 * Teaching
   * Large group teaching
   * Small group teaching
@@ -37,23 +37,7 @@ Skills
   * Marking
   * Supervising
 
-Publications
-======
-  <ul>{% for post in site.publications %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Talks
-======
-  <ul>{% for post in site.talks %}
-    {% include archive-single-talk-cv.html %}
-  {% endfor %}</ul>
-  
-Teaching
-======
-  <ul>{% for post in site.teaching %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
+
   
 Service and leadership
 ======
@@ -85,3 +69,20 @@ Service and leadership
 * Organiser of the Conference on Complex Systems Warm-Up (2018)
 * External expert and evaluator for funding bids to the European Commission's Horizon 2020 programme
  
+Publications
+======
+  <ul>{% for post in site.publications %}
+    {% include archive-single-cv.html %}
+  {% endfor %}</ul>
+  
+Talks
+======
+  <ul>{% for post in site.talks %}
+    {% include archive-single-talk-cv.html %}
+  {% endfor %}</ul>
+  
+Teaching
+======
+  <ul>{% for post in site.teaching %}
+    {% include archive-single-cv.html %}
+  {% endfor %}</ul>
