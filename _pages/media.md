@@ -20,7 +20,7 @@ Selected articles:
 
 I have given <strong>live TV interview</strong> broadcasted worldwide on <em>BBC World News</em> about my <a href = "https://federicobotta.github.io/publication/2015-10-01-paper-title-number-3" target = "_blank" rel="noopener"> work </a>:
 
-<iframe width="300" height="200"
+<iframe width="200" height="150"
 src="https://www.youtube.com/embed/TY59bJIZs2s">
 </iframe>
 
