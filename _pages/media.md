@@ -18,7 +18,7 @@ Selected articles:
 
 <a href="http://uk.businessinsider.com/afp-smartphones-twitter-help-gauge-crowd-size-2015-5?r=US" target="_blank" rel="noopener">Business Insider: Here's how Twitter can help first responders in an emergency</a>
 
-I have given <strong>live TV interview</strong> broadcasted worldwide on <em>BBC World News</em> about my <a href = "https://federicobotta.github.io/publication/2015-10-01-paper-title-number-3" target = "_blank" rel="noopener"> work </a>:
+I have given <strong>live TV interview</strong> broadcasted worldwide on <em>BBC World News</em> about my <a href = "https://federicobotta.github.io/publication/2015-05-27-paper-title-number-1" target = "_blank" rel="noopener"> work </a>:
 
 <iframe width="200" height="150"
 src="https://www.youtube.com/embed/TY59bJIZs2s">
