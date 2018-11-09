@@ -26,8 +26,8 @@ var addressPoints = [
   ],
   [
     "Granada, ES",
-    37.1830197,
-    -3.602192
+    37.183054,
+    -3.6021928
   ],
   [
     "Prague, CZE",
