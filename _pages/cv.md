@@ -29,6 +29,7 @@ Skills
   * Python
   * Matlab
   * C
+  * Java for Android app development
 * Teaching
   * Large group teaching
   * Small group teaching
@@ -41,7 +42,10 @@ Skills
   
 Service and leadership
 ======
+* Editorial roles
+  * Academic editor for PLOS ONE
 * Journal referee
+  * Scientific data
   * EPJ Data Science
   * Computational Social Networks
   * Social Networks Analysis and Mining
