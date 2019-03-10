@@ -66,6 +66,7 @@ Service and leadership
   * Conference on Complex Systems (2017)
   * Data for Policy (2017)
 * Conference Program Committee
+  * International Conference on Computational Social Science 2019
   * Complenet'18
 * Elected council member of the Complex Systems Society (2017-2020)
 * Elected member of the Steering Committee of the Conference on Complex Systems (2017-2020)
