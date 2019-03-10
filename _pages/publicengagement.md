@@ -10,6 +10,8 @@ I am a founder and co-organiser of <a href="https://databeerswrik.tumblr.com" ta
 
 A selection of public engagement and outreach events I have spoken at includes:
 
+* City University, London, 2018
+  * Invited talk at <a href="https://databeersldn.tumblr.com" target="_blank" rel="no opener no referrer">Databeers London</a>
 * Warwick School, Warwick, 2018
   * Invited panelist to discuss about social media with 16-18 year olds
 * Public Engagement Network Conference, University of Warwick, 2018
