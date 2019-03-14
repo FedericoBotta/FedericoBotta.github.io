@@ -1,9 +1,9 @@
 ---
-title: "Big Data Analytics"
+title: "Advanced Data Analysis"
 collection: teaching
 type: "Postgraduate course"
-permalink: /teaching/2014-2020-teaching-15
+permalink: /teaching/2015-teaching-10
 venue: "Warwick Business School"
-date: 2014/2020-01-01
+date: 2015-01-01
 location: "Coventry, UK"
 ---
