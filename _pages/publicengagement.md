@@ -13,17 +13,17 @@ A selection of public engagement and outreach events I have spoken at includes:
 * City University, London, 2018
   * Invited talk at <a href="https://databeersldn.tumblr.com" target="_blank" rel="no opener no referrer">Databeers London</a>
 * Warwick School, Warwick, 2018
-  * Invited panelist to discuss about social media with 16-18 year olds
+  * Invited panelist to discuss social media data with 16-18 year olds
 * Public Engagement Network Conference, University of Warwick, 2018
-  * Invited talk to discuss about <em> Databeers Warwick</em>
+  * Invited talk on <em> Databeers Warwick</em>
 * Ideas Cafe, Leamington Spa, 2017
-  * Talk for elderly members of the local community
+  * Talk on cyber security for elderly members of the local community
 * City College Coventry, Coventry, 2016
-  * Talk for 16-18 year olds
+  * Talk on <i> Measuring the real world using online data </i>for 16-18 year olds
 * Three Minute Thesis competition, University of Warwick, 2016
   * Finalist in the university-wide event
 * Festival of Imagination, University of Warwick, 2015
-  * Interactive exhibits for children
+  * Ran an interactive exhibit on online data for children
 * ESRC Festival of Social Science, Herbert Museum, Coventry, 2014
   * Poster presentation
 
