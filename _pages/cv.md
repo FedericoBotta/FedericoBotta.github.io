@@ -30,6 +30,15 @@ Skills
   * Matlab
   * C
   * Java for Android app development
+  * Google Firebase platform
+  * Amazon Web Services
+* Development of ethics framework for behavioural science experiments
+* Development of data security framework for app-based experiments
+* Management and supervision
+  * Co-supervision of PhD student in collaboration with Cabinet Office
+  * Supervision and management of a team developing a smart phone app
+  * Mentoring and support of an undergraduate student summer project
+  * Mentoring and support of an A-level student doing a research placement
 * Teaching
   * Large group teaching
   * Small group teaching
