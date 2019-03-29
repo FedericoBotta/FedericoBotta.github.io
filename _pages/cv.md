@@ -54,6 +54,7 @@ Service and leadership
 * Editorial roles
   * Academic editor for PLOS ONE
 * Journal referee
+  * Journal of the Royal Society Interface
   * Scientific data
   * EPJ Data Science
   * Computational Social Networks
