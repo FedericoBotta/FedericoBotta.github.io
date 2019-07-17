@@ -6,5 +6,5 @@ excerpt: ''
 date: 2019-03-14
 venue: 'Environment and Planning A: Economy and Space'
 paperurl: ''
-citation: 'Preis T, Botta F, Moat HS. Sensing global tourism numbers with millions of publicly shared online photographs. Environment and Planning A: Economy and Space (To appear)'
+citation: 'Preis T, Botta F, Moat HS. Sensing global tourism numbers with millions of publicly shared online photographs. Environment and Planning A: Economy and Space (Accepted)'
 ---
