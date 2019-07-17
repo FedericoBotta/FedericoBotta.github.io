@@ -6,5 +6,5 @@ excerpt: ''
 date: 2019-03-14
 venue: 'Environment and Planning B: Urban Analytics and City Science'
 paperurl: ''
-citation: 'Botta F, Moat HS, Preis T. Measuring the size of a crowd using Instagram. Environment and Planning B: Urban Analytics and City Science (Accepted February 2019, to appear)'
+citation: 'Botta, F., Moat, H. S., & Preis, T. (2019). Measuring the size of a crowd using Instagram. Environment and Planning B: Urban Analytics and City Science, 2399808319841615.'
 ---
