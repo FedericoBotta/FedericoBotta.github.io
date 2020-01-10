@@ -18,7 +18,9 @@ Education
 
 Work experience
 ======
-* November 2016 - present: Research Fellow in Data Science
+* January 2020 - present: Lecturer in Data Science
+  Department of computer science, University of Exeter
+* November 2016 - December 2019: Research Fellow in Data Science
   * Data Science Lab, Behavioural Science Group, Warwick Business School
   * Investigation of the use of online data to measure crowd size and global mobility patterns. Development of a large scale mobile phone experiment. Collaborations with *ONS Data Science Campus*, the *Department for Digital, Culture, Media, and Sport* and the *Government Office for Science*
   
