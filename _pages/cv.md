@@ -19,6 +19,7 @@ Education
 Work experience
 ======
 * April 2022 - present: Senior Lecturer in Data Science
+  Department of computer science, University of Exeter
 * January 2020 - April 2022: Lecturer in Data Science
   Department of computer science, University of Exeter
 * October 2021 - present: Turing Fellow, Alan Turing Institute
