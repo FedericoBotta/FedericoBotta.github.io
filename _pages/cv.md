@@ -7,102 +7,135 @@ redirect_from:
   - /resume
 ---
 
-{% include base_path %}
+A full PDF version of my CV is available on request — please [email me](mailto:f.botta@exeter.ac.uk).
 
-Education
-======
-* BSc in Physics, Università degli Studi di Milano-Bicocca, 2006-2009, graded 108/110
-* MSc in Theoretical Physics, Università degli Studi di Milano-Bicocca, 2009-2012, graded 109/110
-* MSc in Complexity Science, University of Warwick, 2012-2013, awarded with distinction
-* PhD in Complexity Science, University of Warwick, 2013-2016
+---
 
-Work experience
-======
-* April 2022 - present: Senior Lecturer in Data Science
-  Department of computer science, University of Exeter
-* January 2020 - April 2022: Lecturer in Data Science
-  Department of computer science, University of Exeter
-* October 2021 - present: Turing Fellow, Alan Turing Institute
-* November 2016 - December 2019: Research Fellow in Data Science
-  * Data Science Lab, Behavioural Science Group, Warwick Business School
-  * Investigation of the use of online data to measure crowd size and global mobility patterns. Development of a large scale mobile phone experiment. Collaborations with *ONS Data Science Campus*, the *Department for Digital, Culture, Media, and Sport* and the *Government Office for Science*
-  
-Skills
-======
-* Computer programming
-  * R
-  * Python
-  * Matlab
-  * C
-  * Java for Android app development
-  * Google Firebase platform
-  * Amazon Web Services
-* Development of ethics framework for behavioural science experiments
-* Development of data security framework for app-based experiments
-* Management and supervision
-  * Co-supervision of PhD student in collaboration with Cabinet Office
-  * Supervision and management of a team developing a smart phone app
-  * Mentoring and support of an undergraduate student summer project
-  * Mentoring and support of an A-level student doing a research placement
-* Teaching
-  * Large group teaching
-  * Small group teaching
-  * Lab teaching
-  * Giving summative and formative feedback
-  * Marking
-  * Supervising
+## Education
 
+- **PhD in Complexity Science**, University of Warwick, 2013–2016
+- **MSc in Complexity Science**, University of Warwick, 2012–2013 *(awarded with distinction)*
+- **MSc in Theoretical Physics**, Università degli Studi di Milano-Bicocca, 2009–2012 *(109/110)*
+- **BSc in Physics**, Università degli Studi di Milano-Bicocca, 2006–2009 *(108/110)*
 
-  
-Service and leadership
-======
-* Editorial roles
-  * Academic editor for PLOS ONE
-* Journal referee
-  * Journal of the Royal Society Interface
-  * Scientific data
-  * EPJ Data Science
-  * Computational Social Networks
-  * Social Networks Analysis and Mining
-  * Journal of Economic Interaction and Coordination
-  * Royal Society Open Science
-  * Scientific Reports
-  * International Journal of Geo-Information
-  * Applied Sciences
-  * IEEE Pervasive Computing
-  * Physica A
-  * Physics Letters A
-  * Europhysics Letters
-  * PLOS ONE
-* Conference referee
-  * International Conference on Computational Social Science (2015-2018)
-  * International Conference on Web and Social Media (2015-2018)
-  * Social Informatics (2017)
-  * Conference on Complex Systems (2017)
-  * Data for Policy (2017)
-* Conference Program Committee
-  * International Conference on Computational Social Science 2019
-  * Complenet'18
-* Elected council member of the Complex Systems Society (2017-2020)
-* Elected member of the Steering Committee of the Conference on Complex Systems (2017-2020)
-* Elected member of the Advisory Board of the young researchers of the Complex Systems Society (2017-2019)
-* Organiser of the Conference on Complex Systems Warm-Up (2018)
-* External expert and evaluator for funding bids to the European Commission's Horizon 2020 programme
- 
-Publications
-======
-  <ul>{% for post in site.publications %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Talks
-======
-  <ul>{% for post in site.talks %}
-    {% include archive-single-talk-cv.html %}
-  {% endfor %}</ul>
-  
-Teaching
-======
-  <ul>{% for post in site.teaching %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
+---
+
+## Employment
+
+**University of Exeter**
+- Senior Lecturer in Data Science, Department of Computer Science, 2022–present
+- Lecturer in Data Science, Department of Computer Science, 2020–2022
+
+**Alan Turing Institute**
+- Turing Fellow, 2021–2024
+
+**University of Warwick**
+- Research Fellow in Data Science, Data Science Lab, Behavioural Science Group, Warwick Business School, 2016–2019
+
+---
+
+## Leadership & Administrative Roles
+
+- **Deputy Director of Education and Student Experience (PGT)**, University of Exeter, 2024–present
+- **Programme Lead**, MSc in AI for the Environment, University of Exeter, 2025–present
+
+---
+
+## Research Grants & Awards
+
+| Period | Amount | Funder | Project |
+|--------|--------|--------|---------|
+| 2025–2026 | £190,004 | Natural England | Access to greenspace in England |
+| 2024–2028 | £122,828 | LV= / Allianz Insurance | AI for home insurance property assessment |
+| 2023 | £22,766 | Department for Transport | AI to detect EV chargers |
+| 2021–2023 | £134,074 | ESRC / ADR UK | No. 10 Data Science Fellowship |
+| 2020–2021 | £265,561 | InnovateUK / City Science | Urban data science (Co-I) |
+| 2017 | £796,848 | Government Office for Science | Data science for government (named researcher) |
+| 2016 | £19,984 | ESRC Impact Acceleration Account | Named researcher |
+| 2012–2016 | £64,000 | EPSRC | Postgraduate studentship |
+
+---
+
+## Selected Publications
+
+See the full [Publications page](/publications/) or my <a href="https://scholar.google.co.uk/citations?user=M9kv6n8AAAAJ&hl=en" target="_blank">Google Scholar profile</a>.
+
+**Highlights:**
+- Santana, C., **Botta, F.**, et al. (2023). COVID-19 is linked to changes in the time–space dimension of human mobility. *Nature Human Behaviour*, 7(10), 1729–1739.
+- Collins, T., Di Clemente, R., Gutiérrez-Roig, M., & **Botta, F.** (2023). Spatiotemporal gender differences in urban vibrancy. *Environment and Planning B*.
+- **Botta, F.** (2025). Rail journey cost calculator for Great Britain. *Environment and Planning B*, 52(3), 747–755.
+- **Botta, F.**, Lovelace, R., Gilbert, L., & Turrell, A. (2025). Packaging code and data for reproducible research. *Environment and Planning B*.
+- Chen, Z., & **Botta, F.** (2025). The geography of inequalities in access to healthcare across England. *Journal of Physics: Complexity*.
+
+---
+
+## PhD Supervision
+
+| Period | Student | Project |
+|--------|---------|---------|
+| 2025–2028 | Yuchen Zhou | Exploring causality in urban human mobility dynamics |
+| 2025–2028 | Anna Kaygorodova | Tackling societal challenges with complex systems and computational social science |
+| 2024–2027 | Selorm Komla Darkey | Geospatial data for property information |
+| 2024–2027 | Tatiana Carolina Cantillo-Garcia | Recreational value of landscape features |
+| 2023–2026 | Zihao Chen | Public transport travel time variability and socio-spatial inequality |
+| 2022–2026 | Thomas Hogger Gasby | Colonial urban environments and mobility |
+| 2022–2026 | Nathanael Sheehan | Open data for public health |
+| 2021–2025 | Thomas Collins | Modelling urban environments using mobile phone and online data *(awarded)* |
+
+---
+
+## Postdoctoral Researchers
+
+- Thomas Collins, Pedro Henrique Batista de Barros, Nectarios Keane Nugroho (2025–2026)
+- Melike Dila Karatas (2023)
+
+---
+
+## Advisory & Policy Engagement
+
+See the full [Policy & Impact page](/policy/).
+
+**Select Committees:** Transport (oral evidence, 2024) · Public Accounts (written evidence, 2025) · Built Environment (written evidence, 2025) · Public Administration & Constitutional Affairs (written evidence, 2023)
+
+**Invited talks to policy audiences:** Data Science in Transport Board · UK Cost of Living & Equalities Group · Department for Transport AI Strategy Roundtable · ONS Data Science Campus · Cross-Government Group on Inequalities
+
+---
+
+## Editorial & Service Roles
+
+**Editorial**
+- Academic editor, *PLOS ONE* (2018–present)
+- Associate editor, *Applied Network Science* (2024–present)
+- General Chair, Conference on Complex Systems 2024 (CCS2024)
+- Program Chair, Complenet (2022–2023)
+- Guest editor, *Advances in Complex Systems* (2024)
+
+**Professional society**
+- Elected member, Executive Committee of the Complex Systems Society (2024–2027)
+- Elected council member, Complex Systems Society (2024–2027)
+- Elected member, Steering Committee of the Conference on Complex Systems (2024–2027)
+
+**Reviewing**
+Reviewer for over 40 journals including *Nature Human Behaviour*, *Environment and Planning B*, *Royal Society Open Science*, *EPJ Data Science*, *Journal of the Royal Society Interface*, *PLOS ONE*, and others.
+
+---
+
+## Teaching
+
+Extensive teaching experience at undergraduate, postgraduate (MSc), MBA, and executive education levels in data science, machine learning, and quantitative methods.
+
+**Modules at Exeter:**
+- Social Networks & Text Analysis (MSc, 2023–present) — module design and delivery
+- Artificial Intelligence and its Applications (BSc, 2020–present)
+- Machine Learning and Data Science (BSc, 2020–present)
+
+---
+
+## Public Engagement
+
+- **Databeers Exeter** — founder and co-organiser, public engagement events on data science
+- Royal Albert Memorial Museum, Exeter — ongoing research collaboration and public exhibition (2024–present)
+- Exeter Science Centre — community engagement events, local schools and public (2024–2025)
+- Various invited talks to schools, colleges, and community groups (2014–present)
+
+See the full [Public Engagement page](/publicengagement/) for more.

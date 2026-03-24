@@ -1,20 +1,16 @@
-# main links links
+# main navigation links
 main:
   - title: "Publications"
     url: /publications/
 
-  - title: "Talks"
-    url: /talks/    
+  - title: "Policy & Impact"
+    url: /policy/
 
-  - title: "Teaching"
-    url: /teaching/    
- 
-  - title: "Media Coverage"
-    url : /media/
+  - title: "Media"
+    url: /media/
 
-  - title: "Public Engagement & Outreach"
-    url : /publicengagement/
-    
+  - title: "Public Engagement"
+    url: /publicengagement/
+
   - title: "CV"
     url: /cv/
-    
