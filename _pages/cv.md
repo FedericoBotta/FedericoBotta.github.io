@@ -45,8 +45,8 @@ A full PDF version of my CV is available on request — please [email me](mailto
 
 | Period | Amount | Funder | Project |
 |--------|--------|--------|---------|
-| 2025–2026 | £190,004 | Natural England | Access to greenspace in England |
-| 2024–2028 | £122,828 | LV= / Allianz Insurance | AI for home insurance property assessment |
+| 2025–2026 | £190,004 | Natural England | Funded research project |
+| 2024–2028 | £122,828 | LV= / Allianz Insurance | Funded research project |
 | 2023 | £22,766 | Department for Transport | AI to detect EV chargers |
 | 2021–2023 | £134,074 | ESRC / ADR UK | No. 10 Data Science Fellowship |
 | 2020–2021 | £265,561 | InnovateUK / City Science | Urban data science (Co-I) |

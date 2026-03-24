@@ -29,7 +29,7 @@ Working with the Analysis Directorate on a project investigating the affordabili
 As an **ESRC No. 10 Data Science Fellow** (2021–2023), I was embedded with the data science team at 10 Downing Street and the ONS Data Science Campus. I developed a case study demonstrating how public government datasets can be made more easily available and usable — work that directly shaped data-sharing practice across government.
 
 **Natural England & DEFRA**
-Currently leading a funded project (2025–2026) examining access to greenspace across England. The research will provide new evidence on where inequalities in access to parks and natural environments are most acute, directly informing land use and environmental policy.
+I am currently collaborating with Natural England and DEFRA on a funded research project (2025–2026).
 
 **Foreign, Commonwealth and Development Office**
 Based on my research demonstrating how mobile phone and social media data can be used to estimate where people are, the FCDO developed a pilot project aimed at improving estimates of the number of British nationals living abroad — a metric with direct relevance to emergency planning and consular services.
@@ -59,8 +59,8 @@ Named researcher on a £796,848 Government Office for Science grant; also worked
 
 | Period | Amount | Partner | Focus |
 |--------|--------|---------|-------|
-| 2025–2026 | £190,004 | Natural England / DEFRA | Access to greenspace |
-| 2024–2028 | £122,828 | LV= / Allianz Insurance | AI for property assessment |
+| 2025–2026 | £190,004 | Natural England / DEFRA | Funded research project |
+| 2024–2028 | £122,828 | LV= / Allianz Insurance | Funded research project |
 | 2023 | £22,766 | Department for Transport | AI to detect EV chargers |
 | 2021–2023 | £134,074 | ESRC / ADR UK | No. 10 Data Science Fellowship |
 | 2020–2021 | £265,561 | InnovateUK / City Science | Urban data science |

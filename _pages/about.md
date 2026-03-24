@@ -8,10 +8,15 @@ redirect_from:
   - /about.html
 ---
 
-<div class="page-intro">
-I use data science and AI to understand how cities work — and to help make them fairer, greener, and better served. My research sits at the intersection of <strong>urban analytics</strong>, <strong>human mobility</strong>, and <strong>computational social science</strong>, with a deliberate focus on turning research into real-world policy impact.
-
-My work has been published in leading journals including <em>Nature Human Behaviour</em>, covered by the <strong>BBC</strong>, <em>Science</em>, and <em>Wired</em> in over 15 countries, and has shaped national policy through evidence to UK Parliament and government departments.
+<div class="about-hero">
+  <p class="about-hero__lead">I use data science and AI to understand how cities work — and to help make them fairer, greener, and better served. My research spans <strong>urban analytics</strong>, <strong>human mobility</strong>, and <strong>computational social science</strong>, with a deliberate focus on turning research into real-world policy impact.</p>
+  <p class="about-hero__lead" style="margin-top:0.6em; font-size:0.95em !important;">Published in <em>Nature Human Behaviour</em> · covered by the BBC, <em>Science</em> and <em>Wired</em> in 15+ countries · evidence to UK Parliament and government departments.</p>
+  <div class="about-hero__tags">
+    <span class="hero-tag">Urban Analytics</span>
+    <span class="hero-tag">Human Mobility</span>
+    <span class="hero-tag">Data Science for Policy</span>
+    <span class="hero-tag">AI &amp; Society</span>
+  </div>
 </div>
 
 ## What I Work On
@@ -31,7 +36,7 @@ My work has been published in leading journals including <em>Nature Human Behavi
   </div>
   <div class="theme-card">
     <h3>🤖 AI &amp; Society</h3>
-    <p>Exploring how AI and large-scale data can be used responsibly and equitably — from detecting EV chargers to assessing properties, while addressing questions of bias and public trust.</p>
+    <p>Exploring how AI and large-scale data can be used responsibly and equitably, while addressing questions of bias, access, and public trust in data-driven systems.</p>
   </div>
 </div>
 
@@ -74,7 +79,7 @@ My work has been published in leading journals including <em>Nature Human Behavi
 - **2025** — New research on healthcare access inequalities (*Journal of Physics: Complexity*) and rail journey costs (*Environment and Planning B*)
 - **2024** — General Chair of the **Conference on Complex Systems (CCS2024)**, the world's flagship conference in complex systems science
 - **2024** — Gave **oral evidence to the Transport Select Committee** on the future of transport data
-- **2024** — Appointed **Deputy Director of Education (PGT)** at Exeter; new grants with LV= / Allianz and Natural England
+- **2024** — Appointed **Deputy Director of Education (PGT)** at Exeter
 - **2023** — Published in *Nature Human Behaviour* on how COVID-19 restructured human mobility across space and time
 - **2021–2023** — **ESRC No. 10 Data Science Fellow**, embedded with the data science team at **10 Downing Street** and the ONS Data Science Campus
 
@@ -96,12 +101,7 @@ I actively seek collaborations with organisations outside academia — particula
 
 ## Current Projects
 
-I am currently leading or co-leading funded projects on:
-
-- **Access to greenspace across England** — working with Natural England and DEFRA to study who has access to parks and green space, and where inequalities are most acute (2025–2026)
-- **AI for property assessment** — using computer vision and machine learning for home insurance risk estimation, in collaboration with LV= / Allianz (2024–2028)
-- **Transport affordability in Great Britain** — investigating the cost and accessibility of rail and bus journeys, in collaboration with the Department for Transport
-- **Visitor analytics for cultural institutions** — using data science to help the Royal Albert Memorial Museum (RAMM, Exeter) better understand and predict visitor numbers
+I am currently involved in a number of funded research projects in collaboration with government and industry partners, focusing on transport equity, urban environments, AI applications, and access to natural spaces. I also have an ongoing knowledge exchange project with the **Royal Albert Memorial Museum (RAMM)** in Exeter, using data science to better understand and predict visitor patterns.
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

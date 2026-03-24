@@ -1,135 +1,308 @@
 /* ==========================================================================
-   Custom styles for federicobotta.github.io
+   Custom styles — federicobotta.github.io
+   University of Exeter brand palette:
+     #022020  deep dark green (near-black)
+     #003c3c  dark green (masthead, strong backgrounds)
+     #007d69  medium green (links, accents)
+     #00a87e  bright green (buttons, highlights)
+     #00c896  light accent green
    ========================================================================== */
 
-/* Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* Google Fonts — Inter for clean modern feel */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-/* ---- Global typography overrides ---- */
+/* ==========================================================================
+   Global
+   ========================================================================== */
+
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  color: #2c3e50;
+  color: #222;
   line-height: 1.7;
+  background-color: #fff;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-weight: 600;
-  color: #1e3a5f;
-  letter-spacing: -0.01em;
+  font-weight: 700;
+  color: #022020;
+  letter-spacing: -0.02em;
 }
 
-/* ---- Masthead (top nav bar) ---- */
+a {
+  color: #007d69;
+  &:hover { color: #005a4e; }
+  &:visited { color: #007d69; }
+}
+
+hr {
+  border: none;
+  border-top: 2px solid #e0eeeb;
+  margin: 2em 0;
+}
+
+/* ==========================================================================
+   Masthead (top navigation)
+   ========================================================================== */
+
 .masthead {
-  background: #1e3a5f;
-  border-bottom: none;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  background: linear-gradient(135deg, #022020 0%, #003c3c 100%);
+  border-bottom: 3px solid #00a87e;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+  padding: 0.3em 0;
 
   a {
-    color: #e8f0f8 !important;
+    color: #cceee8 !important;
     font-weight: 500;
-    font-size: 0.85em;
-    letter-spacing: 0.03em;
+    font-size: 0.82em;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
+    padding: 0.4em 0.2em;
+    transition: color 0.15s ease;
 
     &:hover {
-      color: #ffffff !important;
+      color: #00c896 !important;
     }
   }
 
   .masthead__menu-item--lg a {
     color: #ffffff !important;
-    font-weight: 700;
-    font-size: 1em;
+    font-weight: 800;
+    font-size: 1.05em;
     text-transform: none;
-    letter-spacing: 0;
+    letter-spacing: -0.01em;
+    border-right: 1px solid rgba(0,200,150,0.3);
+    padding-right: 1.2em;
+    margin-right: 0.4em;
   }
 }
 
-/* ---- Sidebar author profile ---- */
-.author__avatar img {
-  border-radius: 50%;
-  border: 3px solid #1e3a5f;
-  box-shadow: 0 4px 12px rgba(30,58,95,0.2);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+/* ==========================================================================
+   Sidebar author profile
+   ========================================================================== */
 
-  &:hover {
-    transform: scale(1.03);
-    box-shadow: 0 6px 20px rgba(30,58,95,0.3);
+.sidebar {
+  .author__avatar img {
+    border-radius: 50%;
+    border: 4px solid #00a87e;
+    box-shadow: 0 4px 20px rgba(0, 60, 60, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: scale(1.04);
+      box-shadow: 0 8px 28px rgba(0, 60, 60, 0.35);
+    }
+  }
+
+  .author__name {
+    font-weight: 800;
+    font-size: 1.1em;
+    color: #022020;
+    margin-top: 0.5em;
+  }
+
+  .author__bio {
+    font-size: 0.82em;
+    color: #3a5a50;
+    line-height: 1.55;
+    border-left: 3px solid #00a87e;
+    padding-left: 0.7em;
+    margin-top: 0.6em;
+  }
+
+  .author__urls-wrapper {
+    margin-top: 1em;
+  }
+
+  .author__urls a {
+    color: #007d69;
+    font-size: 0.82em;
+    font-weight: 500;
+    transition: color 0.15s ease;
+
+    &:hover { color: #022020; }
   }
 }
 
-.author__name {
-  font-weight: 700;
-  font-size: 1.05em;
-  color: #1e3a5f;
-}
+/* ==========================================================================
+   Page content — general
+   ========================================================================== */
 
-.author__bio {
-  font-size: 0.82em;
-  color: #4a5568;
-  line-height: 1.5;
-}
-
-.author__urls a {
-  color: #1e6ab4;
-  font-size: 0.82em;
-
-  &:hover {
-    color: #1e3a5f;
-  }
-}
-
-/* ---- Page content ---- */
 .page__content {
   p, li {
-    font-size: 0.96em;
-    line-height: 1.75;
+    font-size: 0.97em;
+    line-height: 1.8;
+    color: #2a2a2a;
   }
 
+  /* Section headings with strong green accent */
   h2 {
-    border-bottom: 2px solid #e8f0f8;
+    font-size: 1.4em;
+    font-weight: 800;
+    color: #022020;
+    margin-top: 2.2em;
     padding-bottom: 0.4em;
-    margin-top: 2em;
+    border-bottom: 3px solid #00a87e;
+    letter-spacing: -0.02em;
+  }
+
+  h3 {
+    font-size: 1.1em;
+    color: #003c3c;
+    margin-top: 1.4em;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88em;
+    margin: 1.5em 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,60,60,0.08);
+
+    thead tr {
+      background: #003c3c;
+      color: #fff;
+
+      th {
+        padding: 0.75em 1em;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-align: left;
+        border: none;
+      }
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #e0eeeb;
+      transition: background 0.15s ease;
+
+      &:hover { background: #f0faf7; }
+      &:nth-child(even) { background: #f7fdfb; }
+      &:nth-child(even):hover { background: #e8f8f3; }
+
+      td {
+        padding: 0.65em 1em;
+        border: none;
+        color: #2a2a2a;
+      }
+    }
+  }
+
+  /* Inline code */
+  code {
+    background: #f0faf7;
+    color: #003c3c;
+    border: 1px solid #c3e8de;
+    border-radius: 4px;
+    padding: 0.1em 0.4em;
+    font-size: 0.88em;
   }
 }
 
-/* ---- Research theme cards ---- */
+/* ==========================================================================
+   Homepage hero intro
+   ========================================================================== */
+
+.about-hero {
+  background: linear-gradient(135deg, #022020 0%, #003c3c 60%, #007d69 100%);
+  border-radius: 10px;
+  padding: 2em 2.2em;
+  margin-bottom: 2em;
+  position: relative;
+  overflow: hidden;
+
+  /* Subtle decorative circle */
+  &::after {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: rgba(0, 200, 150, 0.1);
+    pointer-events: none;
+  }
+}
+
+.about-hero__lead {
+  font-size: 1.15em !important;
+  font-weight: 500;
+  color: #e8faf5 !important;
+  line-height: 1.7 !important;
+  margin: 0 0 1em 0;
+}
+
+.about-hero__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  margin-top: 0.8em;
+}
+
+.hero-tag {
+  display: inline-block;
+  background: rgba(0, 200, 150, 0.18);
+  border: 1px solid rgba(0, 200, 150, 0.4);
+  color: #00c896;
+  font-size: 0.78em;
+  font-weight: 600;
+  padding: 0.3em 0.8em;
+  border-radius: 20px;
+  letter-spacing: 0.03em;
+}
+
+/* ==========================================================================
+   Research theme cards
+   ========================================================================== */
+
 .research-themes {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   gap: 1.2em;
   margin: 1.5em 0;
 }
 
 .theme-card {
-  background: #f7faff;
-  border: 1px solid #d0e2f7;
-  border-radius: 8px;
-  padding: 1.2em 1.4em;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  background: #fff;
+  border: 1px solid #c8e8e0;
+  border-top: 4px solid #00a87e;
+  border-radius: 0 0 8px 8px;
+  padding: 1.4em 1.5em;
+  box-shadow: 0 2px 8px rgba(0, 60, 60, 0.07);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:nth-child(2) { border-top-color: #003c3c; }
+  &:nth-child(3) { border-top-color: #007d69; }
+  &:nth-child(4) { border-top-color: #00c896; }
 
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(30, 58, 95, 0.12);
-    border-color: #1e6ab4;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0, 60, 60, 0.15);
   }
 
   h3 {
     font-size: 1em;
-    margin: 0 0 0.5em 0;
-    color: #1e3a5f;
+    font-weight: 700;
+    margin: 0 0 0.6em 0;
+    color: #022020;
   }
 
   p {
     font-size: 0.85em !important;
     margin: 0;
-    color: #4a5568;
+    color: #3a5a50;
     line-height: 1.6 !important;
   }
 }
 
-/* ---- Impact stats grid ---- */
+/* ==========================================================================
+   Impact stats grid
+   ========================================================================== */
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -139,167 +312,198 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .stat-item {
-  background: linear-gradient(135deg, #1e3a5f 0%, #2d5f9e 100%);
+  background: linear-gradient(145deg, #003c3c 0%, #007d69 100%);
   border-radius: 10px;
-  padding: 1.4em 1em;
+  padding: 1.6em 1em;
   color: #fff;
-  box-shadow: 0 4px 12px rgba(30, 58, 95, 0.25);
-  transition: transform 0.2s ease;
+  box-shadow: 0 4px 16px rgba(0, 60, 60, 0.3);
+  border-bottom: 3px solid #00c896;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 60, 60, 0.4);
   }
 }
 
 .stat-number {
   display: block;
-  font-size: 2.2em;
-  font-weight: 700;
+  font-size: 2.6em;
+  font-weight: 800;
   line-height: 1;
   color: #ffffff;
+  letter-spacing: -0.03em;
 }
 
 .stat-label {
   display: block;
-  font-size: 0.78em;
-  color: #b8d4f0;
-  margin-top: 0.4em;
+  font-size: 0.75em;
+  color: #a0ddd0;
+  margin-top: 0.5em;
   line-height: 1.3;
+  font-weight: 500;
 }
 
-/* ---- Policy partners section ---- */
+/* ==========================================================================
+   Policy partners / highlight sections
+   ========================================================================== */
+
 .partners-section {
-  background: #f7faff;
-  border-left: 4px solid #1e6ab4;
+  background: #f0faf7;
+  border-left: 5px solid #00a87e;
   border-radius: 0 8px 8px 0;
-  padding: 1em 1.4em;
+  padding: 1.2em 1.6em;
   margin: 1.5em 0;
+  box-shadow: 0 2px 8px rgba(0, 60, 60, 0.06);
 
   p {
     margin: 0;
-    font-size: 0.9em !important;
+    font-size: 0.91em !important;
+    color: #1a3a30;
+  }
+
+  strong {
+    color: #003c3c;
   }
 }
 
-/* ---- Highlight boxes ---- */
-.highlight-box {
-  background: #fff8e1;
-  border: 1px solid #ffcc02;
-  border-radius: 6px;
-  padding: 0.8em 1.2em;
-  margin: 1em 0;
-  font-size: 0.9em;
-}
+/* ==========================================================================
+   Publications page
+   ========================================================================== */
 
-/* ---- Publication list improvements ---- */
 .publication-item {
-  padding: 1em 0;
-  border-bottom: 1px solid #e8f0f8;
+  padding: 1.1em 0;
+  border-bottom: 1px solid #e0eeeb;
 
-  &:last-child {
-    border-bottom: none;
-  }
+  &:last-child { border-bottom: none; }
 
   .pub-title {
-    font-weight: 600;
-    color: #1e3a5f;
+    font-weight: 700;
+    color: #022020;
     font-size: 0.95em;
+    line-height: 1.5;
   }
 
   .pub-venue {
-    color: #1e6ab4;
+    color: #007d69;
     font-size: 0.85em;
     font-style: italic;
   }
 
   .pub-year {
     display: inline-block;
-    background: #e8f0f8;
-    color: #1e3a5f;
-    font-size: 0.75em;
-    font-weight: 600;
-    padding: 0.1em 0.5em;
+    background: #003c3c;
+    color: #fff;
+    font-size: 0.72em;
+    font-weight: 700;
+    padding: 0.15em 0.6em;
     border-radius: 4px;
-    margin-right: 0.4em;
-  }
-
-  .pub-highlight {
-    border-left: 3px solid #1e6ab4;
-    padding-left: 0.8em;
+    margin-right: 0.5em;
+    letter-spacing: 0.02em;
   }
 }
 
-/* ---- Publication filter ---- */
+.publication-item.pub-highlight {
+  background: #f4fdf9;
+  border-left: 4px solid #00a87e;
+  padding-left: 1em;
+  border-radius: 0 6px 6px 0;
+  margin-left: -1em;
+}
+
+/* Publication year filter buttons */
 .pub-filter {
   display: flex;
-  gap: 0.6em;
+  gap: 0.5em;
   flex-wrap: wrap;
-  margin: 1em 0;
+  margin: 1.2em 0;
 }
 
 .filter-btn {
-  background: #f0f4f8;
-  border: 1px solid #d0e2f7;
-  border-radius: 20px;
-  padding: 0.3em 0.9em;
+  background: #f0faf7;
+  border: 2px solid #c8e8e0;
+  border-radius: 24px;
+  padding: 0.3em 1em;
   font-size: 0.82em;
   cursor: pointer;
   font-family: 'Inter', sans-serif;
-  font-weight: 500;
-  color: #1e3a5f;
-  transition: all 0.15s ease;
-
-  &:hover, &.active {
-    background: #1e3a5f;
-    color: #fff;
-    border-color: #1e3a5f;
-  }
-}
-
-/* ---- Buttons ---- */
-.btn--primary {
-  background: #1e3a5f !important;
-  border-color: #1e3a5f !important;
-  color: #fff !important;
   font-weight: 600;
+  color: #003c3c;
+  transition: all 0.15s ease;
   letter-spacing: 0.02em;
-  border-radius: 6px !important;
 
   &:hover {
-    background: #2d5f9e !important;
-    border-color: #2d5f9e !important;
+    background: #007d69;
+    color: #fff;
+    border-color: #007d69;
+  }
+
+  &.active {
+    background: #003c3c;
+    color: #fff;
+    border-color: #003c3c;
   }
 }
 
-/* ---- Page hero / intro section ---- */
-.page-intro {
-  font-size: 1.05em;
-  color: #2c3e50;
-  line-height: 1.8;
-  border-bottom: 1px solid #e8f0f8;
-  padding-bottom: 1.2em;
-  margin-bottom: 1.5em;
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+.btn--primary {
+  background: #003c3c !important;
+  border-color: #003c3c !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em;
+  border-radius: 6px !important;
+  padding: 0.6em 1.3em !important;
+  font-size: 0.9em !important;
+  transition: background 0.15s ease, transform 0.15s ease !important;
+
+  &:hover {
+    background: #007d69 !important;
+    border-color: #007d69 !important;
+    transform: translateY(-1px);
+  }
 }
 
-/* ---- Footer ---- */
+.btn {
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+  font-size: 0.9em !important;
+  transition: background 0.15s ease !important;
+
+  &:hover {
+    background: #f0faf7 !important;
+    border-color: #00a87e !important;
+    color: #003c3c !important;
+  }
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
 .page__footer {
-  background: #1e3a5f;
-  color: #b8d4f0;
+  background: linear-gradient(135deg, #022020 0%, #003c3c 100%);
+  border-top: 3px solid #00a87e;
+  color: #a0ddd0;
+  margin-top: 3em;
 
   footer {
-    color: #b8d4f0;
+    color: #a0ddd0;
   }
 
   a {
-    color: #7fb3d3;
-
-    &:hover {
-      color: #fff;
-    }
+    color: #00c896;
+    &:hover { color: #fff; }
   }
 }
 
-/* ---- Responsive tweaks ---- */
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
 @media (max-width: 768px) {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -307,5 +511,13 @@ h1, h2, h3, h4, h5, h6 {
 
   .research-themes {
     grid-template-columns: 1fr;
+  }
+
+  .about-hero {
+    padding: 1.4em 1.2em;
+  }
+
+  .about-hero__lead {
+    font-size: 1em !important;
   }
 }
