@@ -23,19 +23,19 @@ redirect_from:
 
 <div class="research-themes">
   <div class="theme-card">
-    <h3>🏙️ Urban Analytics</h3>
+    <h3>Urban Analytics</h3>
     <p>Understanding how cities function through mobile phone data, social media, and other digital traces — from crowd size estimation to urban vibrancy to access to greenspace.</p>
   </div>
   <div class="theme-card">
-    <h3>🚌 Transport &amp; Mobility</h3>
+    <h3>Transport &amp; Mobility</h3>
     <p>Analysing patterns of human movement to understand inequality in access to transport, the affordability of public transit, and how COVID-19 restructured people's mobility.</p>
   </div>
   <div class="theme-card">
-    <h3>📊 Data Science for Policy</h3>
+    <h3>Data Science for Policy</h3>
     <p>Bridging cutting-edge research and government decision-making — providing evidence to Parliament and co-designing research with teams at the Department for Transport, ONS, and 10 Downing Street.</p>
   </div>
   <div class="theme-card">
-    <h3>🤖 AI &amp; Society</h3>
+    <h3>AI &amp; Society</h3>
     <p>Exploring how AI and large-scale data can be used responsibly and equitably, while addressing questions of bias, access, and public trust in data-driven systems.</p>
   </div>
 </div>
