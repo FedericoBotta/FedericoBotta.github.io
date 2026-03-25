@@ -224,7 +224,7 @@ hr {
   gap: 0.5em;
 }
 
-/* Photo — square, sits right of bio */
+/* Photo — softly rounded, no grayscale */
 .home-intro__photo {
   img {
     width: 100%;
@@ -232,12 +232,61 @@ hr {
     object-fit: cover;
     object-position: center top;
     display: block;
-    border-radius: 3px;
-    box-shadow: 0 4px 24px rgba(0,40,30,.15);
-    filter: grayscale(15%);
-    transition: filter .3s;
-    &:hover { filter: grayscale(0%); }
+    border-radius: 20px;
+    box-shadow: 0 8px 36px rgba(0,40,30,.18);
+    transition: box-shadow .3s, transform .3s;
+    &:hover {
+      box-shadow: 0 14px 48px rgba(0,40,30,.24);
+      transform: translateY(-2px);
+    }
   }
+}
+
+/* ── Visualisation band ─────────────────────────────────────── */
+
+.home-viz {
+  background: #011818;
+  position: relative;
+  overflow: hidden;
+}
+
+.home-viz__inner {
+  position: relative;
+}
+
+.home-viz__label {
+  position: absolute;
+  top: 1.4em;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.home-viz__label-title {
+  display: block;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.1em;
+  font-weight: 400;
+  color: rgba(255,255,255,0.75);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.home-viz__label-sub {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72em;
+  color: rgba(0,200,150,0.6);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: 0.3em;
+}
+
+#mobility-canvas {
+  display: block;
+  width: 100%;
 }
 
 /* ── Homepage main content ──────────────────────────────────── */
