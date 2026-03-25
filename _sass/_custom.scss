@@ -1,22 +1,19 @@
 /* ==========================================================================
-   Custom styles — federicobotta.github.io
-   Design: Clean editorial with Exeter green accents
+   federicobotta.github.io — custom styles
+   Design: editorial minimalism inspired by rpmenezes.github.io
    Palette:
-     #022020  near-black green  (text, headings)
-     #003c3c  dark green        (footer, strong accents)
-     #006647  forest green      (links, icon colours)
-     #00875a  medium green      (borders, buttons)
-     #00c896  bright green      (tags, highlights)
-     #f4faf7  pale green tint   (hero background, cards)
-     #d0ede4  green rule        (borders, dividers)
+     #022020  near-black green   (headings, strong text)
+     #003c3c  dark green         (footer, footer links bg)
+     #006647  forest green       (links, active nav)
+     #00875a  medium green       (section borders, buttons)
+     #00c896  bright green       (tags, highlights)
+     #f5faf8  pale green tint    (subtle backgrounds)
+     #d8ece5  green rule         (dividers)
    ========================================================================== */
 
-/* Google Fonts — DM Serif Display (headings) + Inter (body) */
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* ==========================================================================
-   CSS custom properties
-   ========================================================================== */
+/* ── CSS custom properties ─────────────────────────────────── */
 
 :root {
   --green-darkest: #022020;
@@ -24,244 +21,237 @@
   --green-forest:  #006647;
   --green-mid:     #00875a;
   --green-bright:  #00c896;
-  --green-pale:    #f4faf7;
-  --green-rule:    #d0ede4;
-  --text-primary:  #1a1a1a;
-  --text-muted:    #4a6360;
+  --green-pale:    #f5faf8;
+  --green-rule:    #d8ece5;
+  --text:          #1c1c1c;
+  --text-muted:    #5a6f6a;
   --white:         #ffffff;
+  --content-width: 920px;
 }
 
-/* ==========================================================================
-   Base
-   ========================================================================== */
+/* ── Base ───────────────────────────────────────────────────── */
 
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  color: var(--text-primary);
-  line-height: 1.75;
-  background-color: var(--white);
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 16px;
+  color: var(--text);
+  background: var(--white);
+  line-height: 1.75;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4 {
   font-family: 'DM Serif Display', Georgia, serif;
   font-weight: 400;
   color: var(--green-darkest);
-  letter-spacing: -0.01em;
-  line-height: 1.25;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
 }
 
 a {
   color: var(--green-forest);
   text-decoration: none;
-  transition: color 0.15s ease;
-  &:hover { color: var(--green-dark); text-decoration: underline; }
-  &:visited { color: var(--green-forest); }
+  &:hover        { color: var(--green-darkest); text-decoration: underline; }
+  &:visited      { color: var(--green-forest); }
 }
 
 hr {
   border: none;
   border-top: 1px solid var(--green-rule);
-  margin: 2.5em 0;
+  margin: 3em 0;
 }
 
-/* ==========================================================================
-   Masthead — clean white, green accent underline
-   ========================================================================== */
+/* ── Masthead — letterhead style ─────────────────────────────── */
+/*
+   Name large on the left (like rpmenezes), subtitle below it.
+   Nav links at right. Thin green rule below.
+*/
 
 .masthead {
   background: var(--white);
-  border-bottom: 2px solid var(--green-mid);
-  box-shadow: 0 1px 6px rgba(0, 60, 40, 0.07);
-  padding: 0.5em 0;
+  border-bottom: 1px solid var(--green-rule);
+  padding: 1.2em 0 1em;
+  box-shadow: none;
 
-  a {
-    color: var(--text-muted) !important;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    font-size: 0.83em;
-    letter-spacing: 0.01em;
-    text-transform: none;
-    text-decoration: none;
-    transition: color 0.15s ease;
+  /* Override any theme colours on all links */
+  a { color: var(--text-muted) !important; text-decoration: none; }
+  a:hover { color: var(--green-forest) !important; text-decoration: none; }
+}
 
-    &:hover {
-      color: var(--green-forest) !important;
-      text-decoration: none;
-    }
+/* Site name + subtitle block */
+.masthead__menu-item--lg {
+  a.masthead__name-link {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.1em !important;
+    border-right: none !important;
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+    text-decoration: none !important;
+
+    &:hover .masthead__name { color: var(--green-forest) !important; }
   }
+}
 
-  /* Site name */
-  .masthead__menu-item--lg a {
-    font-family: 'DM Serif Display', Georgia, serif;
-    font-weight: 400;
-    font-size: 1.18em;
-    color: var(--green-dark) !important;
-    letter-spacing: -0.01em;
-    border-right: 1px solid var(--green-rule);
-    padding-right: 1.4em;
-    margin-right: 0.6em;
+.masthead__name {
+  font-family: 'DM Serif Display', Georgia, serif !important;
+  font-size: 1.55em !important;
+  font-weight: 400 !important;
+  color: var(--green-darkest) !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.1 !important;
+  text-transform: none !important;
+}
 
-    &:hover { color: var(--green-forest) !important; text-decoration: none; }
-  }
+.masthead__subtitle {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.75em !important;
+  font-weight: 400 !important;
+  color: var(--text-muted) !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  line-height: 1.3 !important;
+}
+
+/* Nav links — right side */
+.masthead__menu-item a {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.83em !important;
+  font-weight: 500 !important;
+  color: var(--text-muted) !important;
+  letter-spacing: 0.005em;
+  text-transform: none !important;
+  padding: 0.3em 0.5em !important;
+  transition: color 0.15s;
+
+  &:hover { color: var(--green-forest) !important; }
 }
 
 .greedy-nav {
   background: var(--white);
+  align-items: center;
 
   .hidden-links {
     background: var(--white);
     border: 1px solid var(--green-rule);
-    box-shadow: 0 4px 16px rgba(0, 40, 30, 0.1);
+    box-shadow: 0 4px 16px rgba(0,40,30,.1);
     border-radius: 4px;
-
-    a {
-      color: var(--text-muted) !important;
-      font-size: 0.85em;
-      &:hover { color: var(--green-forest) !important; background: var(--green-pale); }
-    }
+    a { font-size: 0.85em !important; }
+    a:hover { background: var(--green-pale); color: var(--green-forest) !important; }
   }
+
+  button .navicon,
+  button .navicon::before,
+  button .navicon::after { background: var(--green-darkest); }
 }
 
-/* ==========================================================================
-   HOME LAYOUT — hero + wide content
-   ========================================================================== */
+/* ── Homepage intro — bio left, photo right ─────────────────── */
+/*
+   Centred column, generous vertical padding.
+   No coloured band — just white with good breathing room.
+*/
 
-/* Full-width hero section */
-.home-hero {
-  background: var(--green-pale);
-  border-bottom: 2px solid var(--green-rule);
-  padding: 4.5em 2em;
+.home-intro {
+  padding: 4em 2em 3.5em;
+  border-bottom: 1px solid var(--green-rule);
 }
 
-.home-hero__inner {
-  max-width: 1080px;
+.home-intro__inner {
+  max-width: var(--content-width);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 5em;
-  align-items: center;
+  grid-template-columns: 1fr 260px;
+  gap: 4em;
+  align-items: start;
 }
 
-/* Photo column */
-.home-hero__photo-col {
-  display: flex;
-  justify-content: center;
-}
-
-.home-hero__photo-frame {
-  width: 280px;
-  height: 280px;
-  border-radius: 6px;
-  overflow: hidden;
-  box-shadow: 0 10px 40px rgba(0, 40, 30, 0.22);
-  border: 3px solid var(--green-mid);
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
-    display: block;
-  }
-}
-
-/* Text column */
-.home-hero__institution {
+.home-intro__eyebrow {
   font-family: 'Inter', sans-serif;
   font-size: 0.78em;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--green-forest);
-  margin: 0 0 0.6em;
-}
-
-.home-hero__name {
-  font-family: 'DM Serif Display', Georgia, serif;
-  font-size: 3.2em;
-  font-weight: 400;
-  color: var(--green-darkest);
-  line-height: 1.05;
-  margin: 0 0 0.25em;
-  letter-spacing: -0.02em;
-  border-bottom: none !important; /* override page__content h2 style */
-}
-
-.home-hero__role {
-  font-family: 'Inter', sans-serif;
-  font-size: 1em;
-  font-weight: 500;
-  color: var(--text-muted);
   margin: 0 0 1.2em;
-  letter-spacing: 0;
 }
 
-.home-hero__intro {
-  font-family: 'Inter', sans-serif;
-  font-size: 1em;
-  line-height: 1.8;
-  color: var(--text-primary);
-  margin: 0 0 1.6em;
+.home-intro__lead {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.4em;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--green-darkest);
+  margin: 0 0 1.5em;
   max-width: 560px;
 }
 
-/* Social/contact link pills */
-.home-hero__links {
+/* Social / profile link pills */
+.home-intro__links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6em;
+  gap: 0.5em;
   margin-bottom: 1.4em;
 }
 
-.home-hero__link {
+.home-intro__link {
   display: inline-flex;
   align-items: center;
   gap: 0.4em;
-  background: var(--white);
-  border: 1.5px solid var(--green-rule);
-  border-radius: 4px;
-  padding: 0.4em 0.95em;
+  border: 1px solid var(--green-rule);
+  border-radius: 3px;
+  padding: 0.35em 0.85em;
   font-family: 'Inter', sans-serif;
-  font-size: 0.82em;
-  font-weight: 600;
-  color: var(--green-dark);
+  font-size: 0.8em;
+  font-weight: 500;
+  color: var(--text-muted);
   text-decoration: none;
-  transition: border-color 0.15s, color 0.15s, box-shadow 0.15s;
-  white-space: nowrap;
+  transition: border-color .15s, color .15s;
 
   &:hover {
     border-color: var(--green-mid);
     color: var(--green-forest);
-    box-shadow: 0 2px 8px rgba(0, 40, 30, 0.1);
     text-decoration: none;
   }
 
-  i { font-size: 0.95em; }
+  i { font-size: 0.9em; opacity: 0.8; }
 }
 
-/* Keyword tags under links */
-.home-hero__tags {
+/* Keyword tags */
+.home-intro__tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5em;
 }
 
-/* Wide no-sidebar content area */
+/* Photo — square, sits right of bio */
+.home-intro__photo {
+  img {
+    width: 100%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    border-radius: 3px;
+    box-shadow: 0 4px 24px rgba(0,40,30,.15);
+    filter: grayscale(15%);
+    transition: filter .3s;
+    &:hover { filter: grayscale(0%); }
+  }
+}
+
+/* ── Homepage main content ──────────────────────────────────── */
+
 .home-main {
-  padding: 3.5em 2em 2em;
+  padding: 3.5em 2em 3em;
 }
 
 .home-main__inner {
-  max-width: 960px;
+  max-width: var(--content-width);
   margin: 0 auto;
 }
 
-/* ==========================================================================
-   Page content — general (applies inside .page__content)
-   ========================================================================== */
+/* ── Page content (shared across all pages) ─────────────────── */
 
 .page__content {
 
@@ -269,15 +259,15 @@ hr {
     font-family: 'Inter', sans-serif;
     font-size: 0.97em;
     line-height: 1.85;
-    color: #2a2a2a;
+    color: #2c2c2c;
   }
 
   h2 {
     font-family: 'DM Serif Display', Georgia, serif;
-    font-size: 1.65em;
+    font-size: 1.55em;
     font-weight: 400;
     color: var(--green-darkest);
-    margin-top: 2.4em;
+    margin-top: 2.6em;
     margin-bottom: 0.7em;
     padding-bottom: 0.4em;
     border-bottom: 2px solid var(--green-mid);
@@ -287,12 +277,20 @@ hr {
   h3 {
     font-family: 'DM Serif Display', Georgia, serif;
     font-size: 1.15em;
-    color: var(--green-dark);
-    margin-top: 1.6em;
     font-weight: 400;
+    color: var(--green-dark);
+    margin-top: 1.8em;
   }
 
   strong { color: var(--green-darkest); }
+
+  blockquote {
+    border-left: 3px solid var(--green-mid);
+    padding-left: 1.2em;
+    margin-left: 0;
+    color: var(--text-muted);
+    font-style: italic;
+  }
 
   table {
     width: 100%;
@@ -302,13 +300,13 @@ hr {
 
     thead tr {
       background: var(--green-darkest);
-      color: #fff;
+      color: var(--white);
       th {
-        padding: 0.75em 1em;
+        padding: .75em 1em;
         font-family: 'Inter', sans-serif;
         font-weight: 600;
-        font-size: 0.83em;
-        letter-spacing: 0.04em;
+        font-size: .83em;
+        letter-spacing: .04em;
         text-transform: uppercase;
         text-align: left;
         border: none;
@@ -317,13 +315,9 @@ hr {
 
     tbody tr {
       border-bottom: 1px solid var(--green-rule);
-      transition: background 0.12s;
+      transition: background .12s;
       &:hover { background: var(--green-pale); }
-      td {
-        padding: 0.65em 1em;
-        border: none;
-        color: #2a2a2a;
-      }
+      td { padding: .65em 1em; border: none; }
     }
   }
 
@@ -332,82 +326,26 @@ hr {
     color: var(--green-dark);
     border: 1px solid var(--green-rule);
     border-radius: 3px;
-    padding: 0.1em 0.4em;
-    font-size: 0.88em;
-  }
-
-  blockquote {
-    border-left: 4px solid var(--green-mid);
-    padding-left: 1.2em;
-    color: var(--text-muted);
-    font-style: italic;
-    margin-left: 0;
+    padding: .1em .4em;
+    font-size: .88em;
   }
 }
 
-/* ==========================================================================
-   Sidebar (other pages still use single layout)
-   ========================================================================== */
-
-.sidebar {
-  .author__avatar img {
-    border-radius: 50%;
-    border: 3px solid var(--green-mid);
-    box-shadow: 0 4px 24px rgba(0, 60, 40, 0.18);
-    transition: transform 0.25s, box-shadow 0.25s;
-    &:hover {
-      transform: scale(1.03);
-      box-shadow: 0 8px 32px rgba(0, 60, 40, 0.28);
-    }
-  }
-
-  .author__name {
-    font-family: 'DM Serif Display', Georgia, serif;
-    font-weight: 400;
-    font-size: 1.15em;
-    color: var(--green-darkest);
-    margin-top: 0.6em;
-    letter-spacing: -0.01em;
-  }
-
-  .author__bio {
-    font-size: 0.82em;
-    color: var(--text-muted);
-    line-height: 1.6;
-    margin-top: 0.5em;
-    padding-top: 0.5em;
-    border-top: 1px solid var(--green-rule);
-  }
-
-  .author__urls a {
-    color: var(--text-muted);
-    font-size: 0.82em;
-    font-weight: 500;
-    text-decoration: none;
-    transition: color 0.15s;
-    &:hover { color: var(--green-forest); }
-  }
-}
-
-/* ==========================================================================
-   Research theme cards
-   ========================================================================== */
+/* ── Research theme cards ────────────────────────────────────── */
 
 .research-themes {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.4em;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1.5em;
   margin: 1.6em 0;
 }
 
 .theme-card {
   background: var(--white);
   border: 1px solid var(--green-rule);
-  border-top: 4px solid var(--green-mid);
-  border-radius: 2px;
+  border-top: 3px solid var(--green-mid);
   padding: 1.5em 1.6em;
-  box-shadow: 0 2px 10px rgba(0, 40, 30, 0.05);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform .2s, box-shadow .2s;
 
   &:nth-child(2) { border-top-color: var(--green-dark); }
   &:nth-child(3) { border-top-color: var(--green-forest); }
@@ -415,30 +353,28 @@ hr {
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(0, 40, 30, 0.1);
+    box-shadow: 0 8px 24px rgba(0,40,30,.09);
   }
 
   h3 {
     font-family: 'Inter', sans-serif !important;
-    font-size: 0.93em !important;
+    font-size: .92em !important;
     font-weight: 700 !important;
-    margin: 0 0 0.7em !important;
     color: var(--green-darkest) !important;
-    letter-spacing: 0 !important;
+    margin: 0 0 .65em !important;
     border: none !important;
+    letter-spacing: 0 !important;
   }
 
   p {
-    font-size: 0.85em !important;
-    margin: 0 !important;
+    font-size: .85em !important;
     color: var(--text-muted) !important;
-    line-height: 1.65 !important;
+    margin: 0 !important;
+    line-height: 1.6 !important;
   }
 }
 
-/* ==========================================================================
-   Impact stats grid — white cards, green numbers
-   ========================================================================== */
+/* ── Stats grid ─────────────────────────────────────────────── */
 
 .stats-grid {
   display: grid;
@@ -452,15 +388,9 @@ hr {
   background: var(--white);
   border: 1px solid var(--green-rule);
   border-bottom: 3px solid var(--green-mid);
-  border-radius: 2px;
-  padding: 1.7em 1em 1.4em;
-  box-shadow: 0 2px 8px rgba(0, 40, 30, 0.05);
-  transition: transform 0.2s, box-shadow 0.2s;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(0, 40, 30, 0.1);
-  }
+  padding: 1.8em 1em 1.4em;
+  transition: transform .2s, box-shadow .2s;
+  &:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,40,30,.08); }
 }
 
 .stat-number {
@@ -476,133 +406,126 @@ hr {
 .stat-label {
   display: block;
   font-family: 'Inter', sans-serif;
-  font-size: 0.75em;
+  font-size: .75em;
   color: var(--text-muted);
-  margin-top: 0.5em;
+  margin-top: .5em;
   line-height: 1.35;
   font-weight: 500;
 }
 
-/* ==========================================================================
-   Policy partners section
-   ========================================================================== */
+/* ── Partners / callout section ─────────────────────────────── */
 
 .partners-section {
   background: var(--green-pale);
   border-left: 4px solid var(--green-mid);
-  border-radius: 0 4px 4px 0;
-  padding: 1.4em 1.8em;
+  padding: 1.3em 1.8em;
   margin: 1.5em 0;
 
-  p {
-    margin: 0 !important;
-    font-size: 0.93em !important;
-    color: var(--green-darkest) !important;
-    line-height: 1.75 !important;
-  }
-
+  p { margin: 0 !important; font-size: .93em !important; color: var(--green-darkest) !important; line-height: 1.75 !important; }
   strong { color: var(--green-dark); }
 }
 
-/* ==========================================================================
-   Keyword / hero tags
-   ========================================================================== */
+/* ── Hero keyword tags (shared) ─────────────────────────────── */
 
 .hero-tag {
   display: inline-block;
-  background: var(--white);
-  border: 1.5px solid var(--green-mid);
+  border: 1px solid var(--green-mid);
   color: var(--green-forest);
   font-family: 'Inter', sans-serif;
-  font-size: 0.75em;
+  font-size: .72em;
   font-weight: 700;
-  padding: 0.3em 0.9em;
-  border-radius: 3px;
-  letter-spacing: 0.05em;
+  padding: .3em .9em;
+  border-radius: 2px;
+  letter-spacing: .05em;
   text-transform: uppercase;
-  transition: background 0.15s, color 0.15s;
+  transition: background .15s, color .15s;
+  &:hover { background: var(--green-mid); color: var(--white); }
+}
 
-  &:hover {
-    background: var(--green-mid);
-    color: var(--white);
+/* ── Sidebar (inner pages still use single layout) ───────────── */
+
+.sidebar {
+  .author__avatar img {
+    border-radius: 50%;
+    border: 3px solid var(--green-mid);
+    box-shadow: 0 4px 20px rgba(0,60,40,.15);
+    transition: transform .25s;
+    &:hover { transform: scale(1.03); }
+  }
+
+  .author__name {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-weight: 400;
+    font-size: 1.1em;
+    color: var(--green-darkest);
+    letter-spacing: -0.01em;
+  }
+
+  .author__bio {
+    font-size: .82em;
+    color: var(--text-muted);
+    line-height: 1.6;
+    border-top: 1px solid var(--green-rule);
+    padding-top: .5em;
+    margin-top: .5em;
+  }
+
+  .author__urls a {
+    font-size: .82em;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-decoration: none;
+    &:hover { color: var(--green-forest); }
   }
 }
 
-/* ==========================================================================
-   Publications page
-   ========================================================================== */
+/* ── Publications page ───────────────────────────────────────── */
 
 .publication-item {
   padding: 1.2em 0;
   border-bottom: 1px solid var(--green-rule);
-
   &:last-child { border-bottom: none; }
 
-  .pub-title {
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    color: var(--green-darkest);
-    font-size: 0.95em;
-    line-height: 1.5;
-  }
-
-  .pub-venue {
-    color: var(--green-forest);
-    font-size: 0.85em;
-    font-style: italic;
-    margin-top: 0.2em;
-  }
-
-  .pub-year {
+  .pub-title { font-weight: 600; color: var(--green-darkest); font-size: .95em; line-height: 1.5; }
+  .pub-venue  { color: var(--green-forest); font-size: .85em; font-style: italic; margin-top: .2em; }
+  .pub-year   {
     display: inline-block;
     background: var(--green-darkest);
-    color: #fff;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.72em;
+    color: var(--white);
+    font-size: .72em;
     font-weight: 700;
-    padding: 0.15em 0.6em;
+    padding: .15em .6em;
     border-radius: 2px;
-    margin-right: 0.5em;
-    letter-spacing: 0.04em;
+    margin-right: .5em;
+    letter-spacing: .04em;
   }
 }
 
 .publication-item.pub-highlight {
   background: var(--green-pale);
-  border-left: 4px solid var(--green-mid);
-  padding-left: 1.1em;
-  border-radius: 0 4px 4px 0;
+  border-left: 3px solid var(--green-mid);
+  padding-left: 1em;
   margin-left: -1em;
 }
 
-/* Filter buttons */
-.pub-filter {
-  display: flex;
-  gap: 0.5em;
-  flex-wrap: wrap;
-  margin: 1.4em 0;
-}
+.pub-filter { display: flex; gap: .5em; flex-wrap: wrap; margin: 1.4em 0; }
 
 .filter-btn {
   background: var(--white);
-  border: 1.5px solid var(--green-rule);
+  border: 1px solid var(--green-rule);
   border-radius: 3px;
-  padding: 0.3em 1em;
+  padding: .3em 1em;
   font-family: 'Inter', sans-serif;
-  font-size: 0.82em;
+  font-size: .82em;
   cursor: pointer;
   font-weight: 600;
   color: var(--text-muted);
-  transition: all 0.15s;
-  letter-spacing: 0.02em;
-
-  &:hover { background: var(--green-mid); color: var(--white); border-color: var(--green-mid); }
+  transition: all .15s;
+  &:hover  { background: var(--green-mid); color: var(--white); border-color: var(--green-mid); }
   &.active { background: var(--green-darkest); color: var(--white); border-color: var(--green-darkest); }
 }
 
-/* ==========================================================================
-   Buttons
-   ========================================================================== */
+/* ── Buttons ─────────────────────────────────────────────────── */
 
 .btn--primary {
   background: var(--green-darkest) !important;
@@ -611,116 +534,62 @@ hr {
   font-family: 'Inter', sans-serif !important;
   font-weight: 600 !important;
   border-radius: 3px !important;
-  padding: 0.6em 1.4em !important;
-  font-size: 0.88em !important;
-  letter-spacing: 0.02em;
-  transition: background 0.15s, transform 0.15s !important;
-
-  &:hover {
-    background: var(--green-forest) !important;
-    border-color: var(--green-forest) !important;
-    transform: translateY(-1px);
-    text-decoration: none;
-    color: var(--white) !important;
-  }
+  padding: .55em 1.3em !important;
+  font-size: .88em !important;
+  transition: background .15s, transform .15s !important;
+  &:hover { background: var(--green-forest) !important; border-color: var(--green-forest) !important; transform: translateY(-1px); text-decoration: none; color: var(--white) !important; }
 }
 
 .btn {
   background: var(--white) !important;
-  border: 1.5px solid var(--green-rule) !important;
+  border: 1px solid var(--green-rule) !important;
   border-radius: 3px !important;
   font-family: 'Inter', sans-serif !important;
   font-weight: 600 !important;
-  font-size: 0.88em !important;
+  font-size: .88em !important;
   color: var(--green-dark) !important;
-  transition: border-color 0.15s, color 0.15s !important;
-
-  &:hover {
-    border-color: var(--green-mid) !important;
-    color: var(--green-forest) !important;
-    background: var(--green-pale) !important;
-    text-decoration: none;
-  }
+  transition: border-color .15s, color .15s !important;
+  &:hover { border-color: var(--green-mid) !important; color: var(--green-forest) !important; background: var(--green-pale) !important; text-decoration: none; }
 }
 
-/* ==========================================================================
-   Footer — keep dark green anchor
-   ========================================================================== */
+/* ── Footer ─────────────────────────────────────────────────── */
 
 .page__footer {
   background: var(--green-darkest);
-  border-top: 3px solid var(--green-mid);
+  border-top: 2px solid var(--green-mid);
   color: #9ecfc4;
   margin-top: 4em;
 
-  footer {
-    color: #9ecfc4;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.85em;
-  }
-
-  a {
-    color: var(--green-bright);
-    text-decoration: none;
-    &:hover { color: var(--white); text-decoration: none; }
-    &:visited { color: var(--green-bright); }
-  }
+  footer { font-family: 'Inter', sans-serif; font-size: .85em; color: #9ecfc4; }
+  a { color: var(--green-bright); text-decoration: none; &:hover { color: var(--white); } &:visited { color: var(--green-bright); } }
 }
 
-/* ==========================================================================
-   Responsive
-   ========================================================================== */
+/* ── Responsive ──────────────────────────────────────────────── */
 
-@media (max-width: 900px) {
-  .home-hero__inner {
-    grid-template-columns: 220px 1fr;
-    gap: 3em;
-  }
-  .home-hero__photo-frame {
-    width: 220px;
-    height: 220px;
-  }
-  .home-hero__name {
-    font-size: 2.6em;
+@media (max-width: 860px) {
+  .home-intro__inner {
+    grid-template-columns: 1fr 200px;
+    gap: 2.5em;
   }
 }
 
 @media (max-width: 640px) {
-  .home-hero {
-    padding: 2.5em 1.4em;
+  .home-intro {
+    padding: 2.5em 1.4em 2em;
   }
-  .home-hero__inner {
+
+  .home-intro__inner {
     grid-template-columns: 1fr;
     gap: 2em;
-    text-align: center;
   }
-  .home-hero__photo-col {
-    justify-content: center;
-  }
-  .home-hero__photo-frame {
-    width: 180px;
-    height: 180px;
-    margin: 0 auto;
-  }
-  .home-hero__name {
-    font-size: 2.2em;
-  }
-  .home-hero__intro {
-    max-width: 100%;
-  }
-  .home-hero__links {
-    justify-content: center;
-  }
-  .home-hero__tags {
-    justify-content: center;
-  }
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .research-themes {
-    grid-template-columns: 1fr;
-  }
-  .home-main {
-    padding: 2em 1.4em 1.5em;
-  }
+
+  /* Photo above bio on mobile */
+  .home-intro__photo { order: -1; }
+  .home-intro__photo img { aspect-ratio: 4/3; max-width: 240px; }
+
+  .home-intro__lead { font-size: 1.2em; }
+
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .research-themes { grid-template-columns: 1fr; }
+  .home-main { padding: 2em 1.4em 1.5em; }
 }

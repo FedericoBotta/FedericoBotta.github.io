@@ -3,58 +3,49 @@ layout: default
 ---
 
 {% include base_path %}
+{% assign author = site.author %}
 
 <!-- ============================================================
-     Full-width hero: photo (left) + name/bio/links (right)
+     INTRO BAND — bio text (left) + photo (right), centred column
+     like rpmenezes.github.io
      ============================================================ -->
-<section class="home-hero">
-  <div class="home-hero__inner">
+<div class="home-intro">
+  <div class="home-intro__inner">
 
-    <div class="home-hero__photo-col">
-      <div class="home-hero__photo-frame">
-        {% assign author = site.author %}
-        {% if author.avatar contains "://" %}
-          <img src="{{ author.avatar }}" alt="{{ author.name }}">
-        {% else %}
-          <img src="{{ author.avatar | prepend: '/images/' | prepend: base_path }}" alt="{{ author.name }}">
-        {% endif %}
-      </div>
-    </div>
-
-    <div class="home-hero__text-col">
-      <p class="home-hero__institution">University of Exeter &middot; Exeter, UK</p>
-      <h1 class="home-hero__name">{{ site.author.name }}</h1>
-      <p class="home-hero__role">Senior Lecturer in Data Science</p>
+    <div class="home-intro__bio">
+      <p class="home-intro__eyebrow">
+        Senior Lecturer in Data Science &nbsp;&middot;&nbsp; University of Exeter
+      </p>
 
       {% if page.hero_intro %}
-        <p class="home-hero__intro">{{ page.hero_intro }}</p>
+        <p class="home-intro__lead">{{ page.hero_intro }}</p>
       {% endif %}
 
-      <nav class="home-hero__links" aria-label="Contact and academic profiles">
-        {% if site.author.email %}
-          <a href="mailto:{{ site.author.email }}" class="home-hero__link">
+      <nav class="home-intro__links" aria-label="Profiles">
+        {% if author.email %}
+          <a href="mailto:{{ author.email }}" class="home-intro__link">
             <i class="fa fa-fw fa-envelope" aria-hidden="true"></i>Email
           </a>
         {% endif %}
-        {% if site.author.googlescholar %}
-          <a href="{{ site.author.googlescholar }}" class="home-hero__link" target="_blank" rel="noopener">
+        {% if author.googlescholar %}
+          <a href="{{ author.googlescholar }}" class="home-intro__link" target="_blank" rel="noopener">
             <i class="ai ai-google-scholar ai-fw" aria-hidden="true"></i>Google Scholar
           </a>
         {% endif %}
-        {% if site.author.orcid %}
-          <a href="{{ site.author.orcid }}" class="home-hero__link" target="_blank" rel="noopener">
+        {% if author.orcid %}
+          <a href="{{ author.orcid }}" class="home-intro__link" target="_blank" rel="noopener">
             <i class="ai ai-orcid ai-fw" aria-hidden="true"></i>ORCID
           </a>
         {% endif %}
-        {% if site.author.github %}
-          <a href="https://github.com/{{ site.author.github }}" class="home-hero__link" target="_blank" rel="noopener">
-            <i class="fa fa-fw fa-github" aria-hidden="true"></i>GitHub
+        {% if author.twitter %}
+          <a href="https://twitter.com/{{ author.twitter }}" class="home-intro__link" target="_blank" rel="noopener">
+            <i class="fa fa-fw fa-twitter" aria-hidden="true"></i>Twitter
           </a>
         {% endif %}
       </nav>
 
       {% if page.hero_tags %}
-        <div class="home-hero__tags">
+        <div class="home-intro__tags">
           {% for tag in page.hero_tags %}
             <span class="hero-tag">{{ tag }}</span>
           {% endfor %}
@@ -62,11 +53,19 @@ layout: default
       {% endif %}
     </div>
 
-  </div>
-</section>
+    <div class="home-intro__photo">
+      {% if author.avatar contains "://" %}
+        <img src="{{ author.avatar }}" alt="{{ author.name }}">
+      {% else %}
+        <img src="{{ author.avatar | prepend: '/images/' | prepend: base_path }}" alt="{{ author.name }}">
+      {% endif %}
+    </div>
+
+  </div><!-- /.home-intro__inner -->
+</div><!-- /.home-intro -->
 
 <!-- ============================================================
-     Wide no-sidebar content area
+     MAIN CONTENT — centred column, no sidebar
      ============================================================ -->
 <main id="main" class="home-main" role="main">
   <div class="home-main__inner page__content">
