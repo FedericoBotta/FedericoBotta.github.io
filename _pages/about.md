@@ -2,22 +2,18 @@
 permalink: /
 title: ""
 excerpt: ""
-author_profile: true
+layout: home
+author_profile: false
 redirect_from:
   - /about/
   - /about.html
+hero_intro: "I use data science and AI to understand how cities work — and to help make them fairer, greener, and better served. My research spans urban analytics, human mobility, and computational social science, with a deliberate focus on turning research into real-world policy impact."
+hero_tags:
+  - Urban Analytics
+  - Human Mobility
+  - Data Science for Policy
+  - AI & Society
 ---
-
-<div class="about-hero">
-  <p class="about-hero__lead">I use data science and AI to understand how cities work — and to help make them fairer, greener, and better served. My research spans <strong>urban analytics</strong>, <strong>human mobility</strong>, and <strong>computational social science</strong>, with a deliberate focus on turning research into real-world policy impact.</p>
-  <p class="about-hero__lead" style="margin-top:0.6em; font-size:0.95em !important;">Published in <em>Nature Human Behaviour</em> · covered by the BBC, <em>Science</em> and <em>Wired</em> in 15+ countries · evidence to UK Parliament and government departments.</p>
-  <div class="about-hero__tags">
-    <span class="hero-tag">Urban Analytics</span>
-    <span class="hero-tag">Human Mobility</span>
-    <span class="hero-tag">Data Science for Policy</span>
-    <span class="hero-tag">AI &amp; Society</span>
-  </div>
-</div>
 
 ## What I Work On
 

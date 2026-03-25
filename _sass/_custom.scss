@@ -2,15 +2,16 @@
    Custom styles — federicobotta.github.io
    Design: Clean editorial with Exeter green accents
    Palette:
-     #022020  near-black green (text, strong headings)
-     #003c3c  dark green (masthead name, footers)
-     #006647  forest green (links, icon accents)
-     #00875a  medium green (buttons, borders)
-     #00c896  bright green (highlights, tags)
-     #f4faf7  pale green-tinted surface
+     #022020  near-black green  (text, headings)
+     #003c3c  dark green        (footer, strong accents)
+     #006647  forest green      (links, icon colours)
+     #00875a  medium green      (borders, buttons)
+     #00c896  bright green      (tags, highlights)
+     #f4faf7  pale green tint   (hero background, cards)
+     #d0ede4  green rule        (borders, dividers)
    ========================================================================== */
 
-/* Fonts — Inter (body) + DM Serif Display (headings) */
+/* Google Fonts — DM Serif Display (headings) + Inter (body) */
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 /* ==========================================================================
@@ -18,16 +19,16 @@
    ========================================================================== */
 
 :root {
-  --green-darkest:  #022020;
-  --green-dark:     #003c3c;
-  --green-forest:   #006647;
-  --green-mid:      #00875a;
-  --green-bright:   #00c896;
-  --green-pale:     #f4faf7;
-  --green-rule:     #d0ede4;
-  --text-primary:   #1a1a1a;
-  --text-muted:     #4a6360;
-  --white:          #ffffff;
+  --green-darkest: #022020;
+  --green-dark:    #003c3c;
+  --green-forest:  #006647;
+  --green-mid:     #00875a;
+  --green-bright:  #00c896;
+  --green-pale:    #f4faf7;
+  --green-rule:    #d0ede4;
+  --text-primary:  #1a1a1a;
+  --text-muted:    #4a6360;
+  --white:         #ffffff;
 }
 
 /* ==========================================================================
@@ -67,16 +68,15 @@ hr {
 }
 
 /* ==========================================================================
-   Masthead — clean white bar, green accent line at bottom
+   Masthead — clean white, green accent underline
    ========================================================================== */
 
 .masthead {
   background: var(--white);
   border-bottom: 2px solid var(--green-mid);
-  box-shadow: 0 1px 8px rgba(0, 60, 40, 0.08);
-  padding: 0.4em 0;
+  box-shadow: 0 1px 6px rgba(0, 60, 40, 0.07);
+  padding: 0.5em 0;
 
-  /* All nav links */
   a {
     color: var(--text-muted) !important;
     font-family: 'Inter', sans-serif;
@@ -84,7 +84,6 @@ hr {
     font-size: 0.83em;
     letter-spacing: 0.01em;
     text-transform: none;
-    padding: 0.5em 0.3em;
     text-decoration: none;
     transition: color 0.15s ease;
 
@@ -94,37 +93,260 @@ hr {
     }
   }
 
-  /* Site name / logo link */
+  /* Site name */
   .masthead__menu-item--lg a {
     font-family: 'DM Serif Display', Georgia, serif;
     font-weight: 400;
-    font-size: 1.15em;
+    font-size: 1.18em;
     color: var(--green-dark) !important;
     letter-spacing: -0.01em;
     border-right: 1px solid var(--green-rule);
     padding-right: 1.4em;
     margin-right: 0.6em;
 
-    &:hover { color: var(--green-forest) !important; }
+    &:hover { color: var(--green-forest) !important; text-decoration: none; }
   }
+}
 
-  /* Mobile hamburger */
-  button {
-    color: var(--green-dark);
-    background: none;
-    border: none;
-    cursor: pointer;
+.greedy-nav {
+  background: var(--white);
 
-    .navicon,
-    .navicon::before,
-    .navicon::after {
-      background: var(--green-dark);
+  .hidden-links {
+    background: var(--white);
+    border: 1px solid var(--green-rule);
+    box-shadow: 0 4px 16px rgba(0, 40, 30, 0.1);
+    border-radius: 4px;
+
+    a {
+      color: var(--text-muted) !important;
+      font-size: 0.85em;
+      &:hover { color: var(--green-forest) !important; background: var(--green-pale); }
     }
   }
 }
 
 /* ==========================================================================
-   Sidebar author profile
+   HOME LAYOUT — hero + wide content
+   ========================================================================== */
+
+/* Full-width hero section */
+.home-hero {
+  background: var(--green-pale);
+  border-bottom: 2px solid var(--green-rule);
+  padding: 4.5em 2em;
+}
+
+.home-hero__inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 5em;
+  align-items: center;
+}
+
+/* Photo column */
+.home-hero__photo-col {
+  display: flex;
+  justify-content: center;
+}
+
+.home-hero__photo-frame {
+  width: 280px;
+  height: 280px;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 40, 30, 0.22);
+  border: 3px solid var(--green-mid);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+}
+
+/* Text column */
+.home-hero__institution {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--green-forest);
+  margin: 0 0 0.6em;
+}
+
+.home-hero__name {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 3.2em;
+  font-weight: 400;
+  color: var(--green-darkest);
+  line-height: 1.05;
+  margin: 0 0 0.25em;
+  letter-spacing: -0.02em;
+  border-bottom: none !important; /* override page__content h2 style */
+}
+
+.home-hero__role {
+  font-family: 'Inter', sans-serif;
+  font-size: 1em;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin: 0 0 1.2em;
+  letter-spacing: 0;
+}
+
+.home-hero__intro {
+  font-family: 'Inter', sans-serif;
+  font-size: 1em;
+  line-height: 1.8;
+  color: var(--text-primary);
+  margin: 0 0 1.6em;
+  max-width: 560px;
+}
+
+/* Social/contact link pills */
+.home-hero__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6em;
+  margin-bottom: 1.4em;
+}
+
+.home-hero__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  background: var(--white);
+  border: 1.5px solid var(--green-rule);
+  border-radius: 4px;
+  padding: 0.4em 0.95em;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82em;
+  font-weight: 600;
+  color: var(--green-dark);
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s, box-shadow 0.15s;
+  white-space: nowrap;
+
+  &:hover {
+    border-color: var(--green-mid);
+    color: var(--green-forest);
+    box-shadow: 0 2px 8px rgba(0, 40, 30, 0.1);
+    text-decoration: none;
+  }
+
+  i { font-size: 0.95em; }
+}
+
+/* Keyword tags under links */
+.home-hero__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+/* Wide no-sidebar content area */
+.home-main {
+  padding: 3.5em 2em 2em;
+}
+
+.home-main__inner {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   Page content — general (applies inside .page__content)
+   ========================================================================== */
+
+.page__content {
+
+  p, li {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.97em;
+    line-height: 1.85;
+    color: #2a2a2a;
+  }
+
+  h2 {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 1.65em;
+    font-weight: 400;
+    color: var(--green-darkest);
+    margin-top: 2.4em;
+    margin-bottom: 0.7em;
+    padding-bottom: 0.4em;
+    border-bottom: 2px solid var(--green-mid);
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 1.15em;
+    color: var(--green-dark);
+    margin-top: 1.6em;
+    font-weight: 400;
+  }
+
+  strong { color: var(--green-darkest); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88em;
+    margin: 1.5em 0;
+
+    thead tr {
+      background: var(--green-darkest);
+      color: #fff;
+      th {
+        padding: 0.75em 1em;
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+        font-size: 0.83em;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        text-align: left;
+        border: none;
+      }
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--green-rule);
+      transition: background 0.12s;
+      &:hover { background: var(--green-pale); }
+      td {
+        padding: 0.65em 1em;
+        border: none;
+        color: #2a2a2a;
+      }
+    }
+  }
+
+  code {
+    background: var(--green-pale);
+    color: var(--green-dark);
+    border: 1px solid var(--green-rule);
+    border-radius: 3px;
+    padding: 0.1em 0.4em;
+    font-size: 0.88em;
+  }
+
+  blockquote {
+    border-left: 4px solid var(--green-mid);
+    padding-left: 1.2em;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-left: 0;
+  }
+}
+
+/* ==========================================================================
+   Sidebar (other pages still use single layout)
    ========================================================================== */
 
 .sidebar {
@@ -132,8 +354,7 @@ hr {
     border-radius: 50%;
     border: 3px solid var(--green-mid);
     box-shadow: 0 4px 24px rgba(0, 60, 40, 0.18);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-
+    transition: transform 0.25s, box-shadow 0.25s;
     &:hover {
       transform: scale(1.03);
       box-shadow: 0 8px 32px rgba(0, 60, 40, 0.28);
@@ -158,167 +379,18 @@ hr {
     border-top: 1px solid var(--green-rule);
   }
 
-  .author__urls-wrapper {
-    margin-top: 1em;
-  }
-
   .author__urls a {
     color: var(--text-muted);
     font-size: 0.82em;
     font-weight: 500;
     text-decoration: none;
-    transition: color 0.15s ease;
-
+    transition: color 0.15s;
     &:hover { color: var(--green-forest); }
   }
 }
 
 /* ==========================================================================
-   Page content — general
-   ========================================================================== */
-
-.page__content {
-  p, li {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.97em;
-    line-height: 1.85;
-    color: #2a2a2a;
-  }
-
-  h2 {
-    font-family: 'DM Serif Display', Georgia, serif;
-    font-size: 1.6em;
-    font-weight: 400;
-    color: var(--green-darkest);
-    margin-top: 2.4em;
-    margin-bottom: 0.6em;
-    padding-bottom: 0.4em;
-    border-bottom: 2px solid var(--green-mid);
-    letter-spacing: -0.01em;
-  }
-
-  h3 {
-    font-family: 'DM Serif Display', Georgia, serif;
-    font-size: 1.15em;
-    color: var(--green-dark);
-    margin-top: 1.6em;
-    font-weight: 400;
-  }
-
-  strong { color: var(--green-darkest); }
-
-  /* Tables */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.88em;
-    margin: 1.5em 0;
-
-    thead tr {
-      background: var(--green-darkest);
-      color: #fff;
-      th {
-        padding: 0.75em 1em;
-        font-family: 'Inter', sans-serif;
-        font-weight: 600;
-        font-size: 0.85em;
-        letter-spacing: 0.03em;
-        text-align: left;
-        border: none;
-        text-transform: uppercase;
-      }
-    }
-
-    tbody tr {
-      border-bottom: 1px solid var(--green-rule);
-      transition: background 0.12s ease;
-      &:hover { background: var(--green-pale); }
-      td {
-        padding: 0.65em 1em;
-        border: none;
-        color: #2a2a2a;
-      }
-    }
-  }
-
-  /* Inline code */
-  code {
-    background: var(--green-pale);
-    color: var(--green-dark);
-    border: 1px solid var(--green-rule);
-    border-radius: 3px;
-    padding: 0.1em 0.4em;
-    font-size: 0.88em;
-  }
-
-  blockquote {
-    border-left: 4px solid var(--green-mid);
-    padding-left: 1.2em;
-    color: var(--text-muted);
-    font-style: italic;
-    margin-left: 0;
-  }
-}
-
-/* ==========================================================================
-   Homepage hero — large typographic, no dark box
-   ========================================================================== */
-
-.about-hero {
-  background: var(--green-pale);
-  border-radius: 0;
-  border-left: 5px solid var(--green-mid);
-  padding: 2.4em 2.4em 2em;
-  margin-bottom: 2.4em;
-  position: relative;
-}
-
-.about-hero__lead {
-  font-family: 'DM Serif Display', Georgia, serif !important;
-  font-size: 1.35em !important;
-  font-weight: 400 !important;
-  color: var(--green-darkest) !important;
-  line-height: 1.55 !important;
-  margin: 0 0 0.8em 0 !important;
-}
-
-.about-hero__lead + .about-hero__lead {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 0.93em !important;
-  font-weight: 400 !important;
-  color: var(--text-muted) !important;
-  line-height: 1.7 !important;
-}
-
-.about-hero__tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5em;
-  margin-top: 1em;
-}
-
-.hero-tag {
-  display: inline-block;
-  background: var(--white);
-  border: 1.5px solid var(--green-mid);
-  color: var(--green-forest);
-  font-family: 'Inter', sans-serif;
-  font-size: 0.76em;
-  font-weight: 600;
-  padding: 0.3em 0.9em;
-  border-radius: 3px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  transition: background 0.15s ease, color 0.15s ease;
-
-  &:hover {
-    background: var(--green-mid);
-    color: var(--white);
-  }
-}
-
-/* ==========================================================================
-   Research theme cards — clean, airy
+   Research theme cards
    ========================================================================== */
 
 .research-themes {
@@ -334,8 +406,8 @@ hr {
   border-top: 4px solid var(--green-mid);
   border-radius: 2px;
   padding: 1.5em 1.6em;
-  box-shadow: 0 2px 12px rgba(0, 40, 30, 0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-top-color 0.2s ease;
+  box-shadow: 0 2px 10px rgba(0, 40, 30, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
 
   &:nth-child(2) { border-top-color: var(--green-dark); }
   &:nth-child(3) { border-top-color: var(--green-forest); }
@@ -343,16 +415,17 @@ hr {
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 28px rgba(0, 40, 30, 0.1);
+    box-shadow: 0 8px 24px rgba(0, 40, 30, 0.1);
   }
 
   h3 {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.93em;
-    font-weight: 700;
-    margin: 0 0 0.7em 0;
-    color: var(--green-darkest);
-    letter-spacing: 0;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.93em !important;
+    font-weight: 700 !important;
+    margin: 0 0 0.7em !important;
+    color: var(--green-darkest) !important;
+    letter-spacing: 0 !important;
+    border: none !important;
   }
 
   p {
@@ -380,13 +453,13 @@ hr {
   border: 1px solid var(--green-rule);
   border-bottom: 3px solid var(--green-mid);
   border-radius: 2px;
-  padding: 1.6em 1em 1.4em;
-  box-shadow: 0 2px 10px rgba(0, 40, 30, 0.06);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 1.7em 1em 1.4em;
+  box-shadow: 0 2px 8px rgba(0, 40, 30, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 40, 30, 0.1);
+    box-shadow: 0 6px 18px rgba(0, 40, 30, 0.1);
   }
 }
 
@@ -418,17 +491,41 @@ hr {
   background: var(--green-pale);
   border-left: 4px solid var(--green-mid);
   border-radius: 0 4px 4px 0;
-  padding: 1.3em 1.7em;
+  padding: 1.4em 1.8em;
   margin: 1.5em 0;
 
   p {
     margin: 0 !important;
-    font-size: 0.92em !important;
+    font-size: 0.93em !important;
     color: var(--green-darkest) !important;
-    line-height: 1.7 !important;
+    line-height: 1.75 !important;
   }
 
   strong { color: var(--green-dark); }
+}
+
+/* ==========================================================================
+   Keyword / hero tags
+   ========================================================================== */
+
+.hero-tag {
+  display: inline-block;
+  background: var(--white);
+  border: 1.5px solid var(--green-mid);
+  color: var(--green-forest);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75em;
+  font-weight: 700;
+  padding: 0.3em 0.9em;
+  border-radius: 3px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover {
+    background: var(--green-mid);
+    color: var(--white);
+  }
 }
 
 /* ==========================================================================
@@ -478,7 +575,7 @@ hr {
   margin-left: -1em;
 }
 
-/* Publication filter buttons */
+/* Filter buttons */
 .pub-filter {
   display: flex;
   gap: 0.5em;
@@ -496,20 +593,11 @@ hr {
   cursor: pointer;
   font-weight: 600;
   color: var(--text-muted);
-  transition: all 0.15s ease;
+  transition: all 0.15s;
   letter-spacing: 0.02em;
 
-  &:hover {
-    background: var(--green-mid);
-    color: var(--white);
-    border-color: var(--green-mid);
-  }
-
-  &.active {
-    background: var(--green-darkest);
-    color: var(--white);
-    border-color: var(--green-darkest);
-  }
+  &:hover { background: var(--green-mid); color: var(--white); border-color: var(--green-mid); }
+  &.active { background: var(--green-darkest); color: var(--white); border-color: var(--green-darkest); }
 }
 
 /* ==========================================================================
@@ -522,11 +610,11 @@ hr {
   color: var(--white) !important;
   font-family: 'Inter', sans-serif !important;
   font-weight: 600 !important;
-  letter-spacing: 0.02em;
   border-radius: 3px !important;
   padding: 0.6em 1.4em !important;
   font-size: 0.88em !important;
-  transition: background 0.15s ease, transform 0.15s ease !important;
+  letter-spacing: 0.02em;
+  transition: background 0.15s, transform 0.15s !important;
 
   &:hover {
     background: var(--green-forest) !important;
@@ -545,7 +633,7 @@ hr {
   font-weight: 600 !important;
   font-size: 0.88em !important;
   color: var(--green-dark) !important;
-  transition: border-color 0.15s ease, color 0.15s ease !important;
+  transition: border-color 0.15s, color 0.15s !important;
 
   &:hover {
     border-color: var(--green-mid) !important;
@@ -580,44 +668,59 @@ hr {
 }
 
 /* ==========================================================================
-   Greedy nav responsive overrides
-   ========================================================================== */
-
-.greedy-nav {
-  background: var(--white);
-
-  .hidden-links {
-    background: var(--white);
-    border: 1px solid var(--green-rule);
-    box-shadow: 0 4px 16px rgba(0,40,30,0.1);
-    border-radius: 4px;
-
-    a {
-      color: var(--text-muted) !important;
-      font-size: 0.85em;
-      &:hover { color: var(--green-forest) !important; background: var(--green-pale); }
-    }
-  }
-}
-
-/* ==========================================================================
    Responsive
    ========================================================================== */
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
+  .home-hero__inner {
+    grid-template-columns: 220px 1fr;
+    gap: 3em;
+  }
+  .home-hero__photo-frame {
+    width: 220px;
+    height: 220px;
+  }
+  .home-hero__name {
+    font-size: 2.6em;
+  }
+}
+
+@media (max-width: 640px) {
+  .home-hero {
+    padding: 2.5em 1.4em;
+  }
+  .home-hero__inner {
+    grid-template-columns: 1fr;
+    gap: 2em;
+    text-align: center;
+  }
+  .home-hero__photo-col {
+    justify-content: center;
+  }
+  .home-hero__photo-frame {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+  }
+  .home-hero__name {
+    font-size: 2.2em;
+  }
+  .home-hero__intro {
+    max-width: 100%;
+  }
+  .home-hero__links {
+    justify-content: center;
+  }
+  .home-hero__tags {
+    justify-content: center;
+  }
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-
   .research-themes {
     grid-template-columns: 1fr;
   }
-
-  .about-hero {
-    padding: 1.6em 1.4em;
-  }
-
-  .about-hero__lead {
-    font-size: 1.15em !important;
+  .home-main {
+    padding: 2em 1.4em 1.5em;
   }
 }
