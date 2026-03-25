@@ -296,7 +296,21 @@
     window._vizResize = setTimeout(resize, 120);
   });
 
-  resize();
-  draw();
+  /* Defer init until the browser has finished layout */
+  function init() {
+    resize();
+    if (W > 0 && H > 0) {
+      draw();
+    } else {
+      /* If layout wasn't ready yet, retry once after a tick */
+      setTimeout(function() { resize(); draw(); }, 50);
+    }
+  }
+
+  if (document.readyState === 'complete') {
+    requestAnimationFrame(init);
+  } else {
+    window.addEventListener('load', init);
+  }
 })();
 </script>

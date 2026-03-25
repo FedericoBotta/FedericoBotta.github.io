@@ -248,10 +248,13 @@ hr {
   background: #011818;
   position: relative;
   overflow: hidden;
+  min-height: 320px; /* fallback height before JS runs */
 }
 
 .home-viz__inner {
   position: relative;
+  width: 100%;
+  line-height: 0; /* prevent inline gap below canvas */
 }
 
 .home-viz__label {
