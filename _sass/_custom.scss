@@ -156,7 +156,7 @@ hr {
 .hero {
   position: relative;
   background: #011818;
-  min-height: 600px;
+  min-height: 640px;
   overflow: hidden;
 }
 
@@ -170,25 +170,25 @@ hr {
   display: block;
 }
 
-/* Gradient overlay: canvas fully visible at top, fades to white */
+/* Gradient overlay: dark at top, fades to white lower down */
 .hero__fade {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to bottom,
     transparent       0%,
-    transparent       18%,
-    rgba(255,255,255,0.95) 52%,
-    white             65%
+    transparent       22%,
+    rgba(255,255,255,0.85) 50%,
+    white             62%
   );
   pointer-events: none;
   z-index: 1;
 }
 
-/* Label at the top of the hero */
+/* Label — below masthead, centred in dark area */
 .hero__label {
   position: absolute;
-  top: 1.6em;
+  top: 2.4em;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
@@ -322,7 +322,7 @@ hr {
 /* ── Homepage main content ──────────────────────────────────── */
 
 .home-main {
-  padding: 2.2em 2em 3em;
+  padding: 3em 2em 3em;
 }
 
 .home-main__inner {
