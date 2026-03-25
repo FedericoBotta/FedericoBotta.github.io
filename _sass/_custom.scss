@@ -265,6 +265,8 @@ hr {
   text-align: center;
   z-index: 2;
   pointer-events: none;
+  line-height: normal;
+  white-space: nowrap;
 }
 
 .home-viz__label-title {

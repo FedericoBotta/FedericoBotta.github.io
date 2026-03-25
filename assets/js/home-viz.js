@@ -1,0 +1,301 @@
+
+(function () {
+  'use strict';
+
+  var canvas = document.getElementById('mobility-canvas');
+  if (!canvas || !canvas.getContext) return;
+  var ctx = canvas.getContext('2d');
+
+  /* ── Colour palette (on dark background) ── */
+  var COL = {
+    bg:         '#011818',
+    edge:       'rgba(0,200,150,0.10)',
+    edgeHov:    'rgba(0,200,150,0.55)',
+    particle:   '#00c896',
+    glow:       'rgba(0,200,150,0.20)',
+    nodeBase:   'rgba(0,100,70,0.75)',
+    nodeHov:    'rgba(0,200,150,0.90)',
+    nodeHome:   '#00c896',
+    ringBase:   'rgba(0,200,150,0.30)',
+    ringHov:    'rgba(0,200,150,0.80)',
+    ringHome:   '#00c896',
+    labelDim:   'rgba(255,255,255,0.40)',
+    labelBright:'rgba(255,255,255,0.85)',
+    labelHome:  '#ffffff',
+    tick:       'rgba(0,200,150,0.08)'
+  };
+
+  /* ── City data [name, lat, lon, radius, alwaysLabel] ── */
+  var CITIES = [
+    ['Exeter',      50.72, -3.53,  7, true ],
+    ['London',      51.51, -0.13, 10, true ],
+    ['Bristol',     51.45, -2.60,  5, false],
+    ['Cardiff',     51.48, -3.18,  5, false],
+    ['Birmingham',  52.48, -1.90,  6, false],
+    ['Manchester',  53.48, -2.24,  7, true ],
+    ['Leeds',       53.80, -1.55,  5, false],
+    ['Edinburgh',   55.95, -3.19,  6, true ],
+    ['Glasgow',     55.86, -4.25,  5, false],
+    ['Paris',       48.85,  2.35,  9, true ],
+    ['Amsterdam',   52.37,  4.90,  7, true ],
+    ['Brussels',    50.85,  4.35,  5, false],
+    ['Berlin',      52.52, 13.40,  8, true ],
+    ['Munich',      48.14, 11.58,  6, false],
+    ['Zurich',      47.38,  8.54,  5, false],
+    ['Frankfurt',   50.11,  8.68,  6, false],
+    ['Copenhagen',  55.68, 12.57,  6, false],
+    ['Rome',        41.90, 12.50,  7, true ],
+    ['Madrid',      40.42, -3.70,  7, true ],
+    ['Lisbon',      38.72, -9.14,  6, false]
+  ].map(function(d) {
+    return { name: d[0], lat: d[1], lon: d[2], r: d[3], always: d[4],
+             x: 0, y: 0, isHome: d[0] === 'Exeter' };
+  });
+
+  /* ── Edges [from-index, to-index] ── */
+  var EDGES = [
+    [0,1],[0,2],[0,3],[1,2],[1,3],[1,4],[1,5],[1,6],[1,7],
+    [2,3],[4,5],[5,6],[7,8],[1,9],[1,10],[9,10],[9,11],
+    [10,11],[10,12],[11,12],[12,13],[12,15],[12,16],[13,14],
+    [14,15],[9,17],[9,18],[18,19],[1,4],[5,7],[9,13]
+  ];
+
+  /* ── State ── */
+  var W = 0, H = 0, hovered = -1, particles = [];
+
+  /* ── Geographic projection ── */
+  var LAT_MIN = 37.5, LAT_MAX = 57.5;
+  var LON_MIN = -10.5, LON_MAX = 15.5;
+
+  function project(lat, lon, padX, padY) {
+    var x = padX + (lon - LON_MIN) / (LON_MAX - LON_MIN) * (W - 2 * padX);
+    var y = padY + (LAT_MAX - lat) / (LAT_MAX - LAT_MIN) * (H - 2 * padY);
+    return [x, y];
+  }
+
+  function reproject() {
+    var px = Math.max(40, W * 0.06);
+    var py = Math.max(30, H * 0.07);
+    CITIES.forEach(function(c) {
+      var p = project(c.lat, c.lon, px, py);
+      c.x = p[0]; c.y = p[1];
+    });
+  }
+
+  /* ── Bezier helpers ── */
+  function ctrlPt(ax, ay, bx, by) {
+    var mx = (ax + bx) / 2, my = (ay + by) / 2;
+    var dx = bx - ax, dy = by - ay;
+    var len = Math.sqrt(dx * dx + dy * dy) || 1;
+    var bend = Math.min(len * 0.20, 60);
+    return [mx - (dy / len) * bend, my + (dx / len) * bend];
+  }
+
+  function bezierPt(ax, ay, cpx, cpy, bx, by, t) {
+    var u = 1 - t;
+    return [u*u*ax + 2*u*t*cpx + t*t*bx,
+            u*u*ay + 2*u*t*cpy + t*t*by];
+  }
+
+  /* ── Particles ── */
+  function initParticles() {
+    particles = [];
+    EDGES.forEach(function(e) {
+      var count = 2 + Math.floor(Math.random() * 2);
+      for (var i = 0; i < count; i++) {
+        particles.push({
+          fi: e[0], ti: e[1],
+          pos: Math.random(),
+          speed: 0.0012 + Math.random() * 0.0018,
+          dir: Math.random() < 0.5 ? 1 : -1
+        });
+      }
+    });
+  }
+
+  /* ── Connectivity check ── */
+  function isConnected(i) {
+    if (hovered < 0) return false;
+    return EDGES.some(function(e) {
+      return (e[0] === hovered && e[1] === i) ||
+             (e[1] === hovered && e[0] === i);
+    });
+  }
+
+  /* ── Draw ── */
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Background
+    ctx.fillStyle = COL.bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // Subtle lat/lon grid lines
+    ctx.strokeStyle = COL.tick;
+    ctx.lineWidth = 0.5;
+    for (var lat = 40; lat <= 57; lat += 5) {
+      var py0 = project(lat, LON_MIN, W*0.06, H*0.07);
+      var py1 = project(lat, LON_MAX, W*0.06, H*0.07);
+      ctx.beginPath();
+      ctx.moveTo(py0[0], py0[1]);
+      ctx.lineTo(py1[0], py1[1]);
+      ctx.stroke();
+    }
+    for (var lon = -10; lon <= 15; lon += 5) {
+      var px0 = project(LAT_MIN, lon, W*0.06, H*0.07);
+      var px1 = project(LAT_MAX, lon, W*0.06, H*0.07);
+      ctx.beginPath();
+      ctx.moveTo(px0[0], px0[1]);
+      ctx.lineTo(px1[0], px1[1]);
+      ctx.stroke();
+    }
+
+    // Edges
+    EDGES.forEach(function(e) {
+      var a = CITIES[e[0]], b = CITIES[e[1]];
+      var cp = ctrlPt(a.x, a.y, b.x, b.y);
+      var isHov = hovered >= 0 && (e[0] === hovered || e[1] === hovered);
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.quadraticCurveTo(cp[0], cp[1], b.x, b.y);
+      ctx.strokeStyle = isHov ? COL.edgeHov : COL.edge;
+      ctx.lineWidth = isHov ? 1.5 : 1;
+      ctx.stroke();
+    });
+
+    // Particles
+    particles.forEach(function(p) {
+      p.pos += p.speed * p.dir;
+      if (p.pos > 1) p.pos = 0;
+      if (p.pos < 0) p.pos = 1;
+      var a = CITIES[p.fi], b = CITIES[p.ti];
+      var cp = ctrlPt(a.x, a.y, b.x, b.y);
+      var pt = bezierPt(a.x, a.y, cp[0], cp[1], b.x, b.y, p.pos);
+      // glow
+      ctx.beginPath();
+      ctx.arc(pt[0], pt[1], 5, 0, Math.PI * 2);
+      ctx.fillStyle = COL.glow;
+      ctx.fill();
+      // dot
+      ctx.beginPath();
+      ctx.arc(pt[0], pt[1], 2, 0, Math.PI * 2);
+      ctx.fillStyle = COL.particle;
+      ctx.fill();
+    });
+
+    // Nodes
+    CITIES.forEach(function(c, i) {
+      var isHov  = i === hovered;
+      var isConn = isConnected(i);
+      var r = c.r + (isHov ? 3 : 0);
+
+      // Outer glow
+      if (c.isHome || isHov) {
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, r + 10, 0, Math.PI * 2);
+        var g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, r + 10);
+        g.addColorStop(0, c.isHome ? 'rgba(0,200,150,0.25)' : 'rgba(0,200,150,0.18)');
+        g.addColorStop(1, 'rgba(0,200,150,0)');
+        ctx.fillStyle = g;
+        ctx.fill();
+      }
+
+      // Ring
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, r + 2.5, 0, Math.PI * 2);
+      ctx.strokeStyle = c.isHome ? COL.ringHome : isHov ? COL.ringHov : isConn ? 'rgba(0,200,150,0.55)' : COL.ringBase;
+      ctx.lineWidth = c.isHome ? 2 : isHov ? 1.5 : 1;
+      ctx.stroke();
+
+      // Fill
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, r, 0, Math.PI * 2);
+      ctx.fillStyle = c.isHome ? COL.nodeHome : isHov ? COL.nodeHov : COL.nodeBase;
+      ctx.fill();
+
+      // Centre dot
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, r * 0.35, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      ctx.fill();
+
+      // Labels
+      var showLabel = c.always || isHov || isConn || c.isHome;
+      if (showLabel) {
+        var labelAlpha = c.isHome ? 1 : (isHov || isConn) ? 0.85 : 0.45;
+        ctx.font = (c.isHome ? '600' : '400') + ' ' + (c.isHome ? 12 : 11) + 'px Inter, sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,' + labelAlpha + ')';
+        // position label to avoid edges
+        var lx = c.x + r + 6;
+        var ly = c.y + 4;
+        ctx.fillText(c.name, lx, ly);
+      }
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  /* ── Resize ── */
+  function resize() {
+    var container = canvas.parentElement;
+    W = canvas.width = container.offsetWidth;
+    H = canvas.height = Math.max(280, Math.min(420, Math.round(W * 0.35)));
+    canvas.style.height = H + 'px';
+    reproject();
+    initParticles();
+  }
+
+  /* ── Mouse interaction ── */
+  canvas.addEventListener('mousemove', function(e) {
+    var rect = canvas.getBoundingClientRect();
+    var sx = W / rect.width, sy = H / rect.height;
+    var mx = (e.clientX - rect.left) * sx;
+    var my = (e.clientY - rect.top)  * sy;
+    hovered = -1;
+    CITIES.forEach(function(c, i) {
+      if (Math.hypot(c.x - mx, c.y - my) < c.r + 10) hovered = i;
+    });
+    canvas.style.cursor = hovered >= 0 ? 'pointer' : 'default';
+  });
+
+  canvas.addEventListener('mouseleave', function() { hovered = -1; });
+
+  /* ── Touch support ── */
+  canvas.addEventListener('touchstart', function(e) {
+    var rect = canvas.getBoundingClientRect();
+    var sx = W / rect.width, sy = H / rect.height;
+    var t = e.touches[0];
+    var mx = (t.clientX - rect.left) * sx;
+    var my = (t.clientY - rect.top)  * sy;
+    hovered = -1;
+    CITIES.forEach(function(c, i) {
+      if (Math.hypot(c.x - mx, c.y - my) < c.r + 14) hovered = i;
+    });
+  }, { passive: true });
+
+  canvas.addEventListener('touchend', function() {
+    setTimeout(function() { hovered = -1; }, 1200);
+  }, { passive: true });
+
+  window.addEventListener('resize', function() {
+    clearTimeout(window._vizResize);
+    window._vizResize = setTimeout(resize, 120);
+  });
+
+  /* Defer init until the browser has finished layout */
+  function init() {
+    resize();
+    if (W > 0 && H > 0) {
+      draw();
+    } else {
+      /* If layout wasn't ready yet, retry once after a tick */
+      setTimeout(function() { resize(); draw(); }, 50);
+    }
+  }
+
+  if (document.readyState === 'complete') {
+    requestAnimationFrame(init);
+  } else {
+    window.addEventListener('load', init);
+  }
+})();
