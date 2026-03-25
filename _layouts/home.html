@@ -6,61 +6,77 @@ layout: default
 {% assign author = site.author %}
 
 <!-- ============================================================
-     INTRO BAND — bio text (left) + photo (right), centred column
-     like rpmenezes.github.io
+     HERO — animated canvas fills top; bio overlaid on fade-to-white
      ============================================================ -->
-<div class="home-intro">
-  <div class="home-intro__inner">
+<section class="hero">
 
-    <div class="home-intro__bio">
-      {% if page.hero_intro %}
-        <p class="home-intro__lead">{{ page.hero_intro }}</p>
-      {% endif %}
+  <!-- Canvas: fills the entire hero as an animated background -->
+  <canvas id="mobility-canvas" aria-label="Interactive urban mobility network visualisation"></canvas>
 
-      <nav class="home-intro__links" aria-label="Profiles">
-        {% if author.email %}
-          <a href="mailto:{{ author.email }}" class="home-intro__link">
-            <i class="fa fa-fw fa-envelope" aria-hidden="true"></i>Email
-          </a>
-        {% endif %}
-        {% if author.googlescholar %}
-          <a href="{{ author.googlescholar }}" class="home-intro__link" target="_blank" rel="noopener">
-            <i class="ai ai-google-scholar ai-fw" aria-hidden="true"></i>Google Scholar
-          </a>
-        {% endif %}
-        {% if author.orcid %}
-          <a href="{{ author.orcid }}" class="home-intro__link" target="_blank" rel="noopener">
-            <i class="ai ai-orcid ai-fw" aria-hidden="true"></i>ORCID
-          </a>
-        {% endif %}
-        {% if author.twitter %}
-          <a href="https://twitter.com/{{ author.twitter }}" class="home-intro__link" target="_blank" rel="noopener">
-            <i class="fa fa-fw fa-twitter" aria-hidden="true"></i>Twitter
-          </a>
-        {% endif %}
-      </nav>
+  <!-- Gradient overlay: canvas visible at top, fades to white at bottom -->
+  <div class="hero__fade" aria-hidden="true"></div>
 
-      {% if page.hero_tags %}
-        <div class="home-intro__tags">
-          {% for tag in page.hero_tags %}
-            <span class="hero-tag">{{ tag }}</span>
-          {% endfor %}
-        </div>
-      {% endif %}
+  <!-- Label near the top of the canvas -->
+  <div class="hero__label">
+    <span class="hero__label-title">Urban mobility &amp; network science</span>
+    <span class="hero__label-sub">Hover a city to explore connections</span>
+  </div>
+
+  <!-- Bio content overlaid at the bottom, over the white fade -->
+  <div class="hero__bio">
+    <div class="hero__bio-inner">
+
+      <div class="hero__bio-text">
+        {% if page.hero_intro %}
+          <p class="home-intro__lead">{{ page.hero_intro }}</p>
+        {% endif %}
+
+        <nav class="home-intro__links" aria-label="Profiles">
+          {% if author.email %}
+            <a href="mailto:{{ author.email }}" class="home-intro__link">
+              <i class="fa fa-fw fa-envelope" aria-hidden="true"></i>Email
+            </a>
+          {% endif %}
+          {% if author.googlescholar %}
+            <a href="{{ author.googlescholar }}" class="home-intro__link" target="_blank" rel="noopener">
+              <i class="ai ai-google-scholar ai-fw" aria-hidden="true"></i>Google Scholar
+            </a>
+          {% endif %}
+          {% if author.orcid %}
+            <a href="{{ author.orcid }}" class="home-intro__link" target="_blank" rel="noopener">
+              <i class="ai ai-orcid ai-fw" aria-hidden="true"></i>ORCID
+            </a>
+          {% endif %}
+          {% if author.twitter %}
+            <a href="https://twitter.com/{{ author.twitter }}" class="home-intro__link" target="_blank" rel="noopener">
+              <i class="fa fa-fw fa-twitter" aria-hidden="true"></i>Twitter
+            </a>
+          {% endif %}
+        </nav>
+
+        {% if page.hero_tags %}
+          <div class="home-intro__tags">
+            {% for tag in page.hero_tags %}
+              <span class="hero-tag">{{ tag }}</span>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="hero__photo">
+        {% if author.avatar contains "://" %}
+          <img src="{{ author.avatar }}" alt="{{ author.name }}">
+        {% else %}
+          <img src="{{ author.avatar | prepend: '/images/' | prepend: base_path }}" alt="{{ author.name }}">
+        {% endif %}
+      </div>
+
     </div>
+  </div>
 
-    <div class="home-intro__photo">
-      {% if author.avatar contains "://" %}
-        <img src="{{ author.avatar }}" alt="{{ author.name }}">
-      {% else %}
-        <img src="{{ author.avatar | prepend: '/images/' | prepend: base_path }}" alt="{{ author.name }}">
-      {% endif %}
-    </div>
+</section>
 
-  </div><!-- /.home-intro__inner -->
-</div><!-- /.home-intro -->
-
-{% include home-viz.html %}
+<script src="{{ '/assets/js/home-viz.js' | relative_url }}"></script>
 
 <!-- ============================================================
      MAIN CONTENT — centred column, no sidebar

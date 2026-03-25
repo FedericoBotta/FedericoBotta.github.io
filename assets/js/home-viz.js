@@ -237,10 +237,10 @@
 
   /* ── Resize ── */
   function resize() {
-    var container = canvas.parentElement;
-    W = canvas.width = container.offsetWidth;
-    H = canvas.height = Math.max(280, Math.min(420, Math.round(W * 0.35)));
-    canvas.style.height = H + 'px';
+    var hero = canvas.parentElement; /* .hero section */
+    W = canvas.width  = hero.offsetWidth;
+    H = canvas.height = hero.offsetHeight;
+    /* CSS handles visual size (position:absolute; width/height:100%) */
     reproject();
     initParticles();
   }
