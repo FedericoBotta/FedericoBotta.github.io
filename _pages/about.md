@@ -46,7 +46,7 @@ hero_tags:
     <span class="stat-label">peer-reviewed publications</span>
   </div>
   <div class="stat-item">
-    <span class="stat-number" data-target="1.6" data-decimal="true">0</span>
+    <span class="stat-number" data-target="0.8" data-decimal="true">0</span>
     <span class="stat-label">£M+ in research grants</span>
   </div>
   <div class="stat-item">

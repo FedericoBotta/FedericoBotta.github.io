@@ -50,8 +50,7 @@ A full PDF version of my CV is available on request — please [email me](mailto
 | 2023 | £22,766 | Department for Transport | AI to detect EV chargers |
 | 2021–2023 | £134,074 | ESRC / ADR UK | No. 10 Data Science Fellowship |
 | 2020–2021 | £265,561 | InnovateUK / City Science | Urban data science (Co-I) |
-| 2017 | £796,848 | Government Office for Science | Data science for government (named researcher) |
-| 2016 | £19,984 | ESRC Impact Acceleration Account | Named researcher |
+| 2017 | — | Government Office for Science | Data science for government (named researcher) |
 | 2012–2016 | £64,000 | EPSRC | Postgraduate studentship |
 
 ---

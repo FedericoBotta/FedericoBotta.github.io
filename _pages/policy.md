@@ -38,7 +38,7 @@ Based on my research demonstrating how mobile phone and social media data can be
 Developed novel methodology for generating early-warning indicators of the performance of museums and galleries sponsored by the Department, enabling more responsive and evidence-based funding decisions.
 
 **Government Office for Science & Cabinet Office**
-Named researcher on a £796,848 Government Office for Science grant; also worked with the Cabinet Office on data science applications.
+Named researcher on a Government Office for Science grant; also worked with the Cabinet Office on data science applications.
 
 ---
 
@@ -64,7 +64,7 @@ Named researcher on a £796,848 Government Office for Science grant; also worked
 | 2023 | £22,766 | Department for Transport | AI to detect EV chargers |
 | 2021–2023 | £134,074 | ESRC / ADR UK | No. 10 Data Science Fellowship |
 | 2020–2021 | £265,561 | InnovateUK / City Science | Urban data science |
-| 2017 | £796,848 | Government Office for Science | Data science for government |
+| 2017 | — | Government Office for Science | Data science for government |
 
 ---
 
