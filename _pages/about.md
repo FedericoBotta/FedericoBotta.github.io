@@ -55,7 +55,7 @@ hero_tags:
   </div>
   <div class="stat-item">
     <span class="stat-number" data-target="8">0</span>
-    <span class="stat-label">PhD students supervised</span>
+    <span class="stat-label">PhD students</span>
   </div>
   <div class="stat-item">
     <span class="stat-number" data-target="15">0</span>
