@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Variation D – City-Scale Mobility | Federico Botta</title>
+  <link rel="stylesheet" href="https://federicobotta.github.io/assets/css/main.css">
+  <link rel="stylesheet" href="https://federicobotta.github.io/assets/css/academicons.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    /* ============================================================
+       VARIATION D — City-Scale Mobility (London POI Network)
+       ============================================================ */
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Fixed pill badge — top right */
+    .variation-badge {
+      position: fixed;
+      top: 1em;
+      right: 1em;
+      z-index: 9999;
+      background: rgba(0, 200, 150, 0.15);
+      border: 1px solid rgba(0, 200, 150, 0.45);
+      color: #00c896;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.68em;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.38em 0.9em;
+      border-radius: 100px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      pointer-events: none;
+    }
+
+    /* ---- Hero — same dimensions as the live site ---- */
+    .hero {
+      position: relative;
+      min-height: 580px;
+      background: #011818;
+      overflow: hidden;
+    }
+
+    #mobility-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Gradient overlay: transparent at top, fades to white at bottom */
+    .hero__fade {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        transparent 22%,
+        rgba(255,255,255,0.85) 50%,
+        white 62%
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Canvas label — top centre */
+    .hero__label {
+      position: absolute;
+      top: 2.4em;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 3;
+      pointer-events: none;
+      line-height: normal;
+      white-space: nowrap;
+    }
+    .hero__label-title {
+      display: block;
+      font-size: 0.68em;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(0, 200, 150, 0.9);
+    }
+    .hero__label-sub {
+      display: block;
+      font-size: 0.6em;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.45);
+      margin-top: 0.3em;
+    }
+
+    /* Bio panel — bottom of hero */
+    .hero__bio {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 0 2em 2.8em;
+      z-index: 2;
+    }
+
+    .hero__bio-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 230px;
+      gap: 4em;
+      align-items: end;
+    }
+
+    .home-intro__lead {
+      font-size: 1.08em;
+      font-weight: 400;
+      line-height: 1.7;
+      color: #022020;
+      margin: 0 0 1.4em;
+    }
+
+    .home-intro__links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5em;
+      margin-bottom: 1.2em;
+      list-style: none;
+      padding: 0;
+    }
+    .home-intro__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4em;
+      padding: 0.35em 0.85em;
+      border-radius: 100px;
+      background: #fff;
+      border: 1px solid #dde6e0;
+      color: #022020;
+      font-size: 0.78em;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.18s, border-color 0.18s;
+    }
+    .home-intro__link:hover {
+      background: #f0faf6;
+      border-color: #00875a;
+      color: #00875a;
+    }
+
+    .home-intro__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4em;
+    }
+    .hero-tag {
+      font-size: 0.67em;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.3em 0.75em;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 135, 90, 0.45);
+      color: #00875a;
+      background: transparent;
+    }
+
+    .hero__photo img {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      border-radius: 18px;
+      box-shadow: 0 10px 40px rgba(0,40,30,.20);
+      display: block;
+    }
+
+  </style>
+</head>
+<body class="layout--home">
+
+  <!-- Fixed variation badge -->
+  <div class="variation-badge">Variation D &ndash; City Scale</div>
+
+  <!-- Masthead -->
+  <div class="masthead">
+    <div class="masthead__inner-wrap">
+      <div class="masthead__menu">
+        <nav id="site-nav" class="greedy-nav">
+          <button><div class="navicon"></div></button>
+          <ul class="visible-links">
+            <li class="masthead__menu-item masthead__menu-item--lg">
+              <a href="#" class="masthead__name-link">
+                <span class="masthead__name">Federico Botta</span>
+                <span class="masthead__subtitle">Senior Lecturer in Data Science · University of Exeter</span>
+              </a>
+            </li>
+            <li class="masthead__menu-item"><a href="#">Publications</a></li>
+            <li class="masthead__menu-item"><a href="#">Policy &amp; Impact</a></li>
+            <li class="masthead__menu-item"><a href="#">Media</a></li>
+            <li class="masthead__menu-item"><a href="#">CV</a></li>
+          </ul>
+          <ul class="hidden-links hidden"></ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <canvas id="mobility-canvas" aria-label="Interactive London mobility network visualisation"></canvas>
+    <div class="hero__fade" aria-hidden="true"></div>
+
+    <div class="hero__label">
+      <span class="hero__label-title">Urban mobility within cities</span>
+      <span class="hero__label-sub">Hover a location to explore connections</span>
+    </div>
+
+    <div class="hero__bio">
+      <div class="hero__bio-inner">
+        <div class="hero__bio-text">
+          <p class="home-intro__lead">
+            I use data science and network science to understand how people move through and interact with cities.
+          </p>
+          <nav class="home-intro__links" aria-label="Profiles">
+            <a href="mailto:f.botta@exeter.ac.uk" class="home-intro__link">
+              <i class="fas fa-envelope" aria-hidden="true"></i>Email
+            </a>
+            <a href="https://scholar.google.com/citations?user=f.botta" class="home-intro__link" target="_blank" rel="noopener">
+              <i class="ai ai-google-scholar ai-fw" aria-hidden="true"></i>Google Scholar
+            </a>
+            <a href="https://orcid.org/0000-0002-9553-0985" class="home-intro__link" target="_blank" rel="noopener">
+              <i class="ai ai-orcid ai-fw" aria-hidden="true"></i>ORCID
+            </a>
+            <a href="https://twitter.com/FedericoBotta" class="home-intro__link" target="_blank" rel="noopener">
+              <i class="fab fa-twitter" aria-hidden="true"></i>Twitter
+            </a>
+          </nav>
+          <div class="home-intro__tags">
+            <span class="hero-tag">Urban Mobility</span>
+            <span class="hero-tag">Network Science</span>
+            <span class="hero-tag">Data Science</span>
+            <span class="hero-tag">Human Behaviour</span>
+          </div>
+        </div>
+        <div class="hero__photo">
+          <img src="https://federicobotta.github.io/images/profile_photo.jpg" alt="Federico Botta">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      'use strict';
+
+      /* ── Colour palette (greenish background, matching live site) ── */
+      var COL = {
+        bg:      '#011818',
+        grid:    'rgba(0,200,150,0.06)',
+        station: '#00d4ff',
+        district:'#ff9f40',
+        park:    '#4ade80',
+        uni:     '#c084fc',
+        other:   '#00c896'
+      };
+
+      /* ── Full London POI pool ──
+         Each entry: [name, lat, lon, type, always_label, core]
+         "core"        : always included regardless of random sample
+         "always_label": label always visible (not just on hover)
+         A larger geographic spread (especially westward) ensures the
+         network fills the canvas evenly on every load.
+      */
+      var POI_POOL = [
+        /* Transport hubs — only 5 are core; rest are drawn from variable pool */
+        ["King's Cross",      51.531, -0.124, 'station',  true,  true],
+        ["Paddington",        51.515, -0.177, 'station',  true,  true],
+        ["Victoria",          51.496, -0.144, 'station',  true,  true],
+        ["Waterloo",          51.503, -0.113, 'station',  true,  true],
+        ["Liverpool St",      51.518, -0.082, 'station',  true,  true],
+        /* Variable stations */
+        ["London Bridge",     51.508, -0.088, 'station',  false, false],
+        ["Canary Wharf",      51.504, -0.020, 'station',  false, false],
+        ["Stratford",         51.542,  0.003, 'station',  false, false],
+        ["Euston",            51.528, -0.133, 'station',  false, false],
+        ["Marylebone",        51.522, -0.163, 'station',  false, false],
+        ["Fenchurch St",      51.511, -0.078, 'station',  false, false],
+        /* Parks / open spaces */
+        ["Hyde Park",         51.507, -0.165, 'park',     true,  false],
+        ["Hampstead Heath",   51.561, -0.163, 'park',     true,  false],
+        ["Greenwich Park",    51.476,  0.000, 'park',     true,  false],
+        ["Wimbledon Common",  51.434, -0.230, 'park',     true,  false],
+        ["Victoria Park",     51.536, -0.036, 'park',     false, false],
+        ["Battersea Park",    51.480, -0.155, 'park',     false, false],
+        ["Regent's Park",     51.531, -0.153, 'park',     false, false],
+        ["Clapham Common",    51.461, -0.137, 'park',     false, false],
+        ["Richmond Park",     51.441, -0.278, 'park',     true,  false],
+        /* Universities */
+        ["UCL",               51.525, -0.134, 'uni',      true,  false],
+        ["Imperial College",  51.499, -0.179, 'uni',      true,  false],
+        ["LSE",               51.514, -0.116, 'uni',      false, false],
+        ["King's College",    51.511, -0.115, 'uni',      false, false],
+        ["Queen Mary",        51.524, -0.041, 'uni',      false, false],
+        ["Brunel Uni",        51.532, -0.480, 'uni',      false, false],
+        /* Central / east districts */
+        ["Shoreditch",        51.524, -0.079, 'district', true,  false],
+        ["Hackney",           51.546, -0.055, 'district', true,  false],
+        ["Camden",            51.541, -0.143, 'district', true,  false],
+        ["Brixton",           51.462, -0.114, 'district', true,  false],
+        ["Islington",         51.538, -0.102, 'district', false, false],
+        ["Chelsea",           51.487, -0.170, 'district', false, false],
+        ["Peckham",           51.474, -0.069, 'district', false, false],
+        ["Dalston",           51.547, -0.075, 'district', false, false],
+        ["Bethnal Green",     51.528, -0.058, 'district', false, false],
+        ["Southwark",         51.503, -0.097, 'district', false, false],
+        ["Whitechapel",       51.518, -0.059, 'district', false, false],
+        ["Stoke Newington",   51.562, -0.075, 'district', false, false],
+        ["Tottenham",         51.588, -0.069, 'district', false, false],
+        ["Walthamstow",       51.583, -0.018, 'district', false, false],
+        ["Lewisham",          51.462, -0.013, 'district', false, false],
+        ["Elephant & Castle", 51.495, -0.100, 'district', false, false],
+        /* West London districts — fill the western canvas area */
+        ["Notting Hill",      51.514, -0.202, 'district', true,  false],
+        ["Kensington",        51.500, -0.191, 'district', false, false],
+        ["Hammersmith",       51.492, -0.222, 'district', true,  false],
+        ["Fulham",            51.475, -0.195, 'district', false, false],
+        ["Shepherd's Bush",   51.505, -0.226, 'district', false, false],
+        ["Putney",            51.462, -0.216, 'district', true,  false],
+        ["Chiswick",          51.493, -0.267, 'district', true,  false],
+        ["Acton",             51.508, -0.267, 'district', false, false],
+        ["Ealing",            51.513, -0.307, 'district', false, false],
+        ["Tooting",           51.428, -0.168, 'district', false, false],
+        ["Streatham",         51.428, -0.126, 'district', false, false],
+        /* Outer / terminus */
+        ["Wembley",           51.553, -0.279, 'other',    false, false],
+        ["Croydon",           51.373, -0.098, 'other',    false, false],
+        ["Richmond",          51.462, -0.301, 'other',    true,  false],
+        ["Barking",           51.540,  0.081, 'other',    false, false],
+        ["Twickenham",        51.449, -0.334, 'other',    false, false]
+      ];
+      /* field indices: 0=name, 1=lat, 2=lon, 3=type, 4=always_label, 5=core */
+
+      /* ── Helpers ── */
+
+      /* Haversine distance in km between two [lat,lon] points */
+      function geoDist(latA, lonA, latB, lonB) {
+        var R = 6371;
+        var dLat = (latB - latA) * Math.PI / 180;
+        var dLon = (lonB - lonA) * Math.PI / 180;
+        var a = Math.sin(dLat/2)*Math.sin(dLat/2) +
+                Math.cos(latA * Math.PI/180) * Math.cos(latB * Math.PI/180) *
+                Math.sin(dLon/2)*Math.sin(dLon/2);
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      }
+
+      /* Fisher-Yates shuffle (in-place) */
+      function shuffle(arr) {
+        for (var i = arr.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+        }
+        return arr;
+      }
+
+      /* ── Sample nodes for this load ── */
+      function sampleNodes() {
+        var core     = POI_POOL.filter(function(d){ return d[5]; }); /* always included */
+        var variable = shuffle(POI_POOL.filter(function(d){ return !d[5]; }).slice());
+        /* Pick 20-26 extra nodes from the variable pool */
+        var extra = 20 + Math.floor(Math.random() * 7);
+        var picked = core.concat(variable.slice(0, extra));
+        return picked.map(function(d){
+          return {
+            name:  d[0],
+            lat:   d[1],
+            lon:   d[2],
+            type:  d[3],
+            always: d[4],
+            color: COL[d[3]] || COL.other,
+            r: d[3] === 'station' ? 6.5 : d[3] === 'district' ? 5.5 : 5,
+            x: 0, y: 0
+          };
+        });
+      }
+
+      /* ── Generate edges probabilistically based on geographic proximity ── */
+      function generateEdges(nodes) {
+        var edges = [];
+        var seen  = {};
+
+        for (var i = 0; i < nodes.length; i++) {
+          for (var j = i + 1; j < nodes.length; j++) {
+            var d = geoDist(nodes[i].lat, nodes[i].lon, nodes[j].lat, nodes[j].lon);
+            var prob;
+            if      (d < 1.8)  prob = 0.92;
+            else if (d < 3.0)  prob = 0.72;
+            else if (d < 5.0)  prob = 0.42;
+            else if (d < 8.0)  prob = 0.18;
+            else if (d < 14.0) prob = 0.06;
+            else               prob = 0;
+            if (Math.random() < prob) {
+              edges.push([i, j]);
+              seen[i + '_' + j] = true;
+            }
+          }
+        }
+
+        /* Guarantee every node has at least 2 edges */
+        for (var i = 0; i < nodes.length; i++) {
+          var degree = edges.filter(function(e){ return e[0]===i || e[1]===i; }).length;
+          if (degree < 2) {
+            /* Find nearest nodes not yet connected */
+            var dists = [];
+            for (var j = 0; j < nodes.length; j++) {
+              if (j === i) continue;
+              dists.push({ j: j, d: geoDist(nodes[i].lat, nodes[i].lon, nodes[j].lat, nodes[j].lon) });
+            }
+            dists.sort(function(a,b){ return a.d - b.d; });
+            var added = 0;
+            for (var k = 0; k < dists.length && added < (2 - degree); k++) {
+              var j = dists[k].j;
+              var key = Math.min(i,j) + '_' + Math.max(i,j);
+              if (!seen[key]) {
+                edges.push([Math.min(i,j), Math.max(i,j)]);
+                seen[key] = true;
+                added++;
+              }
+            }
+          }
+        }
+        return edges;
+      }
+
+      /* ── Initialise nodes and edges for this page load ── */
+      var NODES  = sampleNodes();
+      var EDGES  = generateEdges(NODES);
+      var PHASES = EDGES.map(function(){ return Math.random() * Math.PI * 2; });
+
+      /* ── Particles ── */
+      function initParticles() {
+        var parts = [];
+        for (var i = 0; i < EDGES.length; i++) {
+          var count = 3 + Math.floor(Math.random() * 3);
+          for (var j = 0; j < count; j++) {
+            parts.push({
+              edgeIdx: i,
+              t:     Math.random(),
+              speed: 0.003 + Math.random() * 0.004,
+              dir:   Math.random() < 0.5 ? 1 : -1
+            });
+          }
+        }
+        return parts;
+      }
+      var PARTICLES = initParticles();
+
+      /* ── Canvas / state ── */
+      var canvas  = document.getElementById('mobility-canvas');
+      var ctx     = canvas.getContext('2d');
+      var W = 0, H = 0, hovered = -1;
+
+      /* ── Geographic projection (London bounds) ──
+         Westward extent pushed to -0.52 to accommodate Richmond, Chiswick,
+         Twickenham etc.; the extra western POIs now fill that side of the canvas.
+         Slightly tighter lat range avoids excess empty space top/bottom.
+      */
+      var LAT_MIN = 51.36, LAT_MAX = 51.61;
+      var LON_MIN = -0.50, LON_MAX = 0.10;
+
+      function project(lat, lon, padH, padV) {
+        var x = padH + (lon - LON_MIN) / (LON_MAX - LON_MIN) * (W - 2 * padH);
+        var y = padV + (1 - (lat - LAT_MIN) / (LAT_MAX - LAT_MIN)) * (H - 2 * padV);
+        return [x, y];
+      }
+
+      function reproject() {
+        var padH = Math.max(55, W * 0.06);
+        var padV = Math.max(45, H * 0.07);
+        NODES.forEach(function(n) {
+          var p = project(n.lat, n.lon, padH, padV);
+          n.x = p[0];
+          n.y = p[1];
+        });
+      }
+
+      /* ── Bezier helpers ── */
+      function ctrlPt(ax, ay, bx, by) {
+        var dx = bx - ax, dy = by - ay;
+        var len = Math.sqrt(dx*dx + dy*dy) || 1;
+        var bend = Math.min(len * 0.12, 28);
+        return [(ax+bx)/2 - (dy/len)*bend, (ay+by)/2 + (dx/len)*bend];
+      }
+
+      function bezierPt(ax, ay, cpx, cpy, bx, by, t) {
+        var u = 1 - t;
+        return [u*u*ax + 2*u*t*cpx + t*t*bx,
+                u*u*ay + 2*u*t*cpy + t*t*by];
+      }
+
+      /* ── hex → "r,g,b" ── */
+      function hexRgb(hex) {
+        var r = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return r ? parseInt(r[1],16)+','+parseInt(r[2],16)+','+parseInt(r[3],16) : '255,255,255';
+      }
+
+      /* ── Draw ── */
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+
+        /* Background */
+        ctx.fillStyle = COL.bg;
+        ctx.fillRect(0, 0, W, H);
+
+        /* Subtle dot grid */
+        ctx.fillStyle = COL.grid;
+        var latStep = 0.04, lonStep = 0.07;
+        var padH = Math.max(55, W * 0.06), padV = Math.max(45, H * 0.07);
+        for (var lat = LAT_MIN; lat <= LAT_MAX; lat += latStep) {
+          for (var lon = LON_MIN; lon <= LON_MAX; lon += lonStep) {
+            var dp = project(lat, lon, padH, padV);
+            ctx.beginPath();
+            ctx.arc(dp[0], dp[1], 1, 0, Math.PI*2);
+            ctx.fill();
+          }
+        }
+
+        /* Edges with sinusoidal opacity */
+        var now = Date.now();
+        for (var ei = 0; ei < EDGES.length; ei++) {
+          var e  = EDGES[ei];
+          var a  = NODES[e[0]], b = NODES[e[1]];
+          var isHov = hovered >= 0 && (e[0]===hovered || e[1]===hovered);
+          var dynA = 0.10 + 0.08 * Math.sin(now * 0.001 * 0.35 + PHASES[ei]);
+          var alpha = isHov ? 0.70 : dynA;
+          var cp = ctrlPt(a.x, a.y, b.x, b.y);
+          ctx.strokeStyle = isHov
+            ? 'rgba(0,200,200,' + alpha + ')'
+            : 'rgba(0,200,150,' + alpha + ')';
+          ctx.lineWidth = isHov ? 1.4 : 0.7;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.quadraticCurveTo(cp[0], cp[1], b.x, b.y);
+          ctx.stroke();
+        }
+
+        /* Particles */
+        for (var pi = 0; pi < PARTICLES.length; pi++) {
+          var p = PARTICLES[pi];
+          p.t += p.speed * p.dir;
+          if (p.t > 1) p.t = 0;
+          if (p.t < 0) p.t = 1;
+          var pe = EDGES[p.edgeIdx];
+          var pa = NODES[pe[0]], pb = NODES[pe[1]];
+          var pcp = ctrlPt(pa.x, pa.y, pb.x, pb.y);
+          var pt = bezierPt(pa.x, pa.y, pcp[0], pcp[1], pb.x, pb.y, p.t);
+          var isHovP = hovered >= 0 && (pe[0]===hovered || pe[1]===hovered);
+          var pAlpha = isHovP ? 0.95 : 0.50;
+          var pSize  = isHovP ? 2.0  : 1.2;
+          if (isHovP) { ctx.shadowColor='#fff'; ctx.shadowBlur=6; }
+          ctx.beginPath();
+          ctx.arc(pt[0], pt[1], pSize, 0, Math.PI*2);
+          ctx.fillStyle = 'rgba(255,255,255,' + pAlpha + ')';
+          ctx.fill();
+          if (isHovP) { ctx.shadowBlur=0; }
+        }
+
+        /* Nodes */
+        for (var ni = 0; ni < NODES.length; ni++) {
+          var n = NODES[ni];
+          var isHovN  = ni === hovered;
+          var isConnN = !isHovN && hovered >= 0 && EDGES.some(function(e){
+            return (e[0]===hovered && e[1]===ni) || (e[1]===hovered && e[0]===ni);
+          });
+          var r = n.r * (isHovN ? 1.5 : 1);
+
+          /* Glow halo */
+          var gR = r * (isHovN ? 4.5 : 3.0);
+          var gc = hexRgb(n.color);
+          var grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, gR);
+          grd.addColorStop(0, 'rgba('+gc+','+(isHovN ? 0.35 : isConnN ? 0.22 : 0.14)+')');
+          grd.addColorStop(1, 'rgba('+gc+',0)');
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, gR, 0, Math.PI*2);
+          ctx.fillStyle = grd;
+          ctx.fill();
+
+          /* Ring */
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, r + 2.5, 0, Math.PI*2);
+          ctx.strokeStyle = isHovN  ? 'rgba('+gc+',0.85)'
+                           : isConnN ? 'rgba('+gc+',0.55)'
+                           :           'rgba('+gc+',0.30)';
+          ctx.lineWidth = isHovN ? 1.5 : 0.8;
+          ctx.stroke();
+
+          /* Fill */
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, r, 0, Math.PI*2);
+          ctx.fillStyle = isHovN ? n.color : n.color + 'cc';
+          ctx.fill();
+
+          /* White inner dot for transport hubs */
+          if (n.type === 'station') {
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, r * 0.38, 0, Math.PI*2);
+            ctx.fillStyle = isHovN ? '#fff' : 'rgba(255,255,255,0.60)';
+            ctx.fill();
+          }
+
+          /* Labels */
+          var showLabel = n.always || isHovN || isConnN;
+          if (showLabel) {
+            ctx.font = (isHovN ? '600 ' : '500 ') + (isHovN ? 11 : 10) + 'px Inter,sans-serif';
+            ctx.textAlign = 'center';
+            ctx.shadowColor = '#000';
+            ctx.shadowBlur = 5;
+            ctx.fillStyle = isHovN ? n.color : 'rgba(200,235,220,0.90)';
+            ctx.fillText(n.name, n.x, n.y - r - 5);
+            ctx.shadowBlur = 0;
+          }
+        }
+
+        requestAnimationFrame(draw);
+      }
+
+      /* ── Resize ── */
+      function resize() {
+        var hero = canvas.parentElement;
+        W = canvas.width  = hero.offsetWidth;
+        H = canvas.height = hero.offsetHeight;
+        reproject();
+      }
+
+      /* ── Mouse / touch ── */
+      canvas.addEventListener('mousemove', function(e) {
+        var rect = canvas.getBoundingClientRect();
+        var sx = W / rect.width, sy = H / rect.height;
+        var mx = (e.clientX - rect.left) * sx;
+        var my = (e.clientY - rect.top)  * sy;
+        hovered = -1;
+        NODES.forEach(function(n, i) {
+          if (Math.hypot(n.x - mx, n.y - my) < n.r + 12) hovered = i;
+        });
+        canvas.style.cursor = hovered >= 0 ? 'pointer' : 'default';
+      });
+      canvas.addEventListener('mouseleave', function() { hovered = -1; });
+
+      canvas.addEventListener('touchstart', function(e) {
+        var rect = canvas.getBoundingClientRect();
+        var sx = W / rect.width, sy = H / rect.height;
+        var t = e.touches[0];
+        var mx = (t.clientX - rect.left) * sx;
+        var my = (t.clientY - rect.top)  * sy;
+        hovered = -1;
+        NODES.forEach(function(n, i) {
+          if (Math.hypot(n.x - mx, n.y - my) < n.r + 16) hovered = i;
+        });
+      }, { passive: true });
+      canvas.addEventListener('touchend', function() {
+        setTimeout(function() { hovered = -1; }, 1200);
+      }, { passive: true });
+
+      window.addEventListener('resize', function() {
+        clearTimeout(window._vizResize);
+        window._vizResize = setTimeout(resize, 120);
+      });
+
+      function init() {
+        resize();
+        if (W > 0 && H > 0) {
+          draw();
+        } else {
+          setTimeout(function() { resize(); draw(); }, 50);
+        }
+      }
+
+      if (document.readyState === 'complete') {
+        requestAnimationFrame(init);
+      } else {
+        window.addEventListener('load', init);
+      }
+    })();
+  </script>
+</body>
+</html>

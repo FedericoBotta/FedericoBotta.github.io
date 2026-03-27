@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Variation C: Vertical Split</title>
+  <link rel="stylesheet" href="https://federicobotta.github.io/assets/css/main.css">
+  <link rel="stylesheet" href="https://federicobotta.github.io/assets/css/academicons.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    /* ============================================================
+       VARIATION C — Vertical Split
+       ============================================================ */
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Identification banner */
+    .variation-banner {
+      background: #1e3a5f;
+      color: rgba(100, 200, 255, 0.9);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72em;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 0.45em 1em;
+      position: relative;
+      z-index: 1000;
+    }
+
+    /* ---- Split Hero ---- */
+    .split-hero {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* LEFT PANEL — white, bio content */
+    .split-hero__bio {
+      width: 55%;
+      background: white;
+      padding: 5em 4em 4em;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Eyebrow label at top-left of left panel */
+    .bio__eyebrow {
+      position: absolute;
+      top: 2.5em;
+      left: 4em;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65em;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(0, 135, 90, 0.7);
+    }
+
+    /* Photo — at top of the bio flow, smaller format */
+    .bio__photo-wrap {
+      margin-bottom: 1.6em;
+    }
+    .bio__photo-wrap img {
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.1);
+      display: block;
+    }
+
+    .bio__lead {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.05em;
+      font-weight: 400;
+      line-height: 1.72;
+      color: #022020;
+      margin: 0 0 1.4em;
+    }
+
+    .bio__social {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5em;
+      margin-bottom: 1.2em;
+    }
+    .bio__social a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4em;
+      padding: 0.35em 0.85em;
+      border-radius: 100px;
+      background: #fff;
+      border: 1px solid #dde6e0;
+      color: #022020;
+      font-size: 0.78em;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.18s, border-color 0.18s;
+    }
+    .bio__social a:hover {
+      background: #f0faf6;
+      border-color: #00875a;
+      color: #00875a;
+    }
+
+    .bio__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4em;
+    }
+    .bio__tag {
+      font-size: 0.67em;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.3em 0.75em;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 135, 90, 0.45);
+      color: #00875a;
+      background: transparent;
+    }
+
+    /* RIGHT PANEL — dark canvas */
+    .split-hero__canvas {
+      width: 45%;
+      background: #011818;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .split-hero__canvas canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Canvas label in right panel */
+    .split-hero__canvas-label {
+      position: absolute;
+      top: 2em;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      white-space: nowrap;
+      z-index: 2;
+      pointer-events: none;
+      line-height: normal;
+    }
+    .split-hero__canvas-label span {
+      display: block;
+      font-family: 'Inter', sans-serif;
+    }
+    .split-hero__canvas-label span:first-child {
+      font-size: 0.65em;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(0, 210, 160, 0.9);
+    }
+    .split-hero__canvas-label span:last-child {
+      font-size: 0.58em;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.35);
+      margin-top: 0.35em;
+    }
+
+    /* ---- Theme cards ---- */
+    .theme-card {
+      background: #fff;
+      border: 1px solid #e8eeeb;
+      border-radius: 10px;
+      padding: 1.3em 1.2em;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .theme-card:hover {
+      box-shadow: 0 6px 24px rgba(0,135,90,0.12);
+      border-color: #00875a;
+    }
+    .theme-card__icon {
+      font-size: 1.4em;
+      color: #00875a;
+      margin-bottom: 0.6em;
+    }
+    .theme-card__title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1em;
+      font-weight: 400;
+      color: #022020;
+      margin: 0 0 0.5em;
+    }
+    .theme-card__desc {
+      font-size: 0.82em;
+      color: #4a6060;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    /* Responsive: stack on narrow viewports */
+    @media (max-width: 768px) {
+      .split-hero {
+        flex-direction: column;
+      }
+      .split-hero__bio,
+      .split-hero__canvas {
+        width: 100%;
+      }
+      .split-hero__canvas {
+        min-height: 50vh;
+      }
+    }
+  </style>
+</head>
+<body class="layout--home">
+
+  <!-- Identification banner -->
+  <div class="variation-banner">Variation C — Vertical Split</div>
+
+  <!-- Masthead -->
+  <div class="masthead">
+    <div class="masthead__inner-wrap">
+      <div class="masthead__menu">
+        <nav id="site-nav" class="greedy-nav">
+          <button><div class="navicon"></div></button>
+          <ul class="visible-links">
+            <li class="masthead__menu-item masthead__menu-item--lg">
+              <a href="#" class="masthead__name-link">
+                <span class="masthead__name">Federico Botta</span>
+                <span class="masthead__subtitle">Senior Lecturer in Data Science · University of Exeter</span>
+              </a>
+            </li>
+            <li class="masthead__menu-item"><a href="#">Publications</a></li>
+            <li class="masthead__menu-item"><a href="#">Policy &amp; Impact</a></li>
+            <li class="masthead__menu-item"><a href="#">Media</a></li>
+            <li class="masthead__menu-item"><a href="#">CV</a></li>
+          </ul>
+          <ul class="hidden-links hidden"></ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <!-- Split Hero -->
+  <div class="split-hero" id="split-hero">
+
+    <!-- Left panel — bio -->
+    <div class="split-hero__bio">
+      <div class="bio__eyebrow">Urban mobility &amp; network science</div>
+
+      <div class="bio__photo-wrap">
+        <img src="https://federicobotta.github.io/images/Federico-photo.jpg" alt="Federico Botta">
+      </div>
+
+      <p class="bio__lead">
+        I use data science and AI to understand how cities work — and to help make them fairer,
+        greener, and better served. My research spans urban analytics, human mobility, and
+        computational social science, with a deliberate focus on turning research into real-world
+        policy impact.
+      </p>
+
+      <div class="bio__social">
+        <a href="mailto:f.botta@exeter.ac.uk"><i class="fas fa-envelope"></i> Email</a>
+        <a href="https://scholar.google.com" target="_blank" rel="noopener"><i class="ai ai-google-scholar"></i> Google Scholar</a>
+        <a href="https://orcid.org" target="_blank" rel="noopener"><i class="ai ai-orcid"></i> ORCID</a>
+        <a href="https://twitter.com/FedericoBotta" target="_blank" rel="noopener"><i class="fab fa-twitter"></i> @FedericoBotta</a>
+      </div>
+
+      <div class="bio__tags">
+        <span class="bio__tag">Urban Analytics</span>
+        <span class="bio__tag">Human Mobility</span>
+        <span class="bio__tag">Data Science for Policy</span>
+        <span class="bio__tag">AI &amp; Society</span>
+      </div>
+    </div>
+
+    <!-- Right panel — canvas -->
+    <div class="split-hero__canvas" id="canvas-panel">
+      <canvas id="mobility-canvas"></canvas>
+      <div class="split-hero__canvas-label">
+        <span>Urban mobility &amp; network science</span>
+        <span>Hover a city to explore connections</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Main content -->
+  <main style="padding: 3em 2em; max-width: 920px; margin: 0 auto;">
+    <h2 style="font-family: 'DM Serif Display', Georgia, serif; font-size: 1.55em; font-weight: 400; color: #022020; border-bottom: 2px solid #00875a; padding-bottom: 0.4em; margin-bottom: 1.2em;">What I Work On</h2>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2em; margin-bottom: 2em;">
+      <div class="theme-card">
+        <div class="theme-card__icon"><i class="fas fa-city"></i></div>
+        <h3 class="theme-card__title">Urban Analytics</h3>
+        <p class="theme-card__desc">Understanding city dynamics through large-scale digital data and spatial analysis.</p>
+      </div>
+      <div class="theme-card">
+        <div class="theme-card__icon"><i class="fas fa-route"></i></div>
+        <h3 class="theme-card__title">Human Mobility</h3>
+        <p class="theme-card__desc">Modelling how people move through urban environments and what drives mobility patterns.</p>
+      </div>
+      <div class="theme-card">
+        <div class="theme-card__icon"><i class="fas fa-landmark"></i></div>
+        <h3 class="theme-card__title">Data Science for Policy</h3>
+        <p class="theme-card__desc">Translating research findings into actionable insights for government and public bodies.</p>
+      </div>
+      <div class="theme-card">
+        <div class="theme-card__icon"><i class="fas fa-robot"></i></div>
+        <h3 class="theme-card__title">AI &amp; Society</h3>
+        <p class="theme-card__desc">Examining societal implications of AI systems, with a focus on equity and public interest.</p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    /* ================================================================
+       CANVAS — City Network Visualisation  (Variation C)
+       Canvas parent is the RIGHT PANEL element (.split-hero__canvas)
+       ================================================================ */
+
+    var CITIES = [
+      ['Exeter',      50.72, -3.53,  7, true ],
+      ['London',      51.51, -0.13, 10, true ],
+      ['Bristol',     51.45, -2.60,  5, false],
+      ['Cardiff',     51.48, -3.18,  5, false],
+      ['Birmingham',  52.48, -1.90,  6, false],
+      ['Manchester',  53.48, -2.24,  7, true ],
+      ['Leeds',       53.80, -1.55,  5, false],
+      ['Edinburgh',   55.95, -3.19,  6, true ],
+      ['Glasgow',     55.86, -4.25,  5, false],
+      ['Liverpool',   53.41, -2.99,  5, false],
+      ['Sheffield',   53.38, -1.47,  4, false],
+      ['Newcastle',   54.97, -1.61,  5, false],
+      ['Cambridge',   52.21,  0.12,  4, false],
+      ['Oxford',      51.75, -1.26,  4, false],
+      ['Paris',       48.85,  2.35,  9, true ],
+      ['Amsterdam',   52.37,  4.90,  7, true ],
+      ['Brussels',    50.85,  4.35,  5, false],
+      ['Berlin',      52.52, 13.40,  8, true ],
+      ['Munich',      48.14, 11.58,  6, false],
+      ['Zurich',      47.38,  8.54,  5, false],
+      ['Frankfurt',   50.11,  8.68,  6, false],
+      ['Hamburg',     53.55,  9.99,  6, false],
+      ['Copenhagen',  55.68, 12.57,  6, false],
+      ['Stockholm',   59.33, 18.07,  6, true ],
+      ['Oslo',        59.91, 10.75,  5, false],
+      ['Helsinki',    60.17, 24.94,  5, false],
+      ['Rome',        41.90, 12.50,  7, true ],
+      ['Milan',       45.47,  9.19,  5, false],
+      ['Barcelona',   41.39,  2.15,  6, false],
+      ['Madrid',      40.42, -3.70,  7, true ],
+      ['Lisbon',      38.72, -9.14,  6, false],
+      ['Vienna',      48.21, 16.37,  6, false],
+      ['Prague',      50.08, 14.44,  5, false],
+      ['Warsaw',      52.23, 21.01,  5, false],
+      ['Budapest',    47.50, 19.04,  5, false],
+    ].map(function(d) {
+      return {
+        name: d[0], lat: d[1], lon: d[2], r: d[3],
+        always: d[4], x: 0, y: 0, isHome: d[0] === 'Exeter'
+      };
+    });
+
+    var EDGES = [
+      [0,1],[0,2],[0,3],[0,13],
+      [1,2],[1,3],[1,4],[1,5],[1,6],[1,7],[1,12],[1,13],
+      [2,3],[4,5],[4,9],[4,10],[5,6],[5,9],[5,10],
+      [6,7],[6,10],[6,11],[7,8],[7,11],[8,5],[9,10],
+      [1,14],[1,15],[1,16],
+      [14,15],[14,16],[14,20],[14,27],[14,28],[14,29],
+      [15,16],[15,20],[15,21],
+      [16,20],
+      [20,21],[20,17],[20,18],[20,19],
+      [21,17],[21,22],
+      [17,22],[17,32],[17,31],[17,33],
+      [22,23],[23,24],[23,25],[24,22],
+      [18,19],[18,27],[18,31],
+      [19,27],[27,26],
+      [31,32],[31,34],[31,18],
+      [32,33],[34,32],
+      [28,29],[28,14],[29,30],
+    ];
+
+    var PHASES = EDGES.map(function() { return Math.random() * Math.PI * 2; });
+
+    var PARTICLES = [];
+    (function() {
+      for (var i = 0; i < EDGES.length; i++) {
+        var count = Math.random() < 0.5 ? 1 : 2;
+        for (var j = 0; j < count; j++) {
+          PARTICLES.push({
+            edgeIdx: i,
+            t: Math.random(),
+            speed: 0.0008 + Math.random() * 0.0012,
+            dir: Math.random() < 0.5 ? 1 : -1
+          });
+        }
+      }
+    })();
+
+    var canvas = document.getElementById('mobility-canvas');
+    var ctx = canvas.getContext('2d');
+    var W, H;
+    var hoveredCity = -1;
+    var LAT_MIN = 37, LAT_MAX = 62, LON_MIN = -11, LON_MAX = 27;
+    var PAD = 45; /* slightly tighter padding for the narrower panel */
+
+    function project(lat, lon) {
+      var x = PAD + (lon - LON_MIN) / (LON_MAX - LON_MIN) * (W - 2 * PAD);
+      var y = PAD + (1 - (lat - LAT_MIN) / (LAT_MAX - LAT_MIN)) * (H - 2 * PAD);
+      return [x, y];
+    }
+
+    function resize() {
+      var panel = canvas.parentElement; /* .split-hero__canvas */
+      W = canvas.width = panel.offsetWidth;
+      H = canvas.height = panel.offsetHeight;
+      CITIES.forEach(function(c) {
+        var p = project(c.lat, c.lon);
+        c.x = p[0];
+        c.y = p[1];
+      });
+    }
+
+    function bezierPoint(x1, y1, x2, y2, t) {
+      var mx = (x1 + x2) / 2 + (y2 - y1) * 0.18;
+      var my = (y1 + y2) / 2 - (x2 - x1) * 0.18;
+      var u = 1 - t;
+      return [
+        u * u * x1 + 2 * u * t * mx + t * t * x2,
+        u * u * y1 + 2 * u * t * my + t * t * y2
+      ];
+    }
+
+    function drawGrid() {
+      ctx.strokeStyle = 'rgba(0, 180, 130, 0.07)';
+      ctx.lineWidth = 0.5;
+      for (var lat = 38; lat <= 62; lat += 4) {
+        var p1 = project(lat, LON_MIN);
+        var p2 = project(lat, LON_MAX);
+        ctx.beginPath();
+        ctx.moveTo(p1[0], p1[1]);
+        ctx.lineTo(p2[0], p2[1]);
+        ctx.stroke();
+      }
+      for (var lon = -10; lon <= 26; lon += 4) {
+        var q1 = project(LAT_MIN, lon);
+        var q2 = project(LAT_MAX, lon);
+        ctx.beginPath();
+        ctx.moveTo(q1[0], q1[1]);
+        ctx.lineTo(q2[0], q2[1]);
+        ctx.stroke();
+      }
+    }
+
+    function drawEdges(t) {
+      for (var idx = 0; idx < EDGES.length; idx++) {
+        var e = EDGES[idx];
+        var a = CITIES[e[0]];
+        var b = CITIES[e[1]];
+        var isHighlighted = hoveredCity >= 0 && (e[0] === hoveredCity || e[1] === hoveredCity);
+        var dynAlpha = 0.10 + 0.07 * Math.sin(t * 0.3 + PHASES[idx]);
+        var alpha = isHighlighted ? 0.75 : dynAlpha;
+        ctx.strokeStyle = isHighlighted
+          ? 'rgba(0, 210, 160, ' + alpha + ')'
+          : 'rgba(0, 180, 140, ' + alpha + ')';
+        ctx.lineWidth = isHighlighted ? 1.5 : 0.7;
+        var mx = (a.x + b.x) / 2 + (b.y - a.y) * 0.18;
+        var my = (a.y + b.y) / 2 - (b.x - a.x) * 0.18;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.quadraticCurveTo(mx, my, b.x, b.y);
+        ctx.stroke();
+      }
+    }
+
+    function drawParticles(t) {
+      for (var i = 0; i < PARTICLES.length; i++) {
+        var p = PARTICLES[i];
+        p.t += p.speed * p.dir;
+        if (p.t > 1) p.t = 0;
+        if (p.t < 0) p.t = 1;
+        var e = EDGES[p.edgeIdx];
+        var a = CITIES[e[0]];
+        var b = CITIES[e[1]];
+        var isHighlighted = hoveredCity >= 0 && (e[0] === hoveredCity || e[1] === hoveredCity);
+        var pt = bezierPoint(a.x, a.y, b.x, b.y, p.t);
+        var alpha = isHighlighted ? 0.95 : 0.55;
+        var size = isHighlighted ? 2.2 : 1.5;
+        ctx.beginPath();
+        ctx.arc(pt[0], pt[1], size, 0, Math.PI * 2);
+        ctx.fillStyle = isHighlighted
+          ? 'rgba(0, 240, 180, ' + alpha + ')'
+          : 'rgba(0, 200, 160, ' + alpha + ')';
+        ctx.fill();
+      }
+    }
+
+    function drawCities() {
+      for (var i = 0; i < CITIES.length; i++) {
+        var c = CITIES[i];
+        var isHovered = i === hoveredCity;
+        var showLabel = c.always || c.isHome || isHovered;
+
+        if (c.isHome) {
+          var grd = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, 28);
+          grd.addColorStop(0, 'rgba(0, 230, 170, 0.35)');
+          grd.addColorStop(1, 'rgba(0, 230, 170, 0)');
+          ctx.beginPath();
+          ctx.arc(c.x, c.y, 28, 0, Math.PI * 2);
+          ctx.fillStyle = grd;
+          ctx.fill();
+        }
+
+        if (isHovered && !c.isHome) {
+          var hgrd = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, 20);
+          hgrd.addColorStop(0, 'rgba(0, 210, 160, 0.25)');
+          hgrd.addColorStop(1, 'rgba(0, 210, 160, 0)');
+          ctx.beginPath();
+          ctx.arc(c.x, c.y, 20, 0, Math.PI * 2);
+          ctx.fillStyle = hgrd;
+          ctx.fill();
+        }
+
+        var r = c.r * (isHovered ? 1.4 : 1);
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, r, 0, Math.PI * 2);
+        if (c.isHome) {
+          ctx.fillStyle = 'rgba(0, 230, 170, 1)';
+        } else if (isHovered) {
+          ctx.fillStyle = 'rgba(0, 210, 160, 0.95)';
+        } else {
+          ctx.fillStyle = 'rgba(0, 180, 140, 0.75)';
+        }
+        ctx.fill();
+
+        if (showLabel) {
+          ctx.font = (c.isHome ? 'bold ' : '') + '10px Inter, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillStyle = c.isHome ? 'rgba(0, 240, 180, 1)' : 'rgba(200, 240, 230, 0.9)';
+          ctx.shadowColor = '#000';
+          ctx.shadowBlur = 4;
+          ctx.fillText(c.name, c.x, c.y - r - 5);
+          ctx.shadowBlur = 0;
+        }
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      var t = Date.now() * 0.001;
+      drawGrid();
+      drawEdges(t);
+      drawParticles(t);
+      drawCities();
+      requestAnimationFrame(draw);
+    }
+
+    function getHoveredCity(mx, my) {
+      var threshold = 16;
+      for (var i = 0; i < CITIES.length; i++) {
+        var dx = CITIES[i].x - mx;
+        var dy = CITIES[i].y - my;
+        if (Math.sqrt(dx * dx + dy * dy) < threshold) return i;
+      }
+      return -1;
+    }
+
+    canvas.addEventListener('mousemove', function(e) {
+      var rect = canvas.getBoundingClientRect();
+      var scaleX = canvas.width / rect.width;
+      var scaleY = canvas.height / rect.height;
+      var mx = (e.clientX - rect.left) * scaleX;
+      var my = (e.clientY - rect.top) * scaleY;
+      hoveredCity = getHoveredCity(mx, my);
+      canvas.style.cursor = hoveredCity >= 0 ? 'pointer' : 'default';
+    });
+
+    canvas.addEventListener('mouseleave', function() {
+      hoveredCity = -1;
+    });
+
+    window.addEventListener('resize', function() {
+      resize();
+    });
+
+    window.addEventListener('load', function() {
+      resize();
+      draw();
+    });
+  </script>
+</body>
+</html>
