@@ -57,14 +57,14 @@ Named researcher on a Government Office for Science grant; also worked with the 
 
 ## Research Grants with Policy Partners
 
-| Period | Amount | Partner | Focus |
-|--------|--------|---------|-------|
-| 2025–2026 | £190,004 | Natural England / DEFRA | Funded research project |
-| 2024–2028 | £122,828 | LV= / Allianz Insurance | Funded research project |
-| 2023 | £22,766 | Department for Transport | AI to detect EV chargers |
-| 2021–2023 | £134,074 | ESRC / ADR UK | No. 10 Data Science Fellowship |
-| 2020–2021 | £265,561 | InnovateUK / City Science | Urban data science |
-| 2017 | — | Government Office for Science | Data science for government |
+| Period | Partner | Focus |
+|--------|---------|-------|
+| 2025–2026 | Natural England / DEFRA | Funded research project |
+| 2024–2028 | LV= / Allianz Insurance | Funded research project |
+| 2023 | Department for Transport | AI to detect EV chargers |
+| 2021–2023 | ESRC / ADR UK | No. 10 Data Science Fellowship |
+| 2020–2021 | InnovateUK / City Science | Urban data science |
+| 2017 | Government Office for Science | Data science for government |
 
 ---
 
