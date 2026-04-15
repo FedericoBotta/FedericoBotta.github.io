@@ -97,11 +97,11 @@ I actively seek collaborations with organisations outside academia — particula
 
 ## Current Projects
 
-- **Bus transport accessibility across England** — Using national bus timetable data (BODS) to map how travel time variability affects access to healthcare and other essential services, with direct relevance to transport equity policy. *(with Zihao Chen; EPSRC CDT in Environmental Intelligence)*
-- **Transport equity and journey costs** — Analysing the affordability and cost of public transport journeys, in collaboration with the Department for Transport's Analysis Directorate.
-- **Greenspace and recreational value** — Quantifying the recreational and wellbeing value of landscape features across England, in partnership with Natural England and DEFRA. *(with Tatiana Cantillo-Garcia; 2024–2027)*
+- **Bus transport accessibility across England** — Using national bus timetable data (BODS) to map how travel time variability affects access to healthcare and other essential services, with direct relevance to transport equity policy.
+- **Greenspace and recreational value** — Quantifying the recreational and wellbeing value of landscape features across England.
 - **Urban vibrancy and social sensing** — Ongoing work using mobile phone data, app usage data, and online traces to understand how different social groups experience and navigate urban environments.
 - **Knowledge exchange with RAMM, Exeter** — Applying data science to visitor behaviour at the Royal Albert Memorial Museum to better understand and anticipate audience patterns.
+- **Transport equity and journey costs** — Analysing the affordability and cost of public transport journeys.
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
