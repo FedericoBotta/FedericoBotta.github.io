@@ -11,15 +11,15 @@ For citation counts and a full list, see my <a href="https://scholar.google.co.u
 
 ---
 
-<div class="pub-filter" id="pub-filter">
-  <button class="filter-btn active" data-year="all">All</button>
-  <button class="filter-btn" data-year="2025">2025</button>
-  <button class="filter-btn" data-year="2024">2024</button>
-  <button class="filter-btn" data-year="2023">2023</button>
-  <button class="filter-btn" data-year="2022">2022</button>
-  <button class="filter-btn" data-year="2021">2021</button>
-  <button class="filter-btn" data-year="2020">2020</button>
-  <button class="filter-btn" data-year="2015-2019">2015–2019</button>
+<div class="pub-filter" id="pub-filter" role="group" aria-label="Filter publications by year">
+  <button class="filter-btn active" data-year="all" aria-pressed="true">All</button>
+  <button class="filter-btn" data-year="2025" aria-pressed="false">2025</button>
+  <button class="filter-btn" data-year="2024" aria-pressed="false">2024</button>
+  <button class="filter-btn" data-year="2023" aria-pressed="false">2023</button>
+  <button class="filter-btn" data-year="2022" aria-pressed="false">2022</button>
+  <button class="filter-btn" data-year="2021" aria-pressed="false">2021</button>
+  <button class="filter-btn" data-year="2020" aria-pressed="false">2020</button>
+  <button class="filter-btn" data-year="2015-2019" aria-pressed="false">2015–2019</button>
 </div>
 
 <div id="publications-list">
@@ -29,6 +29,7 @@ For citation counts and a full list, see my <a href="https://scholar.google.co.u
 <span class="pub-title">The geography of inequalities in access to healthcare across England: the role of bus travel time variability</span><br>
 Chen, Z., &amp; Botta, F.<br>
 <span class="pub-venue">Journal of Physics: Complexity</span>
+<a href="https://doi.org/10.5281/zenodo.15459184" class="pub-badge" target="_blank" rel="noopener">data</a>
 </div>
 
 <div class="publication-item" data-year="2025">
@@ -36,6 +37,7 @@ Chen, Z., &amp; Botta, F.<br>
 <span class="pub-title">Packaging code and data for reproducible research: A case study of journey time statistics</span><br>
 Botta, F., Lovelace, R., Gilbert, L., &amp; Turrell, A.<br>
 <span class="pub-venue">Environment and Planning B: Urban Analytics and City Science</span>
+<a href="https://github.com/FedericoBotta/dft-jts" class="pub-badge" target="_blank" rel="noopener">code</a>
 </div>
 
 <div class="publication-item pub-highlight" data-year="2025">
@@ -169,8 +171,9 @@ document.addEventListener('DOMContentLoaded', function() {
       var year = this.getAttribute('data-year');
 
       // Update active button
-      filterBtns.forEach(function(b) { b.classList.remove('active'); });
+      filterBtns.forEach(function(b) { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
       this.classList.add('active');
+      this.setAttribute('aria-pressed', 'true');
 
       // Show/hide publications
       pubItems.forEach(function(item) {

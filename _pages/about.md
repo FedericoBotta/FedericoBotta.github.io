@@ -42,27 +42,27 @@ hero_tags:
 
 <div class="stats-grid">
   <div class="stat-item">
-    <span class="stat-number" data-target="19">0</span>
+    <span class="stat-number" data-target="19">19</span>
     <span class="stat-label">peer-reviewed publications</span>
   </div>
   <div class="stat-item">
-    <span class="stat-number" data-target="0.8" data-decimal="true">0</span>
+    <span class="stat-number" data-target="0.8" data-decimal="true">0.8</span>
     <span class="stat-label">£M+ in research grants</span>
   </div>
   <div class="stat-item">
-    <span class="stat-number" data-target="4">0</span>
+    <span class="stat-number" data-target="4">4</span>
     <span class="stat-label">Parliamentary Select Committees</span>
   </div>
   <div class="stat-item">
-    <span class="stat-number" data-target="8">0</span>
+    <span class="stat-number" data-target="8">8</span>
     <span class="stat-label">PhD students</span>
   </div>
   <div class="stat-item">
-    <span class="stat-number" data-target="15">0</span>
+    <span class="stat-number" data-target="15">15</span>
     <span class="stat-label">countries with media coverage</span>
   </div>
   <div class="stat-item">
-    <span class="stat-number" data-target="3">0</span>
+    <span class="stat-number" data-target="3">3</span>
     <span class="stat-label">postdoctoral researchers</span>
   </div>
 </div>
@@ -97,7 +97,11 @@ I actively seek collaborations with organisations outside academia — particula
 
 ## Current Projects
 
-I am currently involved in a number of funded research projects in collaboration with government and industry partners, focusing on transport equity, urban environments, AI applications, and access to natural spaces. I also have an ongoing knowledge exchange project with the **Royal Albert Memorial Museum (RAMM)** in Exeter, using data science to better understand and predict visitor patterns.
+- **Bus transport accessibility across England** — Using national bus timetable data (BODS) to map how travel time variability affects access to healthcare and other essential services, with direct relevance to transport equity policy. *(with Zihao Chen; EPSRC CDT in Environmental Intelligence)*
+- **Transport equity and journey costs** — Analysing the affordability and cost of public transport journeys, in collaboration with the Department for Transport's Analysis Directorate.
+- **Greenspace and recreational value** — Quantifying the recreational and wellbeing value of landscape features across England, in partnership with Natural England and DEFRA. *(with Tatiana Cantillo-Garcia; 2024–2027)*
+- **Urban vibrancy and social sensing** — Ongoing work using mobile phone data, app usage data, and online traces to understand how different social groups experience and navigate urban environments.
+- **Knowledge exchange with RAMM, Exeter** — Applying data science to visitor behaviour at the Royal Albert Memorial Museum to better understand and anticipate audience patterns.
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

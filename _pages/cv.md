@@ -121,12 +121,24 @@ Reviewer for over 40 journals including *Nature Human Behaviour*, *Environment a
 
 ## Teaching
 
-Extensive teaching experience at undergraduate, postgraduate (MSc), MBA, and executive education levels in data science, machine learning, and quantitative methods.
+Extensive teaching experience at undergraduate, postgraduate (MSc), MBA, and executive education levels in data science, machine learning, and quantitative methods. Currently **Programme Lead for the MSc in AI for the Environment** at Exeter (2025–present).
 
 **Modules at Exeter:**
-- Social Networks & Text Analysis (MSc, 2023–present) — module design and delivery
-- Artificial Intelligence and its Applications (BSc, 2020–present)
-- Machine Learning and Data Science (BSc, 2020–present)
+- Social Networks & Text Analysis (MSc, 2023–present) — module lead; design and delivery
+- Artificial Intelligence and its Applications (BSc Year 2, 2020–present)
+- Machine Learning and Data Science (BSc Year 3, 2020–present)
+
+**Previous teaching (University of Warwick, 2016–2019):**
+- Data Science for Social Scientists (MSc/MBA) — design and delivery
+- Quantitative Methods (MBA, executive education)
+
+---
+
+## Prospective PhD Students
+
+I welcome enquiries from prospective PhD students interested in working at the intersection of **data science, urban analytics, and social inequality**. Current areas of particular interest include public transport accessibility and equity, urban vibrancy and social sensing, human mobility modelling, and AI applications in environmental and social contexts.
+
+Funding opportunities include EPSRC and ESRC Doctoral Training Partnerships (through the University of Exeter), as well as project-specific studentships — see the [University's postgraduate research pages](https://www.exeter.ac.uk/study/postgraduate/research/) for current opportunities. If you have a strong quantitative background and are motivated by research with real-world policy impact, feel free to [get in touch](mailto:f.botta@exeter.ac.uk) with a brief description of your interests.
 
 ---
 
