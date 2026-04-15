@@ -134,14 +134,6 @@ Extensive teaching experience at undergraduate, postgraduate (MSc), MBA, and exe
 
 ---
 
-## Prospective PhD Students
-
-I welcome enquiries from prospective PhD students interested in working at the intersection of **data science, urban analytics, and social inequality**. Current areas of particular interest include public transport accessibility and equity, urban vibrancy and social sensing, human mobility modelling, and AI applications in environmental and social contexts.
-
-Funding opportunities include EPSRC and ESRC Doctoral Training Partnerships (through the University of Exeter), as well as project-specific studentships — see the [University's postgraduate research pages](https://www.exeter.ac.uk/study/postgraduate/research/) for current opportunities. If you have a strong quantitative background and are motivated by research with real-world policy impact, feel free to [get in touch](mailto:f.botta@exeter.ac.uk) with a brief description of your interests.
-
----
-
 ## Public Engagement
 
 - **Databeers Exeter** — founder and co-organiser, public engagement events on data science
