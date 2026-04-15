@@ -601,7 +601,25 @@ hr {
   color: var(--text-muted);
   transition: all .15s;
   &:hover  { background: var(--green-mid); color: var(--white); border-color: var(--green-mid); }
+  &:focus-visible { outline: 2px solid var(--green-mid); outline-offset: 2px; }
   &.active { background: var(--green-darkest); color: var(--white); border-color: var(--green-darkest); }
+}
+
+.pub-badge {
+  display: inline-block;
+  margin-top: .45em;
+  margin-right: .3em;
+  padding: .1em .55em;
+  font-size: .72em;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  border-radius: 3px;
+  border: 1px solid var(--green-mid);
+  color: var(--green-forest);
+  text-decoration: none;
+  transition: background .15s, color .15s;
+  &:hover { background: var(--green-mid); color: var(--white); text-decoration: none; }
 }
 
 /* ── Buttons ─────────────────────────────────────────────────── */
