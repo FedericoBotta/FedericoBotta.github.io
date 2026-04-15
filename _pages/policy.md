@@ -23,22 +23,16 @@ I have given evidence or submitted research to four UK Parliamentary Select Comm
 ## Government Department Collaborations
 
 **Department for Transport**
-Working with the Analysis Directorate on a project investigating the affordability and cost of journeys by public transport — a priority area for the Department. This research directly informs policy on transport equity and access. I have also participated in the Department's **AI Strategy Roundtable** (2023) and presented to the **Data Science in Transport Board** (2023).
+I have worked with the Department for Transport on projects related to transport accessibility and affordability, as well as on the broader use of data and AI.
 
 **10 Downing Street & Office for National Statistics**
-As an **ESRC No. 10 Data Science Fellow** (2021–2023), I was embedded with the data science team at 10 Downing Street and the ONS Data Science Campus. I developed a case study demonstrating how public government datasets can be made more easily available and usable — work that directly shaped data-sharing practice across government.
+As an **ESRC No. 10 Data Science Fellow** (2021–2023), I was embedded with the data science team at 10 Downing Street and the ONS Data Science Campus.
 
 **Natural England & DEFRA**
 I am currently collaborating with Natural England and DEFRA on a funded research project (2025–2026).
 
-**Foreign, Commonwealth and Development Office**
-Based on my research demonstrating how mobile phone and social media data can be used to estimate where people are, the FCDO developed a pilot project aimed at improving estimates of the number of British nationals living abroad — a metric with direct relevance to emergency planning and consular services.
-
 **Department for Digital, Culture, Media and Sport**
 Developed novel methodology for generating early-warning indicators of the performance of museums and galleries sponsored by the Department, enabling more responsive and evidence-based funding decisions.
-
-**Government Office for Science & Cabinet Office**
-Named researcher on a Government Office for Science grant; also worked with the Cabinet Office on data science applications.
 
 ---
 
