@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collins et al. (2024) — Spatiotemporal Gender Differences in Urban Vibrancy [v2 — city map hero]</title>
+  <link rel="stylesheet" href="https://federicobotta.github.io/assets/css/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap">
+  <style>
+    /* ============================================================
+       PAPER EXPLAINER — Collins, Di Clemente, Gutiérrez-Roig & Botta
+       EPB: Urban Analytics and City Science, 2024
+       Self-contained HTML, no Jekyll
+       ============================================================ */
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --bg-dark:    #0d1117;
+      --bg-dark2:   #011818;
+      --bg-light:   #f8fafc;
+      --male:       #60a5fa;
+      --female:     #fb923c;
+      --neutral:    #8b5cf6;
+      --teal:       #10b981;
+      --red:        #ef4444;
+      --text-dark:  #1a1f2e;
+      --text-muted: #6b7a99;
+      --white:      #ffffff;
+      --border:     #e2e8f0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* ---- Fixed preview badge ---- */
+    .preview-badge {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 9999;
+      background: var(--neutral);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.35em 0.9em;
+      border-radius: 100px;
+      box-shadow: 0 2px 16px rgba(139,92,246,0.45);
+      pointer-events: none;
+    }
+
+    /* ============================================================
+       SECTION 1 — HERO
+       ============================================================ */
+    .hero {
+      position: relative;
+      min-height: 540px;
+      background: var(--bg-dark);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 4.5rem;
+    }
+
+    #hero-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: block;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 65%;
+      background: linear-gradient(to top, rgba(13,17,23,0.97) 0%, rgba(13,17,23,0.75) 55%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 0 1.5rem;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--neutral);
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      line-height: 1.15;
+      color: #fff;
+      margin: 0 0 1.1rem;
+    }
+
+    .hero-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 1rem;
+    }
+
+    .hero-authors {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.38);
+      font-style: italic;
+    }
+
+    /* Legend dots */
+    .hero-legend {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      margin-top: 1.8rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.05em;
+    }
+
+    .legend-dot {
+      width: 10px; height: 10px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    /* ============================================================
+       SECTION 2 — Reading the city
+       ============================================================ */
+    .section-white {
+      background: #fff;
+      padding: 5rem 1.5rem;
+    }
+
+    .section-grey {
+      background: var(--bg-light);
+      padding: 5rem 1.5rem;
+    }
+
+    .section-dark {
+      background: var(--bg-dark);
+      padding: 5rem 1.5rem;
+    }
+
+    .section-dark2 {
+      background: var(--bg-dark2);
+      padding: 5rem 1.5rem;
+    }
+
+    .container {
+      max-width: 1020px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--neutral);
+      margin-bottom: 0.6rem;
+    }
+
+    .section-label-light {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--neutral);
+      opacity: 0.8;
+      margin-bottom: 0.6rem;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.7rem, 4vw, 2.6rem);
+      line-height: 1.2;
+      color: var(--text-dark);
+      margin: 0 0 1.2rem;
+    }
+
+    .section-title-light {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.7rem, 4vw, 2.6rem);
+      line-height: 1.2;
+      color: #fff;
+      margin: 0 0 1.2rem;
+    }
+
+    .section-intro {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin-bottom: 3rem;
+    }
+
+    .section-intro-light {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.55);
+      max-width: 680px;
+      margin-bottom: 3rem;
+    }
+
+    /* Explainer cards — 3-col */
+    .cards-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    @media (max-width: 720px) {
+      .cards-3 { grid-template-columns: 1fr; }
+    }
+
+    .info-card {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.8rem 1.6rem;
+    }
+
+    .info-card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .info-card-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--neutral);
+      margin-bottom: 0.5rem;
+    }
+
+    .info-card-text {
+      font-size: 0.93rem;
+      line-height: 1.65;
+      color: #374151;
+    }
+
+    /* City chips + italy map */
+    .cities-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .city-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .chip {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 0.35em 1em;
+      border-radius: 100px;
+      border: 1.5px solid var(--border);
+      color: #374151;
+      background: #fff;
+      cursor: default;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+
+    .chip:hover {
+      border-color: var(--neutral);
+      color: var(--neutral);
+      background: rgba(139,92,246,0.06);
+    }
+
+    .italy-wrap {
+      flex-shrink: 0;
+    }
+
+    /* ============================================================
+       SECTION 3 — Line chart
+       ============================================================ */
+    .chart-wrap {
+      position: relative;
+      margin: 0 auto 1.5rem;
+      max-width: 760px;
+    }
+
+    #activity-chart {
+      width: 100%;
+      height: 260px;
+      display: block;
+    }
+
+    .chart-legend {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      margin-top: 0.8rem;
+    }
+
+    .chart-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.65);
+    }
+
+    .chart-legend-line {
+      width: 28px; height: 3px;
+      border-radius: 2px;
+    }
+
+    .pull-quote {
+      max-width: 680px;
+      margin: 2.5rem auto 0;
+      text-align: center;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.25rem;
+      font-style: italic;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.75);
+      border-top: 1px solid rgba(255,255,255,0.12);
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      padding: 1.5rem 1rem;
+    }
+
+    /* ============================================================
+       SECTION 4 — Headline finding
+       ============================================================ */
+    .finding-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    @media (max-width: 700px) {
+      .finding-grid { grid-template-columns: 1fr; }
+    }
+
+    .finding-card {
+      border-radius: 18px;
+      padding: 2.2rem 2rem;
+      border: 2.5px solid transparent;
+      background: #fff;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .finding-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .finding-card.card-red {
+      border-color: var(--red);
+      transform: translateX(-30px);
+    }
+
+    .finding-card.card-red.visible {
+      transform: translateX(0);
+    }
+
+    .finding-card.card-teal {
+      border-color: var(--teal);
+      transform: translateX(30px);
+    }
+
+    .finding-card.card-teal.visible {
+      transform: translateX(0);
+    }
+
+    .finding-icon {
+      font-size: 2.4rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .finding-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      color: var(--text-dark);
+      margin: 0 0 0.3rem;
+    }
+
+    .finding-subtitle {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .arrow-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      padding: 0.3em 0.9em;
+      border-radius: 100px;
+      margin-bottom: 1rem;
+    }
+
+    .arrow-badge.up {
+      background: rgba(239,68,68,0.1);
+      color: var(--red);
+    }
+
+    .arrow-badge.down {
+      background: rgba(16,185,129,0.1);
+      color: var(--teal);
+    }
+
+    .finding-text {
+      font-size: 0.93rem;
+      line-height: 1.7;
+      color: #374151;
+      margin-bottom: 1.2rem;
+    }
+
+    .category-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .cat-pill {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      padding: 0.25em 0.75em;
+      border-radius: 6px;
+      background: rgba(239,68,68,0.08);
+      color: var(--red);
+    }
+
+    .cat-pill.teal {
+      background: rgba(16,185,129,0.08);
+      color: var(--teal);
+    }
+
+    .finding-note {
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: #374151;
+      font-style: italic;
+      padding: 1.5rem 1rem;
+      border-left: 4px solid var(--neutral);
+      border-right: 4px solid var(--neutral);
+      border-radius: 4px;
+      background: rgba(139,92,246,0.04);
+    }
+
+    /* ============================================================
+       SECTION 5 — Spatial spillovers
+       ============================================================ */
+    .spillover-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    #spillover-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 56px);
+      grid-template-rows: repeat(5, 56px);
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .sp-cell {
+      border-radius: 8px;
+      background: #e8edf5;
+      transition: background 0.35s ease, box-shadow 0.35s ease, transform 0.25s ease;
+    }
+
+    .sp-cell.center {
+      background: var(--neutral);
+      box-shadow: 0 0 0 3px rgba(139,92,246,0.35);
+    }
+
+    .sp-cell.neighbor {
+      background: rgba(139,92,246,0.22);
+    }
+
+    .sp-cell.pulse-anim {
+      animation: cellPulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes cellPulse {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(139,92,246,0.35); }
+      50%       { box-shadow: 0 0 0 8px rgba(139,92,246,0.15); }
+    }
+
+    .spillover-label {
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: #374151;
+      text-align: center;
+      max-width: 480px;
+    }
+
+    .spillover-hint {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--neutral);
+      opacity: 0.8;
+    }
+
+    .stat-highlight {
+      display: inline-block;
+      background: rgba(139,92,246,0.08);
+      border: 1px solid rgba(139,92,246,0.2);
+      border-radius: 8px;
+      padding: 0.8rem 1.4rem;
+      font-size: 0.88rem;
+      color: #374151;
+      margin-top: 0.5rem;
+      text-align: center;
+      max-width: 480px;
+    }
+
+    .stat-highlight strong {
+      color: var(--neutral);
+    }
+
+    /* ============================================================
+       SECTION 6 — Persistent pattern
+       ============================================================ */
+    .pattern-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      max-width: 740px;
+      margin: 0 auto;
+    }
+
+    .pattern-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.4rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 1.6rem 1.8rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .pattern-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .pattern-card:nth-child(2) { transition-delay: 0.12s; }
+    .pattern-card:nth-child(3) { transition-delay: 0.24s; }
+
+    .pattern-icon {
+      font-size: 1.8rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .pattern-text {
+      font-size: 0.97rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.72);
+    }
+
+    .pattern-text strong {
+      color: #fff;
+    }
+
+    /* ============================================================
+       SECTION 7 — Why this matters + citation
+       ============================================================ */
+    .matter-text {
+      font-size: 1.08rem;
+      line-height: 1.8;
+      color: #374151;
+      max-width: 720px;
+      margin-bottom: 3rem;
+    }
+
+    .citation-block {
+      max-width: 720px;
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--neutral);
+      border-radius: 0 12px 12px 0;
+      padding: 1.6rem 2rem;
+    }
+
+    .citation-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--neutral);
+      margin-bottom: 0.7rem;
+    }
+
+    .citation-text {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: #374151;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .citation-doi {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--neutral);
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(139,92,246,0.4);
+      padding-bottom: 1px;
+      transition: color 0.2s;
+    }
+
+    .citation-doi:hover { color: #6d28d9; }
+
+    /* ============================================================
+       SCROLL ANIMATION BASE
+       ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ============================================================
+       CHART ANIMATION (SVG draw)
+       ============================================================ */
+    .chart-path-male,
+    .chart-path-female {
+      stroke-dasharray: 2000;
+      stroke-dashoffset: 2000;
+      transition: stroke-dashoffset 1.8s ease;
+    }
+
+    .chart-area-gap {
+      opacity: 0;
+      transition: opacity 1.2s ease 0.6s;
+    }
+
+    .chart-animated .chart-path-male,
+    .chart-animated .chart-path-female {
+      stroke-dashoffset: 0;
+    }
+
+    .chart-animated .chart-area-gap {
+      opacity: 1;
+    }
+
+    /* ============================================================
+       ITALY SVG
+       ============================================================ */
+    .italy-svg-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    /* responsive tweaks */
+    @media (max-width: 600px) {
+      .section-white, .section-grey, .section-dark, .section-dark2 {
+        padding: 3.5rem 1.2rem;
+      }
+      .hero { min-height: 480px; padding-bottom: 3.5rem; }
+      .hero-legend { flex-wrap: wrap; gap: 0.8rem; }
+      .cities-row { flex-direction: column; gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Fixed badge -->
+<div class="preview-badge">Research Explainer Preview</div>
+
+<!-- ============================================================
+     SECTION 1 — HERO
+     ============================================================ -->
+<section class="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">New research · 2024</p>
+    <h1 class="hero-title">Do men and women<br>experience cities the same way?</h1>
+    <p class="hero-subtitle">Urban vibrancy &nbsp;·&nbsp; 7 Italian cities &nbsp;·&nbsp; Mobile phone data</p>
+    <p class="hero-authors">Collins, Di Clemente, Gutiérrez-Roig &amp; Botta &nbsp;·&nbsp; Environment and Planning B: Urban Analytics and City Science &nbsp;·&nbsp; 2024</p>
+  </div>
+
+  <div class="hero-legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#60a5fa;"></div>
+      More male activity
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#fb923c;"></div>
+      More female activity
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#8b5cf6;"></div>
+      Roughly equal
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 2 — Reading the city through mobile phones
+     ============================================================ -->
+<section class="section-white">
+  <div class="container">
+    <p class="section-label reveal">The data</p>
+    <h2 class="section-title reveal">Reading the city through mobile phones</h2>
+    <p class="section-intro reveal">Modern cities generate continuous streams of digital trace data. Call Detail Records — logged every time someone makes or receives a phone call — let researchers map human presence across an entire city at 15-minute resolution. This study uses that data to ask: do men and women move through and inhabit urban spaces differently?</p>
+
+    <div class="cards-3">
+      <div class="info-card reveal">
+        <span class="info-card-icon">📱</span>
+        <div class="info-card-title">The data</div>
+        <p class="info-card-text">Call Detail Records from Telecom Italia — Italy's largest mobile operator. ~2 months of activity (March–April 2015), captured at 15-minute intervals across 7 cities.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-1">
+        <span class="info-card-icon">🗺️</span>
+        <div class="info-card-title">The method</div>
+        <p class="info-card-text">Each city is divided into a spatial grid. Male and female phone activity is counted per cell, per time window. Results validated against census data: Kendall τ = 0.55–0.72.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-2">
+        <span class="info-card-icon">📐</span>
+        <div class="info-card-title">The measure</div>
+        <p class="info-card-text">Gender difference Δ = Male activity − Female activity. Positive means more men present; negative means more women; zero means equal use.</p>
+      </div>
+    </div>
+
+    <div class="cities-row reveal">
+      <div>
+        <p style="font-size:0.78rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.8rem;">7 cities studied</p>
+        <div class="city-chips">
+          <span class="chip">Milan</span>
+          <span class="chip">Rome</span>
+          <span class="chip">Turin</span>
+          <span class="chip">Naples</span>
+          <span class="chip">Venice</span>
+          <span class="chip">Palermo</span>
+          <span class="chip">Bari</span>
+        </div>
+      </div>
+      <div class="italy-wrap">
+        <!-- Stylised Italy silhouette SVG with 7 city dots -->
+        <svg viewBox="0 0 160 270" width="130" height="220" xmlns="http://www.w3.org/2000/svg" aria-label="Map of Italy showing 7 studied cities">
+          <!-- Italy outline — approximate stylised shape -->
+          <path d="
+            M 72,8
+            C 65,8 55,12 50,18
+            C 44,25 42,32 40,40
+            C 37,50 34,58 33,66
+            C 31,77 31,86 33,95
+            C 35,104 39,110 40,118
+            C 41,126 40,130 38,136
+            C 35,144 30,150 27,157
+            C 24,164 23,172 25,178
+            C 27,184 33,188 38,192
+            C 43,196 46,198 48,203
+            C 51,210 50,218 52,224
+            C 54,230 58,234 62,237
+            C 66,240 70,241 74,240
+            C 79,239 84,236 87,232
+            C 90,228 91,223 93,219
+            C 96,213 100,208 105,205
+            C 112,202 118,203 122,199
+            C 126,195 126,188 124,182
+            C 122,176 117,172 115,166
+            C 113,160 115,154 118,148
+            C 122,142 128,138 131,132
+            C 135,124 134,115 130,108
+            C 126,101 119,97 117,90
+            C 115,82 118,74 117,66
+            C 116,58 112,51 108,45
+            C 104,39 98,35 92,30
+            C 86,24 80,20 74,14
+            C 73,11 73,8 72,8 Z
+            M 48,203 C 44,208 36,214 32,218 C 28,222 27,228 30,232 C 34,236 40,236 44,234 C 48,232 50,228 52,224
+            M 93,219 C 97,224 104,232 110,238 C 116,244 122,248 128,248 C 134,248 140,244 142,238 C 144,232 141,225 137,220 C 133,216 128,214 124,212 C 118,209 112,206 105,205
+          " fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+          <!-- City dots + labels -->
+          <!-- Milan ~(68, 38) -->
+          <circle cx="68" cy="38" r="5" fill="var(--neutral)" opacity="0.9"/>
+          <text x="76" y="42" font-family="Inter,sans-serif" font-size="8.5" fill="#6b7a99" font-weight="600">Milan</text>
+
+          <!-- Turin ~(52, 45) -->
+          <circle cx="52" cy="48" r="5" fill="var(--neutral)" opacity="0.9"/>
+          <text x="36" y="46" font-family="Inter,sans-serif" font-size="8.5" fill="#6b7a99" font-weight="600">Turin</text>
+
+          <!-- Venice ~(88, 40) -->
+          <circle cx="90" cy="42" r="5" fill="var(--neutral)" opacity="0.9"/>
+          <text x="96" y="46" font-family="Inter,sans-serif" font-size="8.5" fill="#6b7a99" font-weight="600">Venice</text>
+
+          <!-- Rome ~(67, 140) -->
+          <circle cx="67" cy="140" r="5" fill="var(--neutral)" opacity="0.9"/>
+          <text x="74" y="144" font-family="Inter,sans-serif" font-size="8.5" fill="#6b7a99" font-weight="600">Rome</text>
+
+          <!-- Naples ~(72, 182) -->
+          <circle cx="72" cy="182" r="5" fill="var(--neutral)" opacity="0.9"/>
+          <text x="78" y="186" font-family="Inter,sans-serif" font-size="8.5" fill="#6b7a99" font-weight="600">Naples</text>
+
+          <!-- Palermo ~(62, 248) -->
+          <circle cx="62" cy="250" r="5" fill="var(--neutral)" opacity="0.9"/>
+          <text x="46" y="262" font-family="Inter,sans-serif" font-size="8.5" fill="#6b7a99" font-weight="600">Palermo</text>
+
+          <!-- Bari ~(110, 192) -->
+          <circle cx="110" cy="192" r="5" fill="var(--neutral)" opacity="0.9"/>
+          <text x="115" y="196" font-family="Inter,sans-serif" font-size="8.5" fill="#6b7a99" font-weight="600">Bari</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 3 — Urban vibrancy has a gender
+     ============================================================ -->
+<section class="section-dark2">
+  <div class="container">
+    <p class="section-label-light reveal">Key findings</p>
+    <h2 class="section-title-light reveal">Urban vibrancy has a gender</h2>
+    <p class="section-intro-light reveal">Across all seven cities, male and female activity patterns track broadly similar rhythms — but they diverge. The gap is not uniform across the day, and — critically — it is not uniform across space. Some parts of a city are consistently more male-dominated; others, more female.</p>
+
+    <div class="chart-wrap reveal" id="chart-container">
+      <svg id="activity-chart" viewBox="0 0 760 260" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        <!-- Grid lines -->
+        <line x1="50" y1="20" x2="50" y2="220" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <line x1="50" y1="220" x2="740" y2="220" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <line x1="50" y1="150" x2="740" y2="150" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4,4"/>
+        <line x1="50" y1="85"  x2="740" y2="85"  stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4,4"/>
+
+        <!-- X-axis labels -->
+        <text x="50"  y="238" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle">00:00</text>
+        <text x="166" y="238" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle">06:00</text>
+        <text x="282" y="238" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle">09:00</text>
+        <text x="397" y="238" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle">12:00</text>
+        <text x="513" y="238" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle">17:00</text>
+        <text x="628" y="238" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle">21:00</text>
+        <text x="740" y="238" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle">24:00</text>
+
+        <!-- Gap shaded area -->
+        <!-- Area between male (above) and female (below) at key divergence points -->
+        <path class="chart-area-gap" d="
+          M 50,200
+          C 80,195 130,185 166,178
+          C 200,170 230,155 265,138
+          C 282,130 295,115 320,100
+          C 340,88 360,80 397,72
+          C 430,65 460,68 490,75
+          C 513,80 530,88 555,98
+          C 580,108 600,115 628,122
+          C 660,130 700,140 740,148
+          L 740,165
+          C 700,158 660,148 628,140
+          C 600,133 580,126 555,116
+          C 530,106 513,98 490,92
+          C 460,84 430,81 397,87
+          C 360,95 340,103 320,115
+          C 295,128 282,143 265,152
+          C 230,168 200,182 166,190
+          C 130,198 80,205 50,208
+          Z
+        " fill="rgba(139,92,246,0.18)"/>
+
+        <!-- Male curve -->
+        <path class="chart-path-male" d="
+          M 50,200
+          C 80,195 130,185 166,178
+          C 200,170 230,155 265,138
+          C 282,130 295,115 320,100
+          C 340,88 360,80 397,72
+          C 430,65 460,68 490,75
+          C 513,80 530,88 555,98
+          C 580,108 600,115 628,122
+          C 660,130 700,140 740,148
+        " fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- Female curve -->
+        <path class="chart-path-female" d="
+          M 50,208
+          C 80,205 130,198 166,190
+          C 200,182 230,168 265,152
+          C 282,143 295,128 320,115
+          C 340,103 360,95 397,87
+          C 430,81 460,84 490,92
+          C 513,98 530,106 555,116
+          C 580,126 600,133 628,140
+          C 660,148 700,158 740,165
+        " fill="none" stroke="#fb923c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- Gap label -->
+        <text x="400" y="54" font-family="Inter,sans-serif" font-size="9" fill="rgba(139,92,246,0.9)" text-anchor="middle" font-weight="600">gender gap</text>
+        <line x1="400" y1="58" x2="400" y2="78" stroke="rgba(139,92,246,0.5)" stroke-width="1" stroke-dasharray="3,2"/>
+
+        <!-- Chart title -->
+        <text x="395" y="12" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,0.45)" text-anchor="middle">Activity across the day — typical city grid cell (schematic)</text>
+      </svg>
+
+      <div class="chart-legend">
+        <div class="chart-legend-item">
+          <div class="chart-legend-line" style="background:#60a5fa;"></div>
+          Male activity
+        </div>
+        <div class="chart-legend-item">
+          <div class="chart-legend-line" style="background:#fb923c;"></div>
+          Female activity
+        </div>
+        <div class="chart-legend-item">
+          <div class="chart-legend-line" style="background:rgba(139,92,246,0.5);"></div>
+          Gender gap
+        </div>
+      </div>
+    </div>
+
+    <blockquote class="pull-quote reveal">
+      "Significant gender differences in urban vibrancy exist across all 7 cities studied, with evidence of spatial clustering."
+    </blockquote>
+    <p style="text-align:center;margin-top:0.8rem;font-size:0.78rem;color:rgba(255,255,255,0.3);font-style:italic;" class="reveal">The gap isn't just about when — it's about where</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 4 — The headline finding
+     ============================================================ -->
+<section class="section-white">
+  <div class="container">
+    <p class="section-label reveal">Core result</p>
+    <h2 class="section-title reveal">The headline finding</h2>
+    <p class="section-intro reveal">Two urban features drive gender differences in opposite directions — and distinguishing between them is crucial for policy. It is not commercial density in general that creates segregation, but specifically the presence of informal social spaces.</p>
+
+    <div class="finding-grid">
+      <div class="finding-card card-red" id="card-left">
+        <span class="finding-icon">☕</span>
+        <h3 class="finding-title">Third places</h3>
+        <p class="finding-subtitle">cafés · pubs · parks · community spaces</p>
+        <span class="arrow-badge up">↑ Larger gender gap</span>
+        <p class="finding-text">Areas with higher density of <strong>third places</strong> — informal social spaces that are neither home nor work — show significantly larger male-female differences in urban activity. These spaces, in theory open to all, appear to be used unequally across genders.</p>
+        <p style="font-size:0.78rem;font-weight:600;color:#6b7a99;margin-bottom:0.5rem;letter-spacing:0.05em;">5 CATEGORIES EXAMINED</p>
+        <div class="category-pills">
+          <span class="cat-pill">Eating &amp; drinking</span>
+          <span class="cat-pill">Organised activities</span>
+          <span class="cat-pill">Outdoor</span>
+          <span class="cat-pill">Commercial venues</span>
+          <span class="cat-pill">Commercial services</span>
+        </div>
+      </div>
+
+      <div class="finding-card card-teal" id="card-right">
+        <span class="finding-icon">📍</span>
+        <h3 class="finding-title">Points of Interest</h3>
+        <p class="finding-subtitle">shops · services · amenities · transport</p>
+        <span class="arrow-badge down">↓ Smaller gender gap</span>
+        <p class="finding-text">Areas with higher overall density of <strong>Points of Interest</strong> (all types combined) show <em>smaller</em> male-female differences in urban activity. General commercial and civic density is used more equally across genders.</p>
+        <p style="font-size:0.78rem;font-weight:600;color:#6b7a99;margin-bottom:0.5rem;letter-spacing:0.05em;">CONSISTENT ACROSS</p>
+        <div class="category-pills">
+          <span class="cat-pill teal">4 largest cities</span>
+          <span class="cat-pill teal">Aggregate model</span>
+          <span class="cat-pill teal">Indirect effects</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="finding-note reveal">
+      These two effects <strong>oppose each other</strong> — it is specifically the social and informal character of third places, not commercial density in general, that drives gender segregation in how cities are used.
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 5 — Effects spill beyond borders
+     ============================================================ -->
+<section class="section-grey">
+  <div class="container">
+    <p class="section-label reveal">Spatial dynamics</p>
+    <h2 class="section-title reveal">Effects spill beyond borders</h2>
+    <p class="section-intro reveal" style="max-width:640px;">A café district does not only affect the block it sits on. Gender-use patterns in one area bleed into neighbouring grid cells — a spatial spillover that conventional regression models would miss entirely. The study uses Spatial Autoregressive models (SAR) to capture this.</p>
+
+    <div class="spillover-wrap">
+      <p class="spillover-hint reveal">Click or hover the grid to see spillover effects</p>
+      <div id="spillover-grid" aria-label="Interactive spillover diagram" role="img">
+        <!-- 5×5 = 25 cells, generated by JS -->
+      </div>
+      <p class="spillover-label reveal">Changes in one area's gender gap ripple into neighbouring grid cells — the indirect effects captured here were <strong>consistent and significant</strong> across the three largest cities and the pooled model.</p>
+      <div class="stat-highlight reveal">
+        <strong>Global Moran's I ranges from 0.013 to 0.8 across cities</strong><br>
+        Spatial clustering of gender differences confirmed in all 7 cities (mean: 0.2)
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 6 — A persistent pattern
+     ============================================================ -->
+<section class="section-dark">
+  <div class="container">
+    <p class="section-label-light reveal">Additional findings</p>
+    <h2 class="section-title-light reveal">A persistent pattern</h2>
+    <p class="section-intro-light reveal">The gender gap in urban use is not an artefact of a particular time of day, type of week, or city size. It is a structural feature of urban space.</p>
+
+    <div class="pattern-cards">
+      <div class="pattern-card" id="pat-1">
+        <div class="pattern-icon">⏰</div>
+        <p class="pattern-text"><strong>Time-stable</strong> — No strong differences between weekday and weekend, or between morning, afternoon, evening and night. The gender gap in how cities are used is a persistent structural feature, not a time-of-day effect.</p>
+      </div>
+      <div class="pattern-card" id="pat-2">
+        <div class="pattern-icon">🏙️</div>
+        <p class="pattern-text"><strong>Density matters more than diversity</strong> — The diversity of urban features was generally not significant; density was. This contrasts with earlier work on age groups, where diversity played a larger role.</p>
+      </div>
+      <div class="pattern-card" id="pat-3">
+        <div class="pattern-icon">📏</div>
+        <p class="pattern-text"><strong>Smaller cities, sharper effects</strong> — In Milan and Rome the associations are present but more diffuse. In smaller cities such as Bari and Palermo the relationship between urban features and gender differences is stronger — possibly because residents have fewer alternative spaces to choose from.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 7 — Why this matters
+     ============================================================ -->
+<section class="section-white">
+  <div class="container">
+    <p class="section-label reveal">Implications</p>
+    <h2 class="section-title reveal">Why this matters</h2>
+
+    <p class="matter-text reveal">
+      Understanding <em>where</em> and <em>how</em> gender segregation manifests in cities — beyond where people live and work — is essential for designing fairer, more equitable urban environments. Streets, parks, and cafés that appear neutral on a planning map may in practice be used very differently by men and women.
+    </p>
+    <p class="matter-text reveal reveal-delay-1">
+      This research demonstrates that mobile phone data, combined with open geographic data from OpenStreetMap, can reveal gender inequalities in urban space at a resolution and temporal frequency that is simply impossible to achieve with traditional survey or census methods. As mobile data becomes more widely available and privacy-preserving methods mature, this approach opens a new window into the lived experience of cities — across genders, time of day, and place.
+    </p>
+
+    <div class="citation-block reveal reveal-delay-2">
+      <div class="citation-label">Full citation</div>
+      <p class="citation-text">
+        Collins, T., Di Clemente, R., Gutiérrez-Roig, M., &amp; Botta, F. (2024). Spatiotemporal gender differences in urban vibrancy. <em>Environment and Planning B: Urban Analytics and City Science</em>, <strong>51</strong>(7), 1430–1446.
+      </p>
+      <a class="citation-doi" href="https://doi.org/10.1177/23998083231209073" target="_blank" rel="noopener noreferrer">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15,3 21,3 21,9"/>
+          <line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+        doi.org/10.1177/23998083231209073
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+/* ----------------------------------------------------------------
+   SECTION 1: Hero canvas — top-down city street map
+   Irregular block grid, gender-coded fills, building footprints,
+   glowing activity hotspots, particles moving along streets.
+   ---------------------------------------------------------------- */
+(function () {
+  const canvas = document.getElementById('hero-canvas');
+  const ctx    = canvas.getContext('2d');
+
+  const MALE    = { r: 96,  g: 165, b: 250 };
+  const FEMALE  = { r: 251, g: 146, b: 60  };
+  const NEUTRAL = { r: 139, g: 92,  b: 246 };
+
+  function weightedType() {
+    const r = Math.random();
+    if (r < 0.38) return 'male';
+    if (r < 0.72) return 'female';
+    return 'neutral';
+  }
+
+  function colorOf(t) {
+    if (t === 'male')   return MALE;
+    if (t === 'female') return FEMALE;
+    return NEUTRAL;
+  }
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  let W, H, city;
+
+  /* Build an irregular street-position array along one axis */
+  function buildStreetPositions(total, count, jitterFrac) {
+    const positions = [0];
+    const step = total / count;
+    for (let i = 1; i < count; i++) {
+      const base = i * step;
+      const j    = (Math.random() - 0.5) * 2 * jitterFrac * step;
+      const prev = positions[positions.length - 1];
+      positions.push(
+        Math.min(total - step * 0.3, Math.max(prev + step * 0.4, base + j))
+      );
+    }
+    positions.push(total);
+    return positions;
+  }
+
+  /* Small building rectangles packed inside a city block */
+  function genBuildings(bx, by, bw, bh) {
+    if (bw < 16 || bh < 16) return [];
+    const out = [];
+    const pad    = Math.max(3, Math.min(bw, bh) * 0.13);
+    const innerW = bw - 2 * pad;
+    const innerH = bh - 2 * pad;
+    const n = 1 + Math.floor(Math.random() * 4);
+    for (let i = 0; i < n; i++) {
+      const bww = Math.max(4, 3 + Math.random() * innerW * 0.55);
+      const bhh = Math.max(4, 3 + Math.random() * innerH * 0.55);
+      const bxx = bx + pad + Math.random() * Math.max(0, innerW - bww);
+      const byy = by + pad + Math.random() * Math.max(0, innerH - bhh);
+      out.push({ x: bxx, y: byy, w: bww, h: bhh });
+    }
+    return out;
+  }
+
+  function buildCity() {
+    const MAJOR_W = 5, MINOR_W = 2, MARGIN = 1;
+
+    /* Street grids — more streets on wider/taller canvases */
+    const nH = Math.round(8  + (H / W) * 4);
+    const nV = Math.round(13 + (W / H) * 2);
+    const hPos = buildStreetPositions(H, nH, 0.18);
+    const vPos = buildStreetPositions(W, nV, 0.14);
+
+    /* Mark some streets as major (wider, brighter) */
+    const majorH = new Set(), majorV = new Set();
+    for (let i = 1; i < hPos.length - 1; i++) if (Math.random() < 0.28) majorH.add(i);
+    for (let i = 1; i < vPos.length - 1; i++) if (Math.random() < 0.22) majorV.add(i);
+
+    /* Blocks = rectangles between adjacent street lines */
+    const blocks = [];
+    for (let r = 0; r < hPos.length - 1; r++) {
+      for (let c = 0; c < vPos.length - 1; c++) {
+        const swT = (r === 0)              ? 0 : (majorH.has(r)     ? MAJOR_W : MINOR_W);
+        const swB = (r === hPos.length-2)  ? 0 : (majorH.has(r + 1) ? MAJOR_W : MINOR_W);
+        const swL = (c === 0)              ? 0 : (majorV.has(c)     ? MAJOR_W : MINOR_W);
+        const swR = (c === vPos.length-2)  ? 0 : (majorV.has(c + 1) ? MAJOR_W : MINOR_W);
+
+        const x1 = vPos[c]     + swL / 2 + MARGIN;
+        const y1 = hPos[r]     + swT / 2 + MARGIN;
+        const x2 = vPos[c + 1] - swR / 2 - MARGIN;
+        const y2 = hPos[r + 1] - swB / 2 - MARGIN;
+        const bw = x2 - x1, bh = y2 - y1;
+        if (bw < 6 || bh < 6) continue;
+
+        const type  = weightedType();
+        const col   = colorOf(type);
+        const alpha = 0.12 + Math.random() * 0.28;
+
+        blocks.push({
+          x: x1, y: y1, w: bw, h: bh,
+          type, targetType: type,
+          cr: col.r, cg: col.g, cb: col.b,
+          alpha, targetAlpha: alpha,
+          tp: 1,
+          buildings: genBuildings(x1, y1, bw, bh),
+        });
+      }
+    }
+
+    /* Glowing activity hotspots on a random subset of blocks */
+    const hotspots = [];
+    const hotN = Math.floor(blocks.length * 0.12);
+    [...blocks].sort(() => Math.random() - 0.5).slice(0, hotN).forEach(b => {
+      hotspots.push({
+        x: b.x + b.w * (0.3 + Math.random() * 0.4),
+        y: b.y + b.h * (0.3 + Math.random() * 0.4),
+        r: 1.8 + Math.random() * 2.5,
+        col: colorOf(b.type),
+        pulse:  Math.random() * Math.PI * 2,
+        pSpeed: 0.018 + Math.random() * 0.025,
+      });
+    });
+
+    /* Tiny particles that travel along street lines */
+    const particles = [];
+    for (let i = 1; i < hPos.length - 1; i++) {
+      if (Math.random() > 0.55) continue;
+      particles.push({
+        axis: 'h', pos: hPos[i], t: Math.random(),
+        speed: (0.00025 + Math.random() * 0.0004) * (Math.random() < 0.5 ? 1 : -1),
+        col: colorOf(weightedType()),
+      });
+    }
+    for (let i = 1; i < vPos.length - 1; i++) {
+      if (Math.random() > 0.45) continue;
+      particles.push({
+        axis: 'v', pos: vPos[i], t: Math.random(),
+        speed: (0.00025 + Math.random() * 0.0004) * (Math.random() < 0.5 ? 1 : -1),
+        col: colorOf(weightedType()),
+      });
+    }
+
+    city = { hPos, vPos, majorH, majorV, MAJOR_W, MINOR_W, blocks, hotspots, particles };
+  }
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+    buildCity();
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+
+  let lastChange = 0;
+
+  function drawFrame(ts) {
+    /* Randomly transition a handful of blocks every ~1.8 s */
+    if (ts - lastChange > 1800) {
+      lastChange = ts;
+      const n = 4 + Math.floor(Math.random() * 7);
+      for (let k = 0; k < n; k++) {
+        const b = city.blocks[Math.floor(Math.random() * city.blocks.length)];
+        b.targetType  = weightedType();
+        b.targetAlpha = 0.12 + Math.random() * 0.28;
+        b.tp = 0;
+      }
+    }
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#0d1117';
+    ctx.fillRect(0, 0, W, H);
+
+    const { hPos, vPos, majorH, majorV, MAJOR_W, MINOR_W, blocks, hotspots, particles } = city;
+
+    /* ---- City blocks ---- */
+    blocks.forEach(b => {
+      if (b.tp < 1) {
+        b.tp = Math.min(1, b.tp + 0.007);
+        const tg = colorOf(b.targetType);
+        const sp = b.tp * 0.035;
+        b.cr    = lerp(b.cr,    tg.r, sp);
+        b.cg    = lerp(b.cg,    tg.g, sp);
+        b.cb    = lerp(b.cb,    tg.b, sp);
+        b.alpha = lerp(b.alpha, b.targetAlpha, sp);
+      }
+
+      const r  = Math.round(b.cr), g = Math.round(b.cg), bl = Math.round(b.cb);
+      const a  = b.alpha.toFixed(2);
+
+      ctx.beginPath();
+      ctx.roundRect(b.x, b.y, b.w, b.h, 2);
+      ctx.fillStyle = `rgba(${r},${g},${bl},${a})`;
+      ctx.fill();
+
+      /* Building footprints inside the block */
+      b.buildings.forEach(bld => {
+        ctx.beginPath();
+        ctx.roundRect(bld.x, bld.y, bld.w, bld.h, 1);
+        ctx.fillStyle = `rgba(${r},${g},${bl},${Math.min(1, b.alpha * 1.9).toFixed(2)})`;
+        ctx.fill();
+      });
+    });
+
+    /* ---- Street lines ---- */
+    for (let i = 1; i < hPos.length - 1; i++) {
+      const major = majorH.has(i);
+      ctx.beginPath();
+      ctx.moveTo(0, hPos[i]);
+      ctx.lineTo(W, hPos[i]);
+      ctx.strokeStyle = major ? 'rgba(200,230,255,0.18)' : 'rgba(160,200,240,0.08)';
+      ctx.lineWidth   = major ? MAJOR_W : MINOR_W;
+      ctx.stroke();
+    }
+    for (let i = 1; i < vPos.length - 1; i++) {
+      const major = majorV.has(i);
+      ctx.beginPath();
+      ctx.moveTo(vPos[i], 0);
+      ctx.lineTo(vPos[i], H);
+      ctx.strokeStyle = major ? 'rgba(200,230,255,0.18)' : 'rgba(160,200,240,0.08)';
+      ctx.lineWidth   = major ? MAJOR_W : MINOR_W;
+      ctx.stroke();
+    }
+
+    /* ---- Intersection glow at major crossings ---- */
+    majorH.forEach(hi => {
+      majorV.forEach(vi => {
+        const x = vPos[vi], y = hPos[hi];
+        const gr = ctx.createRadialGradient(x, y, 0, x, y, 20);
+        gr.addColorStop(0, 'rgba(200,230,255,0.10)');
+        gr.addColorStop(1, 'rgba(200,230,255,0)');
+        ctx.beginPath();
+        ctx.arc(x, y, 20, 0, Math.PI * 2);
+        ctx.fillStyle = gr;
+        ctx.fill();
+      });
+    });
+
+    /* ---- Hotspots ---- */
+    hotspots.forEach(h => {
+      h.pulse += h.pSpeed;
+      const pv    = (Math.sin(h.pulse) + 1) / 2;
+      const glowR = h.r * (3.5 + pv * 2.5);
+
+      const gr = ctx.createRadialGradient(h.x, h.y, h.r * 0.3, h.x, h.y, glowR);
+      gr.addColorStop(0, `rgba(${h.col.r},${h.col.g},${h.col.b},${(0.45 * pv).toFixed(2)})`);
+      gr.addColorStop(1, `rgba(${h.col.r},${h.col.g},${h.col.b},0)`);
+      ctx.beginPath();
+      ctx.arc(h.x, h.y, glowR, 0, Math.PI * 2);
+      ctx.fillStyle = gr;
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(h.x, h.y, h.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${h.col.r},${h.col.g},${h.col.b},${(0.65 + pv * 0.35).toFixed(2)})`;
+      ctx.fill();
+    });
+
+    /* ---- Moving particles along streets ---- */
+    particles.forEach(p => {
+      p.t += p.speed;
+      if (p.t > 1) p.t -= 1;
+      if (p.t < 0) p.t += 1;
+      const px = p.axis === 'h' ? p.t * W : p.pos;
+      const py = p.axis === 'h' ? p.pos   : p.t * H;
+      ctx.beginPath();
+      ctx.arc(px, py, 1.3, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${p.col.r},${p.col.g},${p.col.b},0.75)`;
+      ctx.fill();
+    });
+
+    requestAnimationFrame(drawFrame);
+  }
+
+  requestAnimationFrame(drawFrame);
+})();
+
+
+/* ----------------------------------------------------------------
+   SECTION 3: Activity line chart — draw on scroll
+   ---------------------------------------------------------------- */
+(function () {
+  const container = document.getElementById('chart-container');
+  if (!container) return;
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelector('svg').classList.add('chart-animated');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  obs.observe(container);
+})();
+
+
+/* ----------------------------------------------------------------
+   SECTION 4: Headline finding cards — slide in on scroll
+   ---------------------------------------------------------------- */
+(function () {
+  const cardLeft  = document.getElementById('card-left');
+  const cardRight = document.getElementById('card-right');
+
+  if (!cardLeft || !cardRight) return;
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  obs.observe(cardLeft);
+  obs.observe(cardRight);
+})();
+
+
+/* ----------------------------------------------------------------
+   SECTION 5: Spillover grid — interactive 5×5
+   ---------------------------------------------------------------- */
+(function () {
+  const grid = document.getElementById('spillover-grid');
+  if (!grid) return;
+
+  const SIZE = 5;
+  const CENTER = Math.floor(SIZE / 2); // 2
+  const cells = [];
+
+  // Create cells
+  for (let r = 0; r < SIZE; r++) {
+    for (let c = 0; c < SIZE; c++) {
+      const div = document.createElement('div');
+      div.classList.add('sp-cell');
+      if (r === CENTER && c === CENTER) {
+        div.classList.add('center', 'pulse-anim');
+      }
+      cells.push({ el: div, row: r, col: c });
+      grid.appendChild(div);
+    }
+  }
+
+  function isNeighbour(r, c) {
+    const dr = Math.abs(r - CENTER);
+    const dc = Math.abs(c - CENTER);
+    return (dr <= 1 && dc <= 1) && !(dr === 0 && dc === 0);
+  }
+
+  function isOuterNeighbour(r, c) {
+    const dr = Math.abs(r - CENTER);
+    const dc = Math.abs(c - CENTER);
+    return (dr <= 2 && dc <= 2) && !(dr <= 1 && dc <= 1);
+  }
+
+  function activate() {
+    cells.forEach(({ el, row, col }) => {
+      if (row === CENTER && col === CENTER) return;
+      if (isNeighbour(row, col)) {
+        el.style.background = 'rgba(139,92,246,0.55)';
+        el.style.boxShadow  = '0 0 0 2px rgba(139,92,246,0.3)';
+        el.style.transform  = 'scale(1.05)';
+      } else if (isOuterNeighbour(row, col)) {
+        el.style.background = 'rgba(139,92,246,0.2)';
+        el.style.transform  = 'scale(1.02)';
+      } else {
+        el.style.background = '';
+        el.style.boxShadow  = '';
+        el.style.transform  = '';
+      }
+    });
+  }
+
+  function deactivate() {
+    cells.forEach(({ el, row, col }) => {
+      if (row === CENTER && col === CENTER) return;
+      el.style.background = '';
+      el.style.boxShadow  = '';
+      el.style.transform  = '';
+    });
+  }
+
+  grid.addEventListener('mouseenter', activate);
+  grid.addEventListener('mouseleave', deactivate);
+  grid.addEventListener('click', function () {
+    // Toggle
+    if (cells[0].el.style.background && cells[1].el.style.background) {
+      deactivate();
+    } else {
+      activate();
+    }
+  });
+
+  // Touch support
+  grid.addEventListener('touchstart', function (e) {
+    e.preventDefault();
+    activate();
+  }, { passive: false });
+  grid.addEventListener('touchend', function () {
+    setTimeout(deactivate, 1200);
+  });
+})();
+
+
+/* ----------------------------------------------------------------
+   SECTION 6: Pattern cards — stagger in on scroll
+   ---------------------------------------------------------------- */
+(function () {
+  const cards = ['pat-1', 'pat-2', 'pat-3'].map(id => document.getElementById(id));
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.25 });
+
+  cards.forEach(c => { if (c) obs.observe(c); });
+})();
+
+
+/* ----------------------------------------------------------------
+   General scroll-reveal (all .reveal elements)
+   ---------------------------------------------------------------- */
+(function () {
+  const els = document.querySelectorAll('.reveal');
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  els.forEach(el => obs.observe(el));
+})();
+</script>
+
+</body>
+</html>
