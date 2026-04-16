@@ -1,23 +1,15 @@
 /* ==========================================================================
-   federicobotta.github.io — custom styles  v3
+   federicobotta.github.io — custom styles  v4
    Aesthetic: urban data journalism (Bloomberg CityLab / The Pudding)
-   Two-accent palette: deep teal primary + warm amber secondary
    ──────────────────────────────────────────────────────────────────────────
-   Teal palette
+   Palette (all green, no amber):
      #022020  near-black teal   (headings, strong text, footer bg)
      #003c3c  dark teal         (sub-headings, dark elements)
      #006647  forest green      (links, active nav)
      #00875a  medium teal-green (borders, buttons, active states)
-     #00c896  bright teal       (canvas accents)
-     #f0f7f4  pale teal tint    (card/hover backgrounds)
+     #00c896  bright teal       (canvas accents, footer links)
+     #f5faf8  pale teal tint    (card/hover backgrounds)
      #d8ece5  rule colour       (dividers, borders)
-   Amber accent
-     #E8A838  warm amber        (h2 borders, stat numbers, starred pubs,
-                                 tags, nav underline, top bar)
-     rgba(232,168,56,0.10)      amber tint for section backgrounds
-   Neutrals
-     #F8F7F4  off-white bg      (page background — warmer than pure white)
-     #ffffff  white             (cards, masthead, sidebar)
    ========================================================================== */
 
 /* ── Fonts ───────────────────────────────────────────────────── */
@@ -32,14 +24,11 @@
   --green-forest:  #006647;
   --green-mid:     #00875a;
   --green-bright:  #00c896;
-  --green-pale:    #f0f7f4;
+  --green-pale:    #f5faf8;
   --green-rule:    #d8ece5;
-  --amber:         #E8A838;
-  --amber-pale:    rgba(232, 168, 56, 0.10);
   --text:          #1c1c1c;
   --text-muted:    #5a6f6a;
   --white:         #ffffff;
-  --bg:            #F8F7F4;
   --content-width: 920px;
 }
 
@@ -51,13 +40,11 @@ body {
   font-family: 'Source Serif 4', Georgia, serif;
   font-size: 16px;
   color: var(--text);
-  background: var(--bg);
+  background: var(--white);
   line-height: 1.8;
-  /* Signature accent bar — top of every page */
-  border-top: 5px solid var(--amber);
+  border-top: 4px solid var(--green-dark);
 }
 
-/* Headings: clean geometric sans — data journalism feel */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Inter', system-ui, sans-serif;
   font-weight: 700;
@@ -69,7 +56,7 @@ h1, h2, h3, h4, h5, h6 {
 a {
   color: var(--green-forest);
   text-decoration: none;
-  &:hover        { color: var(--amber); text-decoration: underline; }
+  &:hover        { color: var(--green-darkest); text-decoration: underline; }
   &:visited      { color: var(--green-forest); }
 }
 
@@ -79,7 +66,6 @@ hr {
   margin: 3em 0;
 }
 
-/* Page h1 (archive / inner page titles) */
 .page__title {
   font-family: 'Inter', system-ui, sans-serif;
   font-weight: 800;
@@ -97,10 +83,9 @@ hr {
   box-shadow: none;
 
   a { color: var(--text-muted) !important; text-decoration: none; }
-  a:hover { color: var(--amber) !important; text-decoration: none; }
+  a:hover { color: var(--green-forest) !important; text-decoration: none; }
 }
 
-/* Site name + subtitle */
 .masthead__menu-item--lg {
   a.masthead__name-link {
     display: flex !important;
@@ -135,7 +120,6 @@ hr {
   line-height: 1.3 !important;
 }
 
-/* Nav links */
 .masthead__menu-item a {
   font-family: 'Inter', sans-serif;
   font-size: 0.83em !important;
@@ -147,7 +131,6 @@ hr {
   transition: color 0.15s;
   position: relative;
 
-  /* Underline slide-in on hover */
   &::after {
     content: '';
     position: absolute;
@@ -155,7 +138,7 @@ hr {
     left: 0.5em;
     right: 0.5em;
     height: 2px;
-    background: var(--amber);
+    background: var(--green-mid);
     transform: scaleX(0);
     transition: transform .18s ease;
   }
@@ -163,7 +146,6 @@ hr {
   &:hover::after { transform: scaleX(1); }
 }
 
-/* Active page link */
 .visible-links .masthead__menu-item a[aria-current="page"],
 .visible-links .masthead__menu-item.active a {
   color: var(--green-darkest) !important;
@@ -180,13 +162,12 @@ hr {
     box-shadow: 0 4px 16px rgba(0,40,30,.1);
     border-radius: 4px;
     a { font-size: 0.85em !important; }
-    a:hover { background: var(--green-pale); color: var(--amber) !important; }
+    a:hover { background: var(--green-pale); color: var(--green-forest) !important; }
   }
 
-  /* Hamburger — accent colour */
   button .navicon,
   button .navicon::before,
-  button .navicon::after { background: var(--amber); }
+  button .navicon::after { background: var(--green-darkest); }
 }
 
 /* ── Hero — animated canvas + bio overlay ───────────────────── */
@@ -212,8 +193,8 @@ hr {
     to bottom,
     transparent        0%,
     transparent        22%,
-    rgba(248,247,244,0.88) 50%,   /* fade to --bg, not pure white */
-    #F8F7F4            62%
+    rgba(255,255,255,0.85) 50%,
+    white              62%
   );
   pointer-events: none;
   z-index: 1;
@@ -241,21 +222,9 @@ hr {
   text-transform: uppercase;
 }
 
-.hero__label-sub {
-  display: block;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.72em;
-  color: rgba(232, 168, 56, 0.80);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  margin-top: 0.3em;
-}
-
 .hero__bio {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 0; left: 0; right: 0;
   z-index: 2;
   padding: 0 2em 3em;
 }
@@ -269,7 +238,6 @@ hr {
   align-items: end;
 }
 
-/* Lead paragraph — use serif for warm editorial feel */
 .home-intro__lead {
   font-family: 'Source Serif 4', Georgia, serif;
   font-size: 1.35em;
@@ -279,7 +247,6 @@ hr {
   margin: 0 0 1.4em;
 }
 
-/* Profile link pills */
 .home-intro__links {
   display: flex;
   flex-wrap: wrap;
@@ -303,15 +270,14 @@ hr {
   background: rgba(255,255,255,0.80);
 
   &:hover {
-    border-color: var(--amber);
-    color: var(--green-darkest);
-    background: rgba(232,168,56,0.08);
+    border-color: var(--green-mid);
+    color: var(--green-forest);
+    background: white;
     text-decoration: none;
   }
   i { font-size: 0.9em; opacity: 0.8; }
 }
 
-/* Keyword tags — proper pills with amber */
 .home-intro__tags { display: flex; flex-wrap: wrap; gap: 0.5em; }
 
 .hero__photo {
@@ -331,7 +297,6 @@ hr {
   }
 }
 
-/* Mobile hero */
 @media (max-width: 700px) {
   .hero { min-height: 740px; }
   .hero__bio-inner { grid-template-columns: 1fr; gap: 1.5em; }
@@ -354,7 +319,6 @@ hr {
 
 .page__content {
 
-  /* Editorial body text */
   p, li {
     font-family: 'Source Serif 4', Georgia, serif;
     font-size: 1.0em;
@@ -362,7 +326,6 @@ hr {
     color: #2a2a2a;
   }
 
-  /* h2: left-border accent — editorial / data journalism style */
   h2 {
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 1.45em;
@@ -371,7 +334,7 @@ hr {
     margin-top: 2em;
     margin-bottom: 0.8em;
     padding-left: 0.85em;
-    border-left: 4px solid var(--amber);
+    border-left: 4px solid var(--green-mid);
     letter-spacing: -0.025em;
   }
 
@@ -387,14 +350,13 @@ hr {
   strong { color: var(--green-darkest); font-weight: 700; }
 
   blockquote {
-    border-left: 3px solid var(--amber);
+    border-left: 3px solid var(--green-mid);
     padding-left: 1.2em;
     margin-left: 0;
     color: var(--text-muted);
     font-style: italic;
   }
 
-  /* Tables: clean, no default borders, alternating amber tint */
   table {
     width: 100%;
     border-collapse: collapse;
@@ -420,8 +382,7 @@ hr {
       border-bottom: 1px solid var(--green-rule);
       transition: background .12s;
       td { padding: .65em 1em; border: none; font-family: 'Inter', sans-serif; }
-      /* Alternating row tint */
-      &:nth-child(even) { background: var(--amber-pale); }
+      &:nth-child(even) { background: var(--green-pale); }
       &:hover { background: rgba(0,135,90,0.07); }
     }
   }
@@ -449,13 +410,13 @@ hr {
 .theme-card {
   background: var(--white);
   border: 1px solid var(--green-rule);
-  border-top: 3px solid var(--amber);
+  border-top: 3px solid var(--green-mid);
   padding: 1.5em 1.6em;
   transition: transform .2s, box-shadow .2s;
 
-  &:nth-child(2) { border-top-color: var(--green-mid); }
+  &:nth-child(2) { border-top-color: var(--green-dark); }
   &:nth-child(3) { border-top-color: var(--green-forest); }
-  &:nth-child(4) { border-top-color: var(--green-dark); }
+  &:nth-child(4) { border-top-color: var(--green-bright); }
 
   &:hover {
     transform: translateY(-3px);
@@ -482,7 +443,7 @@ hr {
   }
 }
 
-/* ── Stats grid — "Impact in Numbers" ───────────────────────── */
+/* ── Stats grid ─────────────────────────────────────────────── */
 
 .stats-grid {
   display: grid;
@@ -490,9 +451,8 @@ hr {
   gap: 1.2em;
   margin: 1.6em 0;
   text-align: center;
-  /* Subtle section separation */
   background: var(--white);
-  border-top: 3px solid var(--amber);
+  border-top: 3px solid var(--green-mid);
   border-radius: 2px;
   padding: 1.8em 1em;
 }
@@ -504,14 +464,13 @@ hr {
   &:hover { transform: translateY(-2px); }
 }
 
-/* The numbers: large, amber, maximum impact */
 .stat-number {
   display: block;
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 3em;
   font-weight: 800;
   line-height: 1;
-  color: var(--amber);
+  color: var(--green-forest);
   letter-spacing: -0.04em;
 }
 
@@ -528,8 +487,8 @@ hr {
 /* ── Partners / callout section ─────────────────────────────── */
 
 .partners-section {
-  background: var(--white);
-  border-left: 4px solid var(--amber);
+  background: var(--green-pale);
+  border-left: 4px solid var(--green-mid);
   padding: 1.3em 1.8em;
   margin: 1.5em 0;
 
@@ -537,13 +496,13 @@ hr {
   strong { color: var(--green-dark); }
 }
 
-/* ── Hero keyword tags — proper pill chips ───────────────────── */
+/* ── Hero keyword tags ───────────────────────────────────────── */
 
 .hero-tag {
   display: inline-block;
-  border: 1.5px solid rgba(232, 168, 56, 0.55);
-  color: #8a5e10;
-  background: var(--amber-pale);
+  border: 1.5px solid var(--green-mid);
+  color: var(--green-forest);
+  background: rgba(0,135,90,0.07);
   font-family: 'Inter', sans-serif;
   font-size: .72em;
   font-weight: 700;
@@ -551,21 +510,21 @@ hr {
   border-radius: 100px;
   letter-spacing: .05em;
   text-transform: uppercase;
-  transition: background .15s, color .15s, border-color .15s;
+  transition: background .15s, color .15s;
 
   &:hover {
-    background: var(--amber);
+    background: var(--green-mid);
     color: var(--white);
-    border-color: var(--amber);
+    border-color: var(--green-mid);
   }
 }
 
-/* ── Sidebar (inner pages) ───────────────────────────────────── */
+/* ── Sidebar ─────────────────────────────────────────────────── */
 
 .sidebar {
   .author__avatar img {
     border-radius: 50%;
-    border: 3px solid var(--amber);
+    border: 3px solid var(--green-mid);
     box-shadow: 0 4px 20px rgba(0,60,40,.15);
     transition: transform .25s;
     &:hover { transform: scale(1.03); }
@@ -597,7 +556,7 @@ hr {
     color: var(--text-muted);
     font-weight: 500;
     text-decoration: none;
-    &:hover { color: var(--amber); }
+    &:hover { color: var(--green-forest); }
   }
 }
 
@@ -624,10 +583,9 @@ hr {
   }
 }
 
-/* Starred / highlighted publications — amber accent */
 .publication-item.pub-highlight {
-  background: rgba(232, 168, 56, 0.06);
-  border-left: 3px solid var(--amber);
+  background: var(--green-pale);
+  border-left: 3px solid var(--green-mid);
   padding-left: 1em;
   margin-left: -1em;
 }
@@ -645,8 +603,8 @@ hr {
   font-weight: 600;
   color: var(--text-muted);
   transition: all .15s;
-  &:hover  { background: var(--amber); color: var(--white); border-color: var(--amber); }
-  &:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+  &:hover  { background: var(--green-mid); color: var(--white); border-color: var(--green-mid); }
+  &:focus-visible { outline: 2px solid var(--green-mid); outline-offset: 2px; }
   &.active { background: var(--green-darkest); color: var(--white); border-color: var(--green-darkest); }
 }
 
@@ -661,11 +619,11 @@ hr {
   letter-spacing: .05em;
   text-transform: uppercase;
   border-radius: 3px;
-  border: 1px solid var(--amber);
-  color: #8a5e10;
+  border: 1px solid var(--green-mid);
+  color: var(--green-forest);
   text-decoration: none;
   transition: background .15s, color .15s;
-  &:hover { background: var(--amber); color: var(--white); text-decoration: none; }
+  &:hover { background: var(--green-mid); color: var(--white); text-decoration: none; }
 }
 
 /* ── Buttons ─────────────────────────────────────────────────── */
@@ -680,7 +638,7 @@ hr {
   padding: .55em 1.3em !important;
   font-size: .88em !important;
   transition: background .15s, border-color .15s, transform .15s !important;
-  &:hover { background: var(--amber) !important; border-color: var(--amber) !important; transform: translateY(-1px); text-decoration: none; color: var(--white) !important; }
+  &:hover { background: var(--green-forest) !important; border-color: var(--green-forest) !important; transform: translateY(-1px); text-decoration: none; color: var(--white) !important; }
 }
 
 .btn {
@@ -692,19 +650,19 @@ hr {
   font-size: .88em !important;
   color: var(--green-dark) !important;
   transition: border-color .15s, color .15s !important;
-  &:hover { border-color: var(--amber) !important; color: var(--green-darkest) !important; background: var(--amber-pale) !important; text-decoration: none; }
+  &:hover { border-color: var(--green-mid) !important; color: var(--green-forest) !important; background: var(--green-pale) !important; text-decoration: none; }
 }
 
 /* ── Footer ─────────────────────────────────────────────────── */
 
 .page__footer {
   background: var(--green-darkest);
-  border-top: 3px solid var(--amber);
+  border-top: 2px solid var(--green-mid);
   color: #9ecfc4;
   margin-top: 4em;
 
   footer { font-family: 'Inter', sans-serif; font-size: .85em; color: #9ecfc4; }
-  a { color: var(--amber); text-decoration: none; &:hover { color: var(--white); } &:visited { color: var(--amber); } }
+  a { color: var(--green-bright); text-decoration: none; &:hover { color: var(--white); } &:visited { color: var(--green-bright); } }
 }
 
 /* ── Responsive ──────────────────────────────────────────────── */
