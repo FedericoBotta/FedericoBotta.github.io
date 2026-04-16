@@ -697,12 +697,14 @@
         <div class="ttv-chart-card urban-card fade-in">
           <h3>Urban area</h3>
           <p class="ttv-label">Bus to nearest hospital &mdash; times across the day</p>
-          <span class="ttv-value">TTV ≈ 5.1 min (SD)</span>
+          <span class="ttv-value">TTV ≈ 3.3 min (SD)</span>
           <svg id="urban-chart" viewBox="0 0 320 160" width="100%" style="display:block;"></svg>
           <p class="chart-caption">
-            Journey times spike during the morning and afternoon rush hours,
-            then dip to a quieter midday trough. Still far more predictable
-            than rural routes.
+            Journey times tend to be higher during morning and afternoon rush hours,
+            with a quieter midday period. Still far more predictable than rural routes.
+            <em style="display:block;margin-top:0.4em;opacity:0.7">
+              Shape is illustrative; SD from paper data.
+            </em>
           </p>
         </div>
 
@@ -1368,7 +1370,7 @@
   // Rural data: highly variable, 25–62 min
   const ruralData  = [38, 25, 55, 32, 62, 29, 48, 35, 40];
 
-  drawTTVChart('urban-chart', urbanData, '#00d4ff', '#00d4ff', 'SD ≈ 5 min');
+  drawTTVChart('urban-chart', urbanData, '#00d4ff', '#00d4ff', 'SD ≈ 3 min');
   drawTTVChart('rural-chart', ruralData,  '#ff9f40', '#ff9f40', 'SD ≈ 10 min');
 
   /* ============================================================
