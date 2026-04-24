@@ -653,6 +653,85 @@ hr {
   &:hover { border-color: var(--green-mid) !important; color: var(--green-forest) !important; background: var(--green-pale) !important; text-decoration: none; }
 }
 
+/* ── Publication Highlights (homepage) ──────────────────────── */
+
+.paper-highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.paper-card {
+  background: var(--white);
+  border: 1px solid var(--green-rule);
+  border-radius: 6px;
+  padding: 1.5rem 1.6rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: box-shadow 0.2s, border-color 0.2s;
+
+  &:hover {
+    border-color: var(--green-mid);
+    box-shadow: 0 4px 18px rgba(0, 135, 90, 0.10);
+  }
+}
+
+.paper-card__meta {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--green-forest);
+}
+
+.paper-card__title {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--green-darkest);
+  margin: 0;
+  line-height: 1.35;
+}
+
+.paper-card__summary {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  color: #4a5568;
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+
+.paper-card__link {
+  display: inline-block;
+  margin-top: 0.4rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--green-forest);
+  text-decoration: none;
+  &:hover { color: var(--green-mid); text-decoration: underline; }
+  &:visited { color: var(--green-forest); }
+}
+
+/* ── Publication explore badge ───────────────────────────────── */
+
+.pub-badge--explore {
+  background: var(--green-pale) !important;
+  color: var(--green-forest) !important;
+  border: 1px solid var(--green-rule) !important;
+  font-weight: 600 !important;
+
+  &:hover {
+    background: var(--green-mid) !important;
+    color: var(--white) !important;
+    border-color: var(--green-mid) !important;
+  }
+}
+
 /* ── Footer ─────────────────────────────────────────────────── */
 
 .page__footer {

@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collins et al. (2024) — Spatiotemporal Gender Differences in Urban Vibrancy</title>
+  <link rel="stylesheet" href="https://federicobotta.github.io/assets/css/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap">
+  <style>
+    /* ============================================================
+       PAPER EXPLAINER — Collins, Di Clemente, Gutiérrez-Roig & Botta
+       EPB: Urban Analytics and City Science, 2024
+       Self-contained HTML, no Jekyll
+       ============================================================ */
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --bg-dark:    #0d1117;
+      --bg-dark2:   #011818;
+      --bg-light:   #f8fafc;
+      --male:       #60a5fa;
+      --female:     #fb923c;
+      --neutral:    #8b5cf6;
+      --teal:       #10b981;
+      --red:        #ef4444;
+      --text-dark:  #1a1f2e;
+      --text-muted: #6b7a99;
+      --white:      #ffffff;
+      --border:     #e2e8f0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* ============================================================
+       SECTION 1 — HERO
+       ============================================================ */
+    .hero {
+      position: relative;
+      min-height: 82vh;
+      background: var(--bg-dark);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 3.5rem;
+    }
+
+    #hero-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: block;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 42%;
+      background: linear-gradient(to top, rgba(13,17,23,0.96) 0%, rgba(13,17,23,0.60) 50%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 0 1.5rem;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--neutral);
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      line-height: 1.15;
+      color: #fff;
+      margin: 0 0 1.1rem;
+    }
+
+    .hero-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 1rem;
+    }
+
+    .hero-authors {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.38);
+      font-style: italic;
+    }
+
+    /* Legend dots */
+    .hero-legend {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      margin-top: 1.8rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.05em;
+    }
+
+    .legend-dot {
+      width: 10px; height: 10px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    /* ============================================================
+       SECTION 2 — Reading the city
+       ============================================================ */
+    .section-white {
+      background: #fff;
+      padding: 5rem 1.5rem;
+    }
+
+    .section-grey {
+      background: var(--bg-light);
+      padding: 5rem 1.5rem;
+    }
+
+    .section-dark {
+      background: var(--bg-dark);
+      padding: 5rem 1.5rem;
+    }
+
+    .section-dark2 {
+      background: var(--bg-dark2);
+      padding: 5rem 1.5rem;
+    }
+
+    .container {
+      max-width: 1020px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--neutral);
+      margin-bottom: 0.6rem;
+    }
+
+    .section-label-light {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--neutral);
+      opacity: 0.8;
+      margin-bottom: 0.6rem;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.7rem, 4vw, 2.6rem);
+      line-height: 1.2;
+      color: var(--text-dark);
+      margin: 0 0 1.2rem;
+    }
+
+    .section-title-light {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.7rem, 4vw, 2.6rem);
+      line-height: 1.2;
+      color: #fff;
+      margin: 0 0 1.2rem;
+    }
+
+    .section-intro {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin-bottom: 3rem;
+    }
+
+    .section-intro-light {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.55);
+      max-width: 680px;
+      margin-bottom: 3rem;
+    }
+
+    /* Explainer cards — 3-col */
+    .cards-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    @media (max-width: 720px) {
+      .cards-3 { grid-template-columns: 1fr; }
+    }
+
+    .info-card {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.8rem 1.6rem;
+    }
+
+    .info-card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .info-card-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--neutral);
+      margin-bottom: 0.5rem;
+    }
+
+    .info-card-text {
+      font-size: 0.93rem;
+      line-height: 1.65;
+      color: #374151;
+    }
+
+    /* City chips + italy map */
+    .cities-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .city-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .chip {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 0.35em 1em;
+      border-radius: 100px;
+      border: 1.5px solid var(--border);
+      color: #374151;
+      background: #fff;
+      cursor: default;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+
+    .chip:hover {
+      border-color: var(--neutral);
+      color: var(--neutral);
+      background: rgba(139,92,246,0.06);
+    }
+
+    .italy-wrap {
+      flex-shrink: 0;
+    }
+
+    /* ============================================================
+       SECTION 3 — Line chart
+       ============================================================ */
+    .chart-wrap {
+      position: relative;
+      margin: 0 auto 1.5rem;
+      max-width: 760px;
+    }
+
+    #activity-chart {
+      width: 100%;
+      height: 260px;
+      display: block;
+    }
+
+    .chart-legend {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      margin-top: 0.8rem;
+    }
+
+    .chart-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.65);
+    }
+
+    .chart-legend-line {
+      width: 28px; height: 3px;
+      border-radius: 2px;
+    }
+
+    .pull-quote {
+      max-width: 680px;
+      margin: 2.5rem auto 0;
+      text-align: center;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.25rem;
+      font-style: italic;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.75);
+      border-top: 1px solid rgba(255,255,255,0.12);
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      padding: 1.5rem 1rem;
+    }
+
+    /* ============================================================
+       SECTION 4 — Headline finding
+       ============================================================ */
+    .finding-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    @media (max-width: 700px) {
+      .finding-grid { grid-template-columns: 1fr; }
+    }
+
+    .finding-card {
+      border-radius: 18px;
+      padding: 2.2rem 2rem;
+      border: 2.5px solid transparent;
+      background: #fff;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .finding-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .finding-card.card-red {
+      border-color: var(--red);
+      transform: translateX(-30px);
+    }
+
+    .finding-card.card-red.visible {
+      transform: translateX(0);
+    }
+
+    .finding-card.card-teal {
+      border-color: var(--teal);
+      transform: translateX(30px);
+    }
+
+    .finding-card.card-teal.visible {
+      transform: translateX(0);
+    }
+
+    .finding-icon {
+      font-size: 2.4rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .finding-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      color: var(--text-dark);
+      margin: 0 0 0.3rem;
+    }
+
+    .finding-subtitle {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .arrow-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      padding: 0.3em 0.9em;
+      border-radius: 100px;
+      margin-bottom: 1rem;
+    }
+
+    .arrow-badge.up {
+      background: rgba(239,68,68,0.1);
+      color: var(--red);
+    }
+
+    .arrow-badge.down {
+      background: rgba(16,185,129,0.1);
+      color: var(--teal);
+    }
+
+    .finding-text {
+      font-size: 0.93rem;
+      line-height: 1.7;
+      color: #374151;
+      margin-bottom: 1.2rem;
+    }
+
+    .category-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .cat-pill {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      padding: 0.25em 0.75em;
+      border-radius: 6px;
+      background: rgba(239,68,68,0.08);
+      color: var(--red);
+    }
+
+    .cat-pill.teal {
+      background: rgba(16,185,129,0.08);
+      color: var(--teal);
+    }
+
+    .finding-note {
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: #374151;
+      font-style: italic;
+      padding: 1.5rem 1rem;
+      border-left: 4px solid var(--neutral);
+      border-right: 4px solid var(--neutral);
+      border-radius: 4px;
+      background: rgba(139,92,246,0.04);
+    }
+
+    /* ============================================================
+       SECTION 5 — Spatial spillovers
+       ============================================================ */
+    .spillover-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    #spillover-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 56px);
+      grid-template-rows: repeat(5, 56px);
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .sp-cell {
+      border-radius: 8px;
+      background: #e8edf5;
+      transition: background 0.35s ease, box-shadow 0.35s ease, transform 0.25s ease;
+    }
+
+    .sp-cell.center {
+      background: var(--neutral);
+      box-shadow: 0 0 0 3px rgba(139,92,246,0.35);
+    }
+
+    .sp-cell.neighbor {
+      background: rgba(139,92,246,0.22);
+    }
+
+    .sp-cell.pulse-anim {
+      animation: cellPulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes cellPulse {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(139,92,246,0.35); }
+      50%       { box-shadow: 0 0 0 8px rgba(139,92,246,0.15); }
+    }
+
+    .spillover-label {
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: #374151;
+      text-align: center;
+      max-width: 480px;
+    }
+
+    .spillover-hint {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--neutral);
+      opacity: 0.8;
+    }
+
+    .stat-highlight {
+      display: inline-block;
+      background: rgba(139,92,246,0.08);
+      border: 1px solid rgba(139,92,246,0.2);
+      border-radius: 8px;
+      padding: 0.8rem 1.4rem;
+      font-size: 0.88rem;
+      color: #374151;
+      margin-top: 0.5rem;
+      text-align: center;
+      max-width: 480px;
+    }
+
+    .stat-highlight strong {
+      color: var(--neutral);
+    }
+
+    /* ============================================================
+       SECTION 6 — Persistent pattern
+       ============================================================ */
+    .pattern-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      max-width: 740px;
+      margin: 0 auto;
+    }
+
+    .pattern-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.4rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 1.6rem 1.8rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .pattern-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .pattern-card:nth-child(2) { transition-delay: 0.12s; }
+    .pattern-card:nth-child(3) { transition-delay: 0.24s; }
+
+    .pattern-icon {
+      font-size: 1.8rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .pattern-text {
+      font-size: 0.97rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.72);
+    }
+
+    .pattern-text strong {
+      color: #fff;
+    }
+
+    /* ============================================================
+       SECTION 7 — Why this matters + citation
+       ============================================================ */
+    .matter-text {
+      font-size: 1.08rem;
+      line-height: 1.8;
+      color: #374151;
+      max-width: 720px;
+      margin-bottom: 3rem;
+    }
+
+    .citation-block {
+      max-width: 720px;
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--neutral);
+      border-radius: 0 12px 12px 0;
+      padding: 1.6rem 2rem;
+    }
+
+    .citation-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--neutral);
+      margin-bottom: 0.7rem;
+    }
+
+    .citation-text {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: #374151;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .citation-doi {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--neutral);
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(139,92,246,0.4);
+      padding-bottom: 1px;
+      transition: color 0.2s;
+    }
+
+    .citation-doi:hover { color: #6d28d9; }
+
+    /* ============================================================
+       SCROLL ANIMATION BASE
+       ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ============================================================
+       CHART ANIMATION (SVG draw)
+       ============================================================ */
+    .chart-path-male,
+    .chart-path-female {
+      stroke-dasharray: 2000;
+      stroke-dashoffset: 2000;
+      transition: stroke-dashoffset 1.8s ease;
+    }
+
+    .chart-area-gap {
+      opacity: 0;
+      transition: opacity 1.2s ease 0.6s;
+    }
+
+    .chart-animated .chart-path-male,
+    .chart-animated .chart-path-female {
+      stroke-dashoffset: 0;
+    }
+
+    .chart-animated .chart-area-gap {
+      opacity: 1;
+    }
+
+    /* ============================================================
+       ITALY SVG
+       ============================================================ */
+    .italy-svg-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    /* responsive tweaks */
+    @media (max-width: 600px) {
+      .section-white, .section-grey, .section-dark, .section-dark2 {
+        padding: 3.5rem 1.2rem;
+      }
+      .hero { min-height: 70vh; padding-bottom: 2.5rem; }
+      .hero-legend { flex-wrap: wrap; gap: 0.8rem; }
+      .cities-row { flex-direction: column; gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Fixed badge -->
+
+<!-- ============================================================
+     SECTION 1 — HERO
+     ============================================================ -->
+<section class="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">New research · 2024</p>
+    <h1 class="hero-title">Do men and women<br>experience cities the same way?</h1>
+    <p class="hero-subtitle">Urban vibrancy &nbsp;·&nbsp; 7 Italian cities &nbsp;·&nbsp; Mobile phone data</p>
+    <p class="hero-authors">Collins, Di Clemente, Gutiérrez-Roig &amp; Botta &nbsp;·&nbsp; Environment and Planning B: Urban Analytics and City Science &nbsp;·&nbsp; 2024</p>
+  </div>
+
+  <div class="hero-legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#60a5fa;"></div>
+      More male activity
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#fb923c;"></div>
+      More female activity
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#8b5cf6;"></div>
+      Roughly equal
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 2 — Reading the city through mobile phones
+     ============================================================ -->
+<section class="section-white">
+  <div class="container">
+    <p class="section-label reveal">The data</p>
+    <h2 class="section-title reveal">Reading the city through mobile phones</h2>
+    <p class="section-intro reveal">Modern cities generate continuous streams of digital trace data. Call Detail Records — logged every time someone makes or receives a phone call — let researchers map human presence across an entire city at 15-minute resolution. This study uses that data to ask: do men and women move through and inhabit urban spaces differently?</p>
+
+    <div class="cards-3">
+      <div class="info-card reveal">
+        <span class="info-card-icon">📱</span>
+        <div class="info-card-title">The data</div>
+        <p class="info-card-text">Call Detail Records from Telecom Italia — Italy's largest mobile operator. ~2 months of activity (March–April 2015), captured at 15-minute intervals across 7 cities.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-1">
+        <span class="info-card-icon">🗺️</span>
+        <div class="info-card-title">The method</div>
+        <p class="info-card-text">Each city is divided into a spatial grid. Male and female phone activity is counted per cell, per time window. Results validated against census data: Kendall τ = 0.55–0.72.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-2">
+        <span class="info-card-icon">📐</span>
+        <div class="info-card-title">The measure</div>
+        <p class="info-card-text">Gender difference Δ = Male activity − Female activity. Positive means more men present; negative means more women; zero means equal use.</p>
+      </div>
+    </div>
+
+    <div class="cities-row reveal">
+      <div>
+        <p style="font-size:0.78rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.8rem;">7 cities studied</p>
+        <div class="city-chips">
+          <span class="chip">Milan</span>
+          <span class="chip">Rome</span>
+          <span class="chip">Turin</span>
+          <span class="chip">Naples</span>
+          <span class="chip">Venice</span>
+          <span class="chip">Palermo</span>
+          <span class="chip">Bari</span>
+        </div>
+      </div>
+      <div class="italy-wrap">
+        <!-- Stylised Italy silhouette SVG with 7 city dots -->
+        <svg viewBox="0 0 160 270" width="130" height="220" xmlns="http://www.w3.org/2000/svg" aria-label="Map of Italy showing 7 studied cities">
+          <!-- Italy outline — approximate stylised shape -->
+          <path d="
+            M 72,8
+            C 65,8 55,12 50,18
+            C 44,25 42,32 40,40
+            C 37,50 34,58 33,66
+            C 31,77 31,86 33,95
+            C 35,104 39,110 40,118
+            C 41,126 40,130 38,136
+            C 35,144 30,150 27,157
+            C 24,164 23,172 25,178
+            C 27,184 33,188 38,192
+            C 43,196 46,198 48,203
+            C 51,210 50,218 52,224
+            C 54,230 58,234 62,237
+            C 66,240 70,241 74,240
+            C 79,239 84,236 87,232
+            C 90,228 91,223 93,219
+            C 96,213 100,208 105,205
+            C 112,202 118,203 122,199
+            C 126,195 126,188 124,182
+            C 122,176 117,172 115,166
+            C 113,160 115,154 118,148
+            C 122,142 128,138 131,132
+            C 135,124 134,115 130,108
+            C 126,101 119,97 117,90
+            C 115,82 118,74 117,66
+            C 116,58 112,51 108,45
+            C 104,39 98,35 92,30
+            C 86,24 80,20 74,14
+            C 73,11 73,8 72,8 Z
+            M 48,203 C 44,208 36,214 32,218 C 28,222 27,228 30,232 C 34,236 40,236 44,234 C 48,232 50,228 52,224
+            M 93,219 C 97,224 104,232 110,238 C 116,244 122,248 128,248 C 134,248 140,244 142,238 C 144,232 141,225 137,220 C 133,216 128,214 124,212 C 118,209 112,206 105,205
+          " fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+          <!-- City dots + labels -->
+          <!-- Milan ~(68, 38) -->
+          <circle cx="68" cy="38" r="5" fill="var(--neutral)" opacity="0.9"/>
+          <text x="76" y="42" font-family="Inter,sans-serif" font-size="8.5" fill="#6b7a99" font-weight="600">Milan</text>
+
+          <!-- Turin ~(52, 45) -->
+          <circle cx="52" cy="48" r="5" fill="var(--neutral)" opacity="0.9"/>
+          <text x="36" y="46" font-family="Inter,sans-serif" font-size="8.5" fill="#6b7a99" font-weight="600">Turin</text>
+
+          <!-- Venice ~(88, 40) -->
+          <circle cx="90" cy="42" r="5" fill="var(--neutral)" opacity="0.9"/>
+          <text x="96" y="46" font-family="Inter,sans-serif" font-size="8.5" fill="#6b7a99" font-weight="600">Venice</text>
+
+          <!-- Rome ~(67, 140) -->
+          <circle cx="67" cy="140" r="5" fill="var(--neutral)" opacity="0.9"/>
+          <text x="74" y="144" font-family="Inter,sans-serif" font-size="8.5" fill="#6b7a99" font-weight="600">Rome</text>
+
+          <!-- Naples ~(72, 182) -->
+          <circle cx="72" cy="182" r="5" fill="var(--neutral)" opacity="0.9"/>
+          <text x="78" y="186" font-family="Inter,sans-serif" font-size="8.5" fill="#6b7a99" font-weight="600">Naples</text>
+
+          <!-- Palermo ~(62, 248) -->
+          <circle cx="62" cy="250" r="5" fill="var(--neutral)" opacity="0.9"/>
+          <text x="46" y="262" font-family="Inter,sans-serif" font-size="8.5" fill="#6b7a99" font-weight="600">Palermo</text>
+
+          <!-- Bari ~(110, 192) -->
+          <circle cx="110" cy="192" r="5" fill="var(--neutral)" opacity="0.9"/>
+          <text x="115" y="196" font-family="Inter,sans-serif" font-size="8.5" fill="#6b7a99" font-weight="600">Bari</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 3 — Urban vibrancy has a gender
+     ============================================================ -->
+<section class="section-dark2">
+  <div class="container">
+    <p class="section-label-light reveal">Key findings</p>
+    <h2 class="section-title-light reveal">Urban vibrancy has a gender</h2>
+    <p class="section-intro-light reveal">Across all seven cities, male and female activity patterns track broadly similar rhythms — but they diverge. The gap is not uniform across the day, and — critically — it is not uniform across space. Some parts of a city are consistently more male-dominated; others, more female.</p>
+
+    <div class="chart-wrap reveal" id="chart-container">
+      <svg id="activity-chart" viewBox="0 0 760 260" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        <!-- Grid lines -->
+        <line x1="50" y1="20" x2="50" y2="220" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <line x1="50" y1="220" x2="740" y2="220" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <line x1="50" y1="150" x2="740" y2="150" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4,4"/>
+        <line x1="50" y1="85"  x2="740" y2="85"  stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4,4"/>
+
+        <!-- X-axis labels -->
+        <text x="50"  y="238" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle">00:00</text>
+        <text x="166" y="238" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle">06:00</text>
+        <text x="282" y="238" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle">09:00</text>
+        <text x="397" y="238" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle">12:00</text>
+        <text x="513" y="238" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle">17:00</text>
+        <text x="628" y="238" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle">21:00</text>
+        <text x="740" y="238" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle">24:00</text>
+
+        <!-- Gap shaded area -->
+        <!-- Area between male (above) and female (below) at key divergence points -->
+        <path class="chart-area-gap" d="
+          M 50,200
+          C 80,195 130,185 166,178
+          C 200,170 230,155 265,138
+          C 282,130 295,115 320,100
+          C 340,88 360,80 397,72
+          C 430,65 460,68 490,75
+          C 513,80 530,88 555,98
+          C 580,108 600,115 628,122
+          C 660,130 700,140 740,148
+          L 740,165
+          C 700,158 660,148 628,140
+          C 600,133 580,126 555,116
+          C 530,106 513,98 490,92
+          C 460,84 430,81 397,87
+          C 360,95 340,103 320,115
+          C 295,128 282,143 265,152
+          C 230,168 200,182 166,190
+          C 130,198 80,205 50,208
+          Z
+        " fill="rgba(139,92,246,0.18)"/>
+
+        <!-- Male curve -->
+        <path class="chart-path-male" d="
+          M 50,200
+          C 80,195 130,185 166,178
+          C 200,170 230,155 265,138
+          C 282,130 295,115 320,100
+          C 340,88 360,80 397,72
+          C 430,65 460,68 490,75
+          C 513,80 530,88 555,98
+          C 580,108 600,115 628,122
+          C 660,130 700,140 740,148
+        " fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- Female curve -->
+        <path class="chart-path-female" d="
+          M 50,208
+          C 80,205 130,198 166,190
+          C 200,182 230,168 265,152
+          C 282,143 295,128 320,115
+          C 340,103 360,95 397,87
+          C 430,81 460,84 490,92
+          C 513,98 530,106 555,116
+          C 580,126 600,133 628,140
+          C 660,148 700,158 740,165
+        " fill="none" stroke="#fb923c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- Gap label -->
+        <text x="400" y="54" font-family="Inter,sans-serif" font-size="9" fill="rgba(139,92,246,0.9)" text-anchor="middle" font-weight="600">gender gap</text>
+        <line x1="400" y1="58" x2="400" y2="78" stroke="rgba(139,92,246,0.5)" stroke-width="1" stroke-dasharray="3,2"/>
+
+        <!-- Chart title -->
+        <text x="395" y="12" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,0.45)" text-anchor="middle">Activity across the day — typical city grid cell (schematic)</text>
+      </svg>
+
+      <div class="chart-legend">
+        <div class="chart-legend-item">
+          <div class="chart-legend-line" style="background:#60a5fa;"></div>
+          Male activity
+        </div>
+        <div class="chart-legend-item">
+          <div class="chart-legend-line" style="background:#fb923c;"></div>
+          Female activity
+        </div>
+        <div class="chart-legend-item">
+          <div class="chart-legend-line" style="background:rgba(139,92,246,0.5);"></div>
+          Gender gap
+        </div>
+      </div>
+    </div>
+
+    <blockquote class="pull-quote reveal">
+      "Significant gender differences in urban vibrancy exist across all 7 cities studied, with evidence of spatial clustering."
+    </blockquote>
+    <p style="text-align:center;margin-top:0.8rem;font-size:0.78rem;color:rgba(255,255,255,0.3);font-style:italic;" class="reveal">The gap isn't just about when — it's about where</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 4 — The headline finding
+     ============================================================ -->
+<section class="section-white">
+  <div class="container">
+    <p class="section-label reveal">Core result</p>
+    <h2 class="section-title reveal">The headline finding</h2>
+    <p class="section-intro reveal">Two urban features drive gender differences in opposite directions — and distinguishing between them is crucial for policy. It is not commercial density in general that creates segregation, but specifically the presence of informal social spaces.</p>
+
+    <div class="finding-grid">
+      <div class="finding-card card-red" id="card-left">
+        <span class="finding-icon">☕</span>
+        <h3 class="finding-title">Third places</h3>
+        <p class="finding-subtitle">cafés · pubs · parks · community spaces</p>
+        <span class="arrow-badge up">↑ Larger gender gap</span>
+        <p class="finding-text">Areas with higher density of <strong>third places</strong> — informal social spaces that are neither home nor work — show significantly larger male-female differences in urban activity. These spaces, in theory open to all, appear to be used unequally across genders.</p>
+        <p style="font-size:0.78rem;font-weight:600;color:#6b7a99;margin-bottom:0.5rem;letter-spacing:0.05em;">5 CATEGORIES EXAMINED</p>
+        <div class="category-pills">
+          <span class="cat-pill">Eating &amp; drinking</span>
+          <span class="cat-pill">Organised activities</span>
+          <span class="cat-pill">Outdoor</span>
+          <span class="cat-pill">Commercial venues</span>
+          <span class="cat-pill">Commercial services</span>
+        </div>
+      </div>
+
+      <div class="finding-card card-teal" id="card-right">
+        <span class="finding-icon">📍</span>
+        <h3 class="finding-title">Points of Interest</h3>
+        <p class="finding-subtitle">shops · services · amenities · transport</p>
+        <span class="arrow-badge down">↓ Smaller gender gap</span>
+        <p class="finding-text">Areas with higher overall density of <strong>Points of Interest</strong> (all types combined) show <em>smaller</em> male-female differences in urban activity. General commercial and civic density is used more equally across genders.</p>
+        <p style="font-size:0.78rem;font-weight:600;color:#6b7a99;margin-bottom:0.5rem;letter-spacing:0.05em;">CONSISTENT ACROSS</p>
+        <div class="category-pills">
+          <span class="cat-pill teal">4 largest cities</span>
+          <span class="cat-pill teal">Aggregate model</span>
+          <span class="cat-pill teal">Indirect effects</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="finding-note reveal">
+      These two effects <strong>oppose each other</strong> — it is specifically the social and informal character of third places, not commercial density in general, that drives gender segregation in how cities are used.
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 5 — Effects spill beyond borders
+     ============================================================ -->
+<section class="section-grey">
+  <div class="container">
+    <p class="section-label reveal">Spatial dynamics</p>
+    <h2 class="section-title reveal">Effects spill beyond borders</h2>
+    <p class="section-intro reveal" style="max-width:640px;">A café district does not only affect the block it sits on. Gender-use patterns in one area bleed into neighbouring grid cells — a spatial spillover that conventional regression models would miss entirely. The study uses Spatial Autoregressive models (SAR) to capture this.</p>
+
+    <div class="spillover-wrap">
+      <p class="spillover-hint reveal">Click or hover the grid to see spillover effects</p>
+      <div id="spillover-grid" aria-label="Interactive spillover diagram" role="img">
+        <!-- 5×5 = 25 cells, generated by JS -->
+      </div>
+      <p class="spillover-label reveal">Changes in one area's gender gap ripple into neighbouring grid cells — the indirect effects captured here were <strong>consistent and significant</strong> across the three largest cities and the pooled model.</p>
+      <div class="stat-highlight reveal">
+        <strong>Global Moran's I ranges from 0.013 to 0.8 across cities</strong><br>
+        Spatial clustering of gender differences confirmed in all 7 cities (mean: 0.2)
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 6 — A persistent pattern
+     ============================================================ -->
+<section class="section-dark">
+  <div class="container">
+    <p class="section-label-light reveal">Additional findings</p>
+    <h2 class="section-title-light reveal">A persistent pattern</h2>
+    <p class="section-intro-light reveal">The gender gap in urban use is not an artefact of a particular time of day, type of week, or city size. It is a structural feature of urban space.</p>
+
+    <div class="pattern-cards">
+      <div class="pattern-card" id="pat-1">
+        <div class="pattern-icon">⏰</div>
+        <p class="pattern-text"><strong>Time-stable</strong> — No strong differences between weekday and weekend, or between morning, afternoon, evening and night. The gender gap in how cities are used is a persistent structural feature, not a time-of-day effect.</p>
+      </div>
+      <div class="pattern-card" id="pat-2">
+        <div class="pattern-icon">🏙️</div>
+        <p class="pattern-text"><strong>Density matters more than diversity</strong> — The diversity of urban features was generally not significant; density was. This contrasts with earlier work on age groups, where diversity played a larger role.</p>
+      </div>
+      <div class="pattern-card" id="pat-3">
+        <div class="pattern-icon">📏</div>
+        <p class="pattern-text"><strong>Smaller cities, sharper effects</strong> — In Milan and Rome the associations are present but more diffuse. In smaller cities such as Bari and Palermo the relationship between urban features and gender differences is stronger — possibly because residents have fewer alternative spaces to choose from.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 7 — Why this matters
+     ============================================================ -->
+<section class="section-white">
+  <div class="container">
+    <p class="section-label reveal">Implications</p>
+    <h2 class="section-title reveal">Why this matters</h2>
+
+    <p class="matter-text reveal">
+      Understanding <em>where</em> and <em>how</em> gender segregation manifests in cities — beyond where people live and work — is essential for designing fairer, more equitable urban environments. Streets, parks, and cafés that appear neutral on a planning map may in practice be used very differently by men and women.
+    </p>
+    <p class="matter-text reveal reveal-delay-1">
+      This research demonstrates that mobile phone data, combined with open geographic data from OpenStreetMap, can reveal gender inequalities in urban space at a resolution and temporal frequency that is simply impossible to achieve with traditional survey or census methods. As mobile data becomes more widely available and privacy-preserving methods mature, this approach opens a new window into the lived experience of cities — across genders, time of day, and place.
+    </p>
+
+    <div class="citation-block reveal reveal-delay-2">
+      <div class="citation-label">Full citation</div>
+      <p class="citation-text">
+        Collins, T., Di Clemente, R., Gutiérrez-Roig, M., &amp; Botta, F. (2024). Spatiotemporal gender differences in urban vibrancy. <em>Environment and Planning B: Urban Analytics and City Science</em>, <strong>51</strong>(7), 1430–1446.
+      </p>
+      <a class="citation-doi" href="https://doi.org/10.1177/23998083231209073" target="_blank" rel="noopener noreferrer">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15,3 21,3 21,9"/>
+          <line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+        doi.org/10.1177/23998083231209073
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+/* ----------------------------------------------------------------
+   SECTION 1: Hero canvas — real Milan street map (OpenStreetMap)
+   Roads drawn from live Overpass API data. Male (blue) and female
+   (orange) particles navigate the actual street network.
+   ---------------------------------------------------------------- */
+(function () {
+  const canvas = document.getElementById('hero-canvas');
+  const ctx    = canvas.getContext('2d');
+
+  const MALE   = { r: 96,  g: 165, b: 250 };  /* #60a5fa */
+  const FEMALE = { r: 251, g: 146, b: 60  };  /* #fb923c */
+
+  /* ----------------------------------------------------------------
+     Road data: OpenStreetMap via Overpass API, central Milan
+     (area around Duomo / Piazza della Scala, ~600 m across)
+     ---------------------------------------------------------------- */
+  const ROADS = [
+    {name:"Via San Clemente",pts:[{lat:45.4625783,lon:9.1939230},{lat:45.4625921,lon:9.1938770},{lat:45.4626036,lon:9.1938387},{lat:45.4626192,lon:9.1938088},{lat:45.4626421,lon:9.1937756},{lat:45.4626854,lon:9.1937327},{lat:45.4627179,lon:9.1937091},{lat:45.4627531,lon:9.1936893},{lat:45.4627971,lon:9.1936681}]},
+    {name:"Via Cardinale Federico",pts:[{lat:45.4628667,lon:9.1854833},{lat:45.4629437,lon:9.1855773},{lat:45.4629767,lon:9.1856372},{lat:45.4630188,lon:9.1857208},{lat:45.4631929,lon:9.1859616}]},
+    {name:"Via Gaetano Negri",pts:[{lat:45.4649805,lon:9.1835692},{lat:45.4649942,lon:9.1835694},{lat:45.4650159,lon:9.1835782},{lat:45.4650261,lon:9.1836134},{lat:45.4651717,lon:9.1843953},{lat:45.4653216,lon:9.1851028},{lat:45.4653397,lon:9.1851872}]},
+    {name:"Via Santa Maria Segreta",pts:[{lat:45.4659690,lon:9.1848766},{lat:45.4659127,lon:9.1849032},{lat:45.4654035,lon:9.1851620},{lat:45.4653397,lon:9.1851872}]},
+    {name:"Via Cordusio",pts:[{lat:45.4647349,lon:9.1854664},{lat:45.4648217,lon:9.1855980},{lat:45.4651506,lon:9.1860965}]},
+    {name:"Via Dogana",pts:[{lat:45.4632950,lon:9.1885189},{lat:45.4632950,lon:9.1885364},{lat:45.4632949,lon:9.1885700},{lat:45.4632929,lon:9.1891058}]},
+    {name:"Via Maurizio Gonzaga",pts:[{lat:45.4620275,lon:9.1897677},{lat:45.4620039,lon:9.1897349},{lat:45.4619639,lon:9.1896792},{lat:45.4617204,lon:9.1893215},{lat:45.4613627,lon:9.1887961}]},
+    {name:"Via Gaetano Giardino",pts:[{lat:45.4627117,lon:9.1897074},{lat:45.4627047,lon:9.1895759}]},
+    {name:"Piazza Filippo Meda",pts:[{lat:45.4667277,lon:9.1928607},{lat:45.4667725,lon:9.1929656},{lat:45.4668284,lon:9.1930868}]},
+    {name:"Via Pietro Verri",pts:[{lat:45.4676975,lon:9.1945319},{lat:45.4678327,lon:9.1947598}]},
+    {name:"Via Ulrico Hoepli",pts:[{lat:45.4658886,lon:9.1920361},{lat:45.4659409,lon:9.1920311},{lat:45.4659952,lon:9.1920534},{lat:45.4660332,lon:9.1920784}]},
+    {name:"Via San Paolo",pts:[{lat:45.4665182,lon:9.1930235},{lat:45.4661532,lon:9.1932510},{lat:45.4659957,lon:9.1933436}]},
+    {name:"Via Moneta",pts:[{lat:45.4641678,lon:9.1845736},{lat:45.4641111,lon:9.1846008},{lat:45.4640621,lon:9.1846372},{lat:45.4637298,lon:9.1853479},{lat:45.4637053,lon:9.1853881},{lat:45.4636716,lon:9.1854315},{lat:45.4636451,lon:9.1854493}]},
+    {name:"Via Verziere",pts:[{lat:45.4628633,lon:9.1949750},{lat:45.4629015,lon:9.1952770},{lat:45.4629317,lon:9.1955822}]},
+    {name:"Via Francesco Pecorari",pts:[{lat:45.4627073,lon:9.1923080},{lat:45.4626921,lon:9.1922269},{lat:45.4626583,lon:9.1921359},{lat:45.4625359,lon:9.1918053},{lat:45.4624858,lon:9.1916973},{lat:45.4622201,lon:9.1913177},{lat:45.4621467,lon:9.1912718}]},
+    {name:"Via Flavio Baracchini",pts:[{lat:45.4620304,lon:9.1902546},{lat:45.4620112,lon:9.1902756},{lat:45.4619771,lon:9.1903078},{lat:45.4619318,lon:9.1903664}]},
+    {name:"Via Rastrelli",pts:[{lat:45.4621997,lon:9.1911854},{lat:45.4626525,lon:9.1906919},{lat:45.4626796,lon:9.1906391},{lat:45.4627002,lon:9.1905690}]},
+    {name:"Largo Ildefonso Schuster",pts:[{lat:45.4626917,lon:9.1925345},{lat:45.4627002,lon:9.1924214},{lat:45.4627073,lon:9.1923080}]},
+    {name:"Via delle Ore",pts:[{lat:45.4630686,lon:9.1936408},{lat:45.4630657,lon:9.1936205},{lat:45.4630556,lon:9.1935576},{lat:45.4630047,lon:9.1932596},{lat:45.4628697,lon:9.1927391}]},
+    {name:"Via Rastrelli",pts:[{lat:45.4621467,lon:9.1912718},{lat:45.4620863,lon:9.1913635},{lat:45.4616420,lon:9.1920366}]},
+    {name:"Via Palazzo Reale",pts:[{lat:45.4627073,lon:9.1923080},{lat:45.4626454,lon:9.1923662},{lat:45.4626372,lon:9.1923751},{lat:45.4625569,lon:9.1924313},{lat:45.4620932,lon:9.1927599},{lat:45.4620231,lon:9.1927977}]},
+    {name:"Piazza Santo Stefano",pts:[{lat:45.4625186,lon:9.1941511},{lat:45.4624732,lon:9.1941953},{lat:45.4623261,lon:9.1943367}]},
+    {name:"Via Larga",pts:[{lat:45.4621227,lon:9.1933007},{lat:45.4620729,lon:9.1933502},{lat:45.4619981,lon:9.1934250}]},
+    {name:"Via San Protaso",pts:[{lat:45.4658189,lon:9.1883360},{lat:45.4658295,lon:9.1883174},{lat:45.4658603,lon:9.1882633},{lat:45.4658801,lon:9.1882285},{lat:45.4662302,lon:9.1876319}]},
+    {name:"Piazza Paolo Ferrari",pts:[{lat:45.4668392,lon:9.1886319},{lat:45.4668748,lon:9.1886773},{lat:45.4670179,lon:9.1887546},{lat:45.4671525,lon:9.1889168},{lat:45.4671794,lon:9.1889515}]},
+    {name:"Via San Prospero",pts:[{lat:45.4660668,lon:9.1862834},{lat:45.4660652,lon:9.1862647},{lat:45.4660612,lon:9.1862102},{lat:45.4660186,lon:9.1856363},{lat:45.4659985,lon:9.1853571},{lat:45.4659916,lon:9.1852774}]},
+    {name:"Via Bassano Porrone",pts:[{lat:45.4662302,lon:9.1876319},{lat:45.4663081,lon:9.1877266}]},
+    {name:"Via Clerici",pts:[{lat:45.4664756,lon:9.1876098},{lat:45.4664813,lon:9.1876060},{lat:45.4666011,lon:9.1875234},{lat:45.4668522,lon:9.1873161},{lat:45.4675740,lon:9.1867420},{lat:45.4675853,lon:9.1867324}]},
+    {name:"Via Bigli",pts:[{lat:45.4697573,lon:9.1924634},{lat:45.4697506,lon:9.1924757},{lat:45.4697081,lon:9.1925531},{lat:45.4696920,lon:9.1925826},{lat:45.4695189,lon:9.1928983},{lat:45.4693029,lon:9.1932439},{lat:45.4692218,lon:9.1933720},{lat:45.4691167,lon:9.1934878},{lat:45.4690334,lon:9.1935738},{lat:45.4686660,lon:9.1936752},{lat:45.4683596,lon:9.1939134},{lat:45.4680091,lon:9.1942257},{lat:45.4677474,lon:9.1944842},{lat:45.4677284,lon:9.1945016},{lat:45.4676975,lon:9.1945319}]},
+    {name:"Via degli Omenoni",pts:[{lat:45.4673972,lon:9.1925736},{lat:45.4673849,lon:9.1925426},{lat:45.4673798,lon:9.1925297},{lat:45.4673373,lon:9.1923929},{lat:45.4671716,lon:9.1920092},{lat:45.4671511,lon:9.1919575},{lat:45.4670926,lon:9.1919192},{lat:45.4670665,lon:9.1919032}]},
+    {name:"Piazza Filippo Meda",pts:[{lat:45.4669920,lon:9.1925868},{lat:45.4670094,lon:9.1926269},{lat:45.4670622,lon:9.1927483},{lat:45.4671036,lon:9.1927693},{lat:45.4671286,lon:9.1927584}]},
+    {name:"Piazza Filippo Meda",pts:[{lat:45.4669920,lon:9.1925868},{lat:45.4669798,lon:9.1926446},{lat:45.4669557,lon:9.1926869},{lat:45.4668713,lon:9.1927607}]},
+    {name:"Via Gerolamo Morone",pts:[{lat:45.4684445,lon:9.1910524},{lat:45.4684367,lon:9.1910669},{lat:45.4684034,lon:9.1911323},{lat:45.4682735,lon:9.1913694},{lat:45.4682160,lon:9.1915048},{lat:45.4681919,lon:9.1916377},{lat:45.4681688,lon:9.1917868},{lat:45.4681114,lon:9.1919085},{lat:45.4680272,lon:9.1920459},{lat:45.4678329,lon:9.1922333}]},
+    {name:"Via Agnello",pts:[{lat:45.4655118,lon:9.1936182},{lat:45.4655006,lon:9.1936260},{lat:45.4654871,lon:9.1936312},{lat:45.4654703,lon:9.1936326},{lat:45.4654563,lon:9.1936296},{lat:45.4654424,lon:9.1936217},{lat:45.4654327,lon:9.1936102},{lat:45.4654156,lon:9.1935669},{lat:45.4654046,lon:9.1935434}]},
+    {name:"Corso Giacomo Matteotti",pts:[{lat:45.4669816,lon:9.1937506},{lat:45.4669762,lon:9.1938690},{lat:45.4669294,lon:9.1950837},{lat:45.4669260,lon:9.1951923}]},
+    {name:"Via dell'Ambrosiana",pts:[{lat:45.4636451,lon:9.1854493},{lat:45.4636133,lon:9.1854531},{lat:45.4635855,lon:9.1854432},{lat:45.4635606,lon:9.1854218},{lat:45.4633894,lon:9.1851701},{lat:45.4633685,lon:9.1851398},{lat:45.4632184,lon:9.1850383},{lat:45.4631991,lon:9.1850322}]},
+    {name:"Via dei Bossi",pts:[{lat:45.4675853,lon:9.1867324},{lat:45.4674613,lon:9.1863036},{lat:45.4673637,lon:9.1858865},{lat:45.4673623,lon:9.1858535},{lat:45.4673437,lon:9.1857709}]},
+    {name:"Via Giuseppe Mengoni",pts:[{lat:45.4646992,lon:9.1885490},{lat:45.4648234,lon:9.1885464},{lat:45.4649516,lon:9.1885434}]},
+    {name:"Via Silvio Pellico",pts:[{lat:45.4651406,lon:9.1892536},{lat:45.4649092,lon:9.1892538}]},
+    {name:"Via San Pietro all'Orto",pts:[{lat:45.4669260,lon:9.1951923},{lat:45.4670374,lon:9.1951353},{lat:45.4676485,lon:9.1948555}]},
+    {name:"Via San Pietro all'Orto",pts:[{lat:45.4676485,lon:9.1948555},{lat:45.4676853,lon:9.1946039},{lat:45.4676975,lon:9.1945319}]},
+    {name:"Piazza Armando Diaz",pts:[{lat:45.4627117,lon:9.1897074},{lat:45.4621444,lon:9.1897002},{lat:45.4620591,lon:9.1896989},{lat:45.4620429,lon:9.1897169},{lat:45.4620275,lon:9.1897677}]},
+    {name:"Via Gaetano Giardino",pts:[{lat:45.4627047,lon:9.1895759},{lat:45.4627140,lon:9.1895365},{lat:45.4627053,lon:9.1894861}]},
+    {name:"Via Gaetano Giardino",pts:[{lat:45.4627053,lon:9.1894861},{lat:45.4627168,lon:9.1891618},{lat:45.4627204,lon:9.1889905},{lat:45.4627399,lon:9.1888615},{lat:45.4627494,lon:9.1888034},{lat:45.4627508,lon:9.1887802},{lat:45.4627518,lon:9.1887601},{lat:45.4627514,lon:9.1887400},{lat:45.4627396,lon:9.1886251},{lat:45.4627313,lon:9.1885117}]},
+    {name:"Via Falcone",pts:[{lat:45.4626896,lon:9.1882240},{lat:45.4624576,lon:9.1875533},{lat:45.4623534,lon:9.1872733},{lat:45.4623149,lon:9.1872229}]},
+    {name:"Via Pietro Verri",pts:[{lat:45.4676975,lon:9.1945319},{lat:45.4676744,lon:9.1944931},{lat:45.4672239,lon:9.1937370},{lat:45.4672057,lon:9.1937140},{lat:45.4671836,lon:9.1936972},{lat:45.4671599,lon:9.1936905}]},
+    {name:"Largo Bortolo Belotti",pts:[{lat:45.4663081,lon:9.1877266},{lat:45.4664126,lon:9.1879269}]},
+    {name:"Via Santa Margherita",pts:[{lat:45.4652608,lon:9.1877864},{lat:45.4652737,lon:9.1877942},{lat:45.4655697,lon:9.1880750},{lat:45.4656494,lon:9.1881720},{lat:45.4656950,lon:9.1882274}]},
+    {name:"Largo Claudio Abbado",pts:[{lat:45.4656950,lon:9.1882274},{lat:45.4656911,lon:9.1882433},{lat:45.4656760,lon:9.1883039},{lat:45.4656720,lon:9.1885111},{lat:45.4656716,lon:9.1885469}]},
+    {name:"Via San Dalmazio",pts:[{lat:45.4664126,lon:9.1879269},{lat:45.4664236,lon:9.1879474},{lat:45.4667753,lon:9.1885496}]},
+    {name:"Via Bassano Porrone",pts:[{lat:45.4662302,lon:9.1876319},{lat:45.4662197,lon:9.1875453},{lat:45.4660758,lon:9.1863653},{lat:45.4660687,lon:9.1863016},{lat:45.4660668,lon:9.1862834}]},
+    {name:"Via Filodrammatici",pts:[{lat:45.4671794,lon:9.1889515},{lat:45.4670247,lon:9.1892732},{lat:45.4670113,lon:9.1893010},{lat:45.4669608,lon:9.1893915},{lat:45.4669512,lon:9.1894087}]},
+    {name:"Largo Claudio Abbado",pts:[{lat:45.4656716,lon:9.1885469},{lat:45.4658485,lon:9.1885484},{lat:45.4660659,lon:9.1885520},{lat:45.4660871,lon:9.1885523}]},
+    {name:"Via dell'Unione",pts:[{lat:45.4623149,lon:9.1872229},{lat:45.4622893,lon:9.1872600},{lat:45.4622245,lon:9.1873062},{lat:45.4621492,lon:9.1873532},{lat:45.4620289,lon:9.1874283}]},
+    {name:"Via Armorari",pts:[{lat:45.4642891,lon:9.1860180},{lat:45.4646489,lon:9.1853361}]},
+    {name:"Via Victor Hugo",pts:[{lat:45.4641329,lon:9.1876551},{lat:45.4640786,lon:9.1875692},{lat:45.4640557,lon:9.1875315},{lat:45.4637539,lon:9.1870620},{lat:45.4637361,lon:9.1870196},{lat:45.4637386,lon:9.1869509},{lat:45.4637599,lon:9.1868730},{lat:45.4637924,lon:9.1868031}]},
+    {name:"Via Torino",pts:[{lat:45.4638256,lon:9.1881670},{lat:45.4638003,lon:9.1881926},{lat:45.4637781,lon:9.1881991},{lat:45.4637613,lon:9.1882001},{lat:45.4637317,lon:9.1881989},{lat:45.4637037,lon:9.1881915},{lat:45.4636734,lon:9.1881798},{lat:45.4636198,lon:9.1881507}]},
+    {name:"Via Cesare Beccaria",pts:[{lat:45.4637522,lon:9.1948202},{lat:45.4637388,lon:9.1947863},{lat:45.4637306,lon:9.1947312},{lat:45.4637137,lon:9.1945507},{lat:45.4636984,lon:9.1943616},{lat:45.4636862,lon:9.1942492},{lat:45.4636743,lon:9.1941774},{lat:45.4636587,lon:9.1941092}]},
+    {name:"Via Tommaso Grossi",pts:[{lat:45.4656151,lon:9.1868531},{lat:45.4656144,lon:9.1874282},{lat:45.4656144,lon:9.1879378},{lat:45.4656148,lon:9.1879866},{lat:45.4656227,lon:9.1880602},{lat:45.4656378,lon:9.1881192},{lat:45.4656545,lon:9.1881556},{lat:45.4656950,lon:9.1882274}]},
+    {name:"Via Alessandro Manzoni",pts:[{lat:45.4674472,lon:9.1900080},{lat:45.4674688,lon:9.1900294},{lat:45.4674927,lon:9.1900531},{lat:45.4677584,lon:9.1903404},{lat:45.4680732,lon:9.1906724},{lat:45.4682587,lon:9.1908613},{lat:45.4682956,lon:9.1908986}]},
+    {name:"Via Broletto",pts:[{lat:45.4657231,lon:9.1864363},{lat:45.4657651,lon:9.1864101},{lat:45.4658023,lon:9.1863888},{lat:45.4660207,lon:9.1862998},{lat:45.4660668,lon:9.1862834}]},
+    {name:"Largo Raffaele Mattioli",pts:[{lat:45.4670665,lon:9.1919032},{lat:45.4670707,lon:9.1917920},{lat:45.4670562,lon:9.1916504},{lat:45.4670372,lon:9.1915882},{lat:45.4670107,lon:9.1915256},{lat:45.4669278,lon:9.1913358},{lat:45.4669026,lon:9.1912621},{lat:45.4668901,lon:9.1911854},{lat:45.4668849,lon:9.1911257},{lat:45.4668860,lon:9.1910466},{lat:45.4668943,lon:9.1909886}]},
+    {name:"Piazza della Scala",pts:[{lat:45.4671655,lon:9.1903315},{lat:45.4672859,lon:9.1901464},{lat:45.4673257,lon:9.1900766},{lat:45.4673840,lon:9.1899743},{lat:45.4673917,lon:9.1899608}]},
+    {name:"Via Case Rotte",pts:[{lat:45.4668943,lon:9.1909886},{lat:45.4669136,lon:9.1908926},{lat:45.4669501,lon:9.1907944},{lat:45.4670115,lon:9.1906619}]},
+    {name:"Via Silvio Pellico",pts:[{lat:45.4665899,lon:9.1890074},{lat:45.4665409,lon:9.1890954},{lat:45.4664606,lon:9.1892405},{lat:45.4664201,lon:9.1892707},{lat:45.4656092,lon:9.1892546}]},
+    {name:"Via dell'Unione",pts:[{lat:45.4623149,lon:9.1872229},{lat:45.4625385,lon:9.1869146},{lat:45.4625673,lon:9.1868886},{lat:45.4625809,lon:9.1868758}]},
+    {name:"Piazza Santa Maria Beltrade",pts:[{lat:45.4629370,lon:9.1863282},{lat:45.4628519,lon:9.1864975},{lat:45.4626623,lon:9.1867917},{lat:45.4626441,lon:9.1868196},{lat:45.4625953,lon:9.1868637},{lat:45.4625809,lon:9.1868758}]},
+    {name:"Via delle Asole",pts:[{lat:45.4631929,lon:9.1859616},{lat:45.4631652,lon:9.1860038},{lat:45.4629370,lon:9.1863282}]},
+    {name:"Via Valpetrosa",pts:[{lat:45.4624566,lon:9.1853554},{lat:45.4625528,lon:9.1853240},{lat:45.4625730,lon:9.1853247},{lat:45.4627411,lon:9.1853576}]},
+    {name:"Via Valpetrosa",pts:[{lat:45.4618093,lon:9.1857666},{lat:45.4620041,lon:9.1853214},{lat:45.4620258,lon:9.1852851},{lat:45.4620565,lon:9.1852640},{lat:45.4620888,lon:9.1852619},{lat:45.4621183,lon:9.1852671},{lat:45.4623070,lon:9.1853704},{lat:45.4623984,lon:9.1853774},{lat:45.4624566,lon:9.1853554}]},
+    {name:"Piazza Fontana",pts:[{lat:45.4634853,lon:9.1936094},{lat:45.4633459,lon:9.1936135},{lat:45.4633074,lon:9.1936203},{lat:45.4632862,lon:9.1936261},{lat:45.4632641,lon:9.1936346}]},
+    {name:"Piazza San Sepolcro",pts:[{lat:45.4630952,lon:9.1849642},{lat:45.4629800,lon:9.1851114},{lat:45.4629489,lon:9.1851623},{lat:45.4629251,lon:9.1852322},{lat:45.4629046,lon:9.1853208},{lat:45.4628806,lon:9.1854568},{lat:45.4628667,lon:9.1854833}]},
+    {name:"Largo Claudio Abbado",pts:[{lat:45.4658189,lon:9.1883360},{lat:45.4658146,lon:9.1883308},{lat:45.4657363,lon:9.1882636},{lat:45.4656950,lon:9.1882274}]},
+    {name:"Largo Claudio Abbado",pts:[{lat:45.4658189,lon:9.1883360},{lat:45.4659953,lon:9.1884729},{lat:45.4660603,lon:9.1885291},{lat:45.4660871,lon:9.1885523}]},
+    {name:"Piazza San Sepolcro",pts:[{lat:45.4631991,lon:9.1850322},{lat:45.4631638,lon:9.1850174},{lat:45.4631211,lon:9.1850047},{lat:45.4630952,lon:9.1849642}]},
+    {name:"Largo Jorge Luis Borges",pts:[{lat:45.4627313,lon:9.1885117},{lat:45.4627302,lon:9.1884913},{lat:45.4627262,lon:9.1884192},{lat:45.4627136,lon:9.1883153},{lat:45.4626896,lon:9.1882240}]},
+    {name:"Via Torino",pts:[{lat:45.4637433,lon:9.1885380},{lat:45.4637112,lon:9.1885237},{lat:45.4637027,lon:9.1885151},{lat:45.4636899,lon:9.1884976},{lat:45.4636767,lon:9.1884774}]},
+    {name:"Via Giuseppe Mazzini",pts:[{lat:45.4636767,lon:9.1884774},{lat:45.4636568,lon:9.1884890},{lat:45.4636373,lon:9.1884997},{lat:45.4636005,lon:9.1885151},{lat:45.4635267,lon:9.1885191},{lat:45.4632950,lon:9.1885189}]},
+    {name:"Via Torino",pts:[{lat:45.4636198,lon:9.1881507},{lat:45.4635946,lon:9.1881198},{lat:45.4632343,lon:9.1876777},{lat:45.4631819,lon:9.1876134}]},
+    {name:"Piazza Cordusio",pts:[{lat:45.4654989,lon:9.1864315},{lat:45.4655230,lon:9.1864508},{lat:45.4655498,lon:9.1864844},{lat:45.4655639,lon:9.1865082},{lat:45.4655731,lon:9.1865263},{lat:45.4655824,lon:9.1865521},{lat:45.4655930,lon:9.1865896},{lat:45.4656020,lon:9.1866295},{lat:45.4656071,lon:9.1866633},{lat:45.4656131,lon:9.1867291},{lat:45.4656142,lon:9.1867496},{lat:45.4656144,lon:9.1867693},{lat:45.4656151,lon:9.1868531}]},
+    {name:"Piazza Cordusio",pts:[{lat:45.4656997,lon:9.1864545},{lat:45.4656495,lon:9.1865847},{lat:45.4656392,lon:9.1866275},{lat:45.4656224,lon:9.1867309},{lat:45.4656204,lon:9.1867478},{lat:45.4656179,lon:9.1867850},{lat:45.4656151,lon:9.1868531}]},
+    {name:"Piazza Cordusio",pts:[{lat:45.4654989,lon:9.1864315},{lat:45.4655252,lon:9.1864441},{lat:45.4655508,lon:9.1864524},{lat:45.4655842,lon:9.1864591},{lat:45.4656011,lon:9.1864614},{lat:45.4656182,lon:9.1864619},{lat:45.4656997,lon:9.1864545}]},
+    {name:"Via Orefici",pts:[{lat:45.4650120,lon:9.1864343},{lat:45.4648965,lon:9.1865843}]},
+    {name:"Via San Tomaso",pts:[{lat:45.4671986,lon:9.1845264},{lat:45.4672211,lon:9.1846127},{lat:45.4672951,lon:9.1849084},{lat:45.4673363,lon:9.1850589},{lat:45.4673551,lon:9.1851197},{lat:45.4673717,lon:9.1851716},{lat:45.4673891,lon:9.1852145},{lat:45.4674050,lon:9.1852660},{lat:45.4674274,lon:9.1853474},{lat:45.4674753,lon:9.1855330},{lat:45.4674929,lon:9.1856134},{lat:45.4675108,lon:9.1857022},{lat:45.4675145,lon:9.1857166}]},
+    {name:"Via Broletto",pts:[{lat:45.4660668,lon:9.1862834},{lat:45.4661712,lon:9.1862413},{lat:45.4665512,lon:9.1860897},{lat:45.4669349,lon:9.1859342},{lat:45.4672867,lon:9.1857933},{lat:45.4673437,lon:9.1857709}]},
+    {name:"Via San Clemente",pts:[{lat:45.4630686,lon:9.1936408},{lat:45.4627971,lon:9.1936681}]},
+    {name:"Via San Clemente",pts:[{lat:45.4625355,lon:9.1936621},{lat:45.4624744,lon:9.1936649},{lat:45.4624603,lon:9.1936619},{lat:45.4624469,lon:9.1936554}]},
+    {name:"Piazza Fontana",pts:[{lat:45.4632641,lon:9.1936346},{lat:45.4633152,lon:9.1936544},{lat:45.4633471,lon:9.1936825},{lat:45.4633581,lon:9.1937011},{lat:45.4633706,lon:9.1937335},{lat:45.4633839,lon:9.1937969}]},
+    {name:"Via Torino",pts:[{lat:45.4631819,lon:9.1876134},{lat:45.4631291,lon:9.1875457}]},
+    {name:"Piazza Armando Diaz",pts:[{lat:45.4622878,lon:9.1902681},{lat:45.4624253,lon:9.1902656},{lat:45.4625824,lon:9.1902560},{lat:45.4626563,lon:9.1902528},{lat:45.4627080,lon:9.1902479}]},
+    {name:"Piazza Armando Diaz",pts:[{lat:45.4620275,lon:9.1897677},{lat:45.4620294,lon:9.1899261},{lat:45.4620277,lon:9.1902253},{lat:45.4620304,lon:9.1902546}]},
+    {name:"Piazza Belgioioso",pts:[{lat:45.4678329,lon:9.1922333},{lat:45.4675547,lon:9.1924508},{lat:45.4673972,lon:9.1925736}]},
+    {name:"Piazza Belgioioso",pts:[{lat:45.4671764,lon:9.1927238},{lat:45.4673972,lon:9.1925736}]},
+    {name:"Piazza Filippo Meda",pts:[{lat:45.4671599,lon:9.1936905},{lat:45.4671339,lon:9.1936958},{lat:45.4670213,lon:9.1937473},{lat:45.4670011,lon:9.1937506},{lat:45.4669816,lon:9.1937506}]},
+    {name:"Corso Europa",pts:[{lat:45.4632773,lon:9.1954123},{lat:45.4631200,lon:9.1950913},{lat:45.4630158,lon:9.1948766}]},
+    {name:"Piazza Filippo Meda",pts:[{lat:45.4669632,lon:9.1935987},{lat:45.4669771,lon:9.1936636},{lat:45.4669810,lon:9.1937090},{lat:45.4669816,lon:9.1937506}]},
+    {name:"Via Spadari",pts:[{lat:45.4631819,lon:9.1876134},{lat:45.4631909,lon:9.1876000},{lat:45.4632098,lon:9.1875744}]},
+    {name:"Via Fosse Ardeatine",pts:[{lat:45.4625507,lon:9.1845046},{lat:45.4625434,lon:9.1845472},{lat:45.4624296,lon:9.1852125},{lat:45.4624321,lon:9.1852654},{lat:45.4624566,lon:9.1853554}]},
+    {name:"Via Carlo Cattaneo",pts:[{lat:45.4651409,lon:9.1891662},{lat:45.4651415,lon:9.1888986},{lat:45.4651426,lon:9.1886472},{lat:45.4651426,lon:9.1886320},{lat:45.4651429,lon:9.1885409}]},
+    {name:"Piazza della Scala",pts:[{lat:45.4673917,lon:9.1899608},{lat:45.4674472,lon:9.1900080}]},
+    {name:"Via Alessandro Manzoni",pts:[{lat:45.4682956,lon:9.1908986},{lat:45.4684445,lon:9.1910524}]},
+    {name:"Via Meravigli",pts:[{lat:45.4659889,lon:9.1850369},{lat:45.4659690,lon:9.1848766}]},
+    {name:"Via Santa Margherita",pts:[{lat:45.4665170,lon:9.1889408},{lat:45.4665899,lon:9.1890074}]},
+    {name:"Via Silvio Pellico",pts:[{lat:45.4656092,lon:9.1892546},{lat:45.4656005,lon:9.1892546},{lat:45.4651406,lon:9.1892536}]},
+    {name:"Piazza Cordusio",pts:[{lat:45.4652323,lon:9.1862587},{lat:45.4652409,lon:9.1862747},{lat:45.4652499,lon:9.1862914}]},
+    {name:"Passaggio Centrale",pts:[{lat:45.4645593,lon:9.1863699},{lat:45.4646365,lon:9.1862480}]},
+    {name:"Passaggio Centrale",pts:[{lat:45.4642775,lon:9.1867172},{lat:45.4643484,lon:9.1866293},{lat:45.4643550,lon:9.1866233},{lat:45.4645593,lon:9.1863699}]},
+    {name:"Via Larga",pts:[{lat:45.4630158,lon:9.1948766},{lat:45.4629821,lon:9.1947855}]},
+    {name:"Via Cesare Cantù",pts:[{lat:45.4640142,lon:9.1865190},{lat:45.4640723,lon:9.1865927}]},
+    {name:"Via Gabrio Casati",pts:[{lat:45.4655376,lon:9.1855455},{lat:45.4653576,lon:9.1852593},{lat:45.4653397,lon:9.1851872}]},
+    {name:"Piazza Tommaso Edison",pts:[{lat:45.4645459,lon:9.1851800},{lat:45.4644743,lon:9.1848687}]},
+    {name:"Via San Prospero",pts:[{lat:45.4659916,lon:9.1852774},{lat:45.4659945,lon:9.1851994}]},
+    {name:"Via Cordusio",pts:[{lat:45.4647349,lon:9.1854664},{lat:45.4646489,lon:9.1853361}]},
+    {name:"Via Broletto",pts:[{lat:45.4656997,lon:9.1864545},{lat:45.4657231,lon:9.1864363}]},
+    {name:"Piazza Belgioioso",pts:[{lat:45.4671764,lon:9.1927238},{lat:45.4671286,lon:9.1927584}]},
+    {name:"Piazza Filippo Meda",pts:[{lat:45.4671286,lon:9.1927584},{lat:45.4671764,lon:9.1927238}]},
+    {name:"Via Piazza San Sepolcro",pts:[{lat:45.4628667,lon:9.1854833},{lat:45.4630952,lon:9.1849642}]},
+    {name:"Piazza Fontana",pts:[{lat:45.4630158,lon:9.1948766},{lat:45.4631100,lon:9.1948143}]}
+  ];
+
+  /* ---- Projection: lat/lon → canvas pixel ---- */
+  let W, H, project, roads2d, nodeMap, particles;
+
+  function setupProjection() {
+    let latMin=Infinity,latMax=-Infinity,lonMin=Infinity,lonMax=-Infinity;
+    ROADS.forEach(r => r.pts.forEach(p => {
+      if(p.lat<latMin) latMin=p.lat; if(p.lat>latMax) latMax=p.lat;
+      if(p.lon<lonMin) lonMin=p.lon; if(p.lon>lonMax) lonMax=p.lon;
+    }));
+    /* Correct lon scale for latitude (1 deg lon ≠ 1 deg lat in distance) */
+    const cosLat = Math.cos((latMin+latMax)/2 * Math.PI/180);
+    const lonSpan = lonMax-lonMin, latSpan = latMax-latMin;
+    const PAD = 0.10;
+    /* Scale so the entire network fits with padding on all sides */
+    const scl = Math.min(W*(1-2*PAD)/(lonSpan*cosLat), H*(1-2*PAD)/latSpan);
+    const Sy = scl, Sx = scl * cosLat;
+    const ox = (W - lonSpan*Sx)/2, oy = (H - latSpan*Sy)/2;
+    project = pt => ({
+      x: ox + (pt.lon - lonMin)*Sx,
+      y: H - oy - (pt.lat - latMin)*Sy,  /* invert: lat increases northward */
+    });
+    roads2d = ROADS.map(r => r.pts.map(project));
+  }
+
+  /* ---- Graph: which roads connect at each endpoint ---- */
+  function ptKey(pt) {
+    return `${Math.round(pt.lat*5000)},${Math.round(pt.lon*5000)}`;
+  }
+
+  function buildGraph() {
+    nodeMap = {};
+    ROADS.forEach((road, ri) => {
+      const n = road.pts.length;
+      [[road.pts[0],0],[road.pts[n-1],1]].forEach(([pt, atEnd]) => {
+        const k = ptKey(pt);
+        if(!nodeMap[k]) nodeMap[k] = [];
+        nodeMap[k].push({ri, atEnd});
+      });
+    });
+  }
+
+  /* Length of a road in pixels (for consistent particle speed) */
+  function roadLenPx(ri) {
+    const pts = roads2d[ri];
+    let l = 0;
+    for(let i=1;i<pts.length;i++){
+      const dx=pts[i].x-pts[i-1].x, dy=pts[i].y-pts[i-1].y;
+      l += Math.sqrt(dx*dx+dy*dy);
+    }
+    return Math.max(l, 4);
+  }
+
+  /* Pixel position at parameter t ∈ [0,1] along road ri */
+  function roadPos(ri, t) {
+    const pts = roads2d[ri];
+    if(pts.length===1) return {x:pts[0].x,y:pts[0].y};
+    const sc = t*(pts.length-1);
+    const i  = Math.min(Math.floor(sc), pts.length-2);
+    const f  = sc-i;
+    return { x:pts[i].x+(pts[i+1].x-pts[i].x)*f, y:pts[i].y+(pts[i+1].y-pts[i].y)*f };
+  }
+
+  /* At junction: pick next road+direction, avoiding immediate reversal */
+  function pickNext(ri, arrivedAtEnd) {
+    const pt = arrivedAtEnd===0 ? ROADS[ri].pts[0] : ROADS[ri].pts[ROADS[ri].pts.length-1];
+    const conns = (nodeMap[ptKey(pt)]||[]).filter(c => !(c.ri===ri && c.atEnd===arrivedAtEnd));
+    if(!conns.length) {
+      /* Dead end — reverse */
+      return {ri, forward: arrivedAtEnd===1, t: arrivedAtEnd===1?1:0};
+    }
+    const c = conns[Math.floor(Math.random()*conns.length)];
+    const forward = c.atEnd===0;          /* atEnd=0 → road starts here → go forward */
+    return {ri:c.ri, forward, t: forward?0:1};
+  }
+
+  /* ---- Particles ---- */
+  const SPEED_PX = 1.6;   /* pixels per frame, same for all particles */
+
+  function spawnParticle(gender) {
+    const ri = Math.floor(Math.random()*ROADS.length);
+    return {gender, ri, t:Math.random(), forward:Math.random()<0.5};
+  }
+
+  function stepParticle(p) {
+    const dt = SPEED_PX / roadLenPx(p.ri);
+    p.t += p.forward ? dt : -dt;
+    if(p.forward && p.t>=1) {
+      const n=pickNext(p.ri,1); p.ri=n.ri; p.forward=n.forward; p.t=n.t;
+    } else if(!p.forward && p.t<=0) {
+      const n=pickNext(p.ri,0); p.ri=n.ri; p.forward=n.forward; p.t=n.t;
+    }
+    p.t=Math.max(0,Math.min(1,p.t));
+  }
+
+  /* ---- Resize / init ---- */
+  function init() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+    setupProjection();
+    buildGraph();
+    particles = [];
+    for(let i=0;i<32;i++) particles.push(spawnParticle('male'));
+    for(let i=0;i<32;i++) particles.push(spawnParticle('female'));
+  }
+  window.addEventListener('resize', init);
+  init();
+
+  /* ---- Draw loop ---- */
+  function draw() {
+    ctx.clearRect(0,0,W,H);
+
+    /* Dark map background */
+    ctx.fillStyle = '#0b1120';
+    ctx.fillRect(0,0,W,H);
+
+    /* Roads: longer = major (brighter, wider) */
+    roads2d.forEach((pts, ri) => {
+      if(pts.length<2) return;
+      const major = roadLenPx(ri) > 70;
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i].x, pts[i].y);
+      ctx.strokeStyle = major ? 'rgba(150,185,230,0.45)' : 'rgba(110,150,210,0.22)';
+      ctx.lineWidth   = major ? 2.5 : 1.5;
+      ctx.lineJoin    = 'round';
+      ctx.lineCap     = 'round';
+      ctx.stroke();
+    });
+
+    /* Particles */
+    particles.forEach(p => {
+      stepParticle(p);
+      const pos = roadPos(p.ri, p.t);
+      const c   = p.gender==='male' ? MALE : FEMALE;
+
+      /* Soft glow */
+      const grd = ctx.createRadialGradient(pos.x,pos.y,0, pos.x,pos.y,6);
+      grd.addColorStop(0, `rgba(${c.r},${c.g},${c.b},0.40)`);
+      grd.addColorStop(1, `rgba(${c.r},${c.g},${c.b},0)`);
+      ctx.beginPath(); ctx.arc(pos.x,pos.y,6,0,Math.PI*2);
+      ctx.fillStyle=grd; ctx.fill();
+
+      /* Core dot */
+      ctx.beginPath(); ctx.arc(pos.x,pos.y,2,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${c.r},${c.g},${c.b},0.95)`;
+      ctx.fill();
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  requestAnimationFrame(draw);
+})();
+
+
+/* ----------------------------------------------------------------
+   SECTION 3: Activity line chart — draw on scroll
+   ---------------------------------------------------------------- */
+(function () {
+  const container = document.getElementById('chart-container');
+  if (!container) return;
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelector('svg').classList.add('chart-animated');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  obs.observe(container);
+})();
+
+
+/* ----------------------------------------------------------------
+   SECTION 4: Headline finding cards — slide in on scroll
+   ---------------------------------------------------------------- */
+(function () {
+  const cardLeft  = document.getElementById('card-left');
+  const cardRight = document.getElementById('card-right');
+
+  if (!cardLeft || !cardRight) return;
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  obs.observe(cardLeft);
+  obs.observe(cardRight);
+})();
+
+
+/* ----------------------------------------------------------------
+   SECTION 5: Spillover grid — interactive 5×5
+   ---------------------------------------------------------------- */
+(function () {
+  const grid = document.getElementById('spillover-grid');
+  if (!grid) return;
+
+  const SIZE = 5;
+  const CENTER = Math.floor(SIZE / 2); // 2
+  const cells = [];
+
+  // Create cells
+  for (let r = 0; r < SIZE; r++) {
+    for (let c = 0; c < SIZE; c++) {
+      const div = document.createElement('div');
+      div.classList.add('sp-cell');
+      if (r === CENTER && c === CENTER) {
+        div.classList.add('center', 'pulse-anim');
+      }
+      cells.push({ el: div, row: r, col: c });
+      grid.appendChild(div);
+    }
+  }
+
+  function isNeighbour(r, c) {
+    const dr = Math.abs(r - CENTER);
+    const dc = Math.abs(c - CENTER);
+    return (dr <= 1 && dc <= 1) && !(dr === 0 && dc === 0);
+  }
+
+  function isOuterNeighbour(r, c) {
+    const dr = Math.abs(r - CENTER);
+    const dc = Math.abs(c - CENTER);
+    return (dr <= 2 && dc <= 2) && !(dr <= 1 && dc <= 1);
+  }
+
+  function activate() {
+    cells.forEach(({ el, row, col }) => {
+      if (row === CENTER && col === CENTER) return;
+      if (isNeighbour(row, col)) {
+        el.style.background = 'rgba(139,92,246,0.55)';
+        el.style.boxShadow  = '0 0 0 2px rgba(139,92,246,0.3)';
+        el.style.transform  = 'scale(1.05)';
+      } else if (isOuterNeighbour(row, col)) {
+        el.style.background = 'rgba(139,92,246,0.2)';
+        el.style.transform  = 'scale(1.02)';
+      } else {
+        el.style.background = '';
+        el.style.boxShadow  = '';
+        el.style.transform  = '';
+      }
+    });
+  }
+
+  function deactivate() {
+    cells.forEach(({ el, row, col }) => {
+      if (row === CENTER && col === CENTER) return;
+      el.style.background = '';
+      el.style.boxShadow  = '';
+      el.style.transform  = '';
+    });
+  }
+
+  grid.addEventListener('mouseenter', activate);
+  grid.addEventListener('mouseleave', deactivate);
+  grid.addEventListener('click', function () {
+    // Toggle
+    if (cells[0].el.style.background && cells[1].el.style.background) {
+      deactivate();
+    } else {
+      activate();
+    }
+  });
+
+  // Touch support
+  grid.addEventListener('touchstart', function (e) {
+    e.preventDefault();
+    activate();
+  }, { passive: false });
+  grid.addEventListener('touchend', function () {
+    setTimeout(deactivate, 1200);
+  });
+})();
+
+
+/* ----------------------------------------------------------------
+   SECTION 6: Pattern cards — stagger in on scroll
+   ---------------------------------------------------------------- */
+(function () {
+  const cards = ['pat-1', 'pat-2', 'pat-3'].map(id => document.getElementById(id));
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.25 });
+
+  cards.forEach(c => { if (c) obs.observe(c); });
+})();
+
+
+/* ----------------------------------------------------------------
+   General scroll-reveal (all .reveal elements)
+   ---------------------------------------------------------------- */
+(function () {
+  const els = document.querySelectorAll('.reveal');
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  els.forEach(el => obs.observe(el));
+})();
+</script>
+
+</body>
+</html>

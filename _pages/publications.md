@@ -30,6 +30,7 @@ For citation counts and a full list, see my <a href="https://scholar.google.co.u
 Chen, Z., &amp; Botta, F.<br>
 <span class="pub-venue">Journal of Physics: Complexity</span>
 <a href="https://doi.org/10.5281/zenodo.15459184" class="pub-badge" target="_blank" rel="noopener">data</a>
+<a href="/papers/chen-2025.html" class="pub-badge pub-badge--explore">explore ↗</a>
 </div>
 
 <div class="publication-item" data-year="2025">
@@ -73,6 +74,7 @@ Sheehan, N., Botta, F., &amp; Leonelli, S.<br>
 <span class="pub-title">★ Spatiotemporal gender differences in urban vibrancy</span><br>
 Collins, T., Di Clemente, R., Gutiérrez-Roig, M., &amp; Botta, F.<br>
 <span class="pub-venue">Environment and Planning B: Urban Analytics and City Science</span>
+<a href="/papers/collins-2024.html" class="pub-badge pub-badge--explore">explore ↗</a>
 </div>
 
 <div class="publication-item pub-highlight" data-year="2023">
