@@ -1127,235 +1127,294 @@
      ============================================================ -->
 <script>
 /* ----------------------------------------------------------------
-   SECTION 1: Hero canvas — dark choropleth city map
-   Streets as bright lines, blocks as flat dark-grey fills with
-   a transparent gender-colour overlay. No building footprints.
+   SECTION 1: Hero canvas — real Milan street map (OpenStreetMap)
+   Roads drawn from live Overpass API data. Male (blue) and female
+   (orange) particles navigate the actual street network.
    ---------------------------------------------------------------- */
 (function () {
   const canvas = document.getElementById('hero-canvas');
   const ctx    = canvas.getContext('2d');
 
-  const MALE    = { r: 96,  g: 165, b: 250 };
-  const FEMALE  = { r: 251, g: 146, b: 60  };
-  const NEUTRAL = { r: 139, g: 92,  b: 246 };
+  const MALE   = { r: 96,  g: 165, b: 250 };  /* #60a5fa */
+  const FEMALE = { r: 251, g: 146, b: 60  };  /* #fb923c */
 
-  function weightedType() {
-    const r = Math.random();
-    if (r < 0.38) return 'male';
-    if (r < 0.72) return 'female';
-    return 'neutral';
+  /* ----------------------------------------------------------------
+     Road data: OpenStreetMap via Overpass API, central Milan
+     (area around Duomo / Piazza della Scala, ~600 m across)
+     ---------------------------------------------------------------- */
+  const ROADS = [
+    {name:"Via San Clemente",pts:[{lat:45.4625783,lon:9.1939230},{lat:45.4625921,lon:9.1938770},{lat:45.4626036,lon:9.1938387},{lat:45.4626192,lon:9.1938088},{lat:45.4626421,lon:9.1937756},{lat:45.4626854,lon:9.1937327},{lat:45.4627179,lon:9.1937091},{lat:45.4627531,lon:9.1936893},{lat:45.4627971,lon:9.1936681}]},
+    {name:"Via Cardinale Federico",pts:[{lat:45.4628667,lon:9.1854833},{lat:45.4629437,lon:9.1855773},{lat:45.4629767,lon:9.1856372},{lat:45.4630188,lon:9.1857208},{lat:45.4631929,lon:9.1859616}]},
+    {name:"Via Gaetano Negri",pts:[{lat:45.4649805,lon:9.1835692},{lat:45.4649942,lon:9.1835694},{lat:45.4650159,lon:9.1835782},{lat:45.4650261,lon:9.1836134},{lat:45.4651717,lon:9.1843953},{lat:45.4653216,lon:9.1851028},{lat:45.4653397,lon:9.1851872}]},
+    {name:"Via Santa Maria Segreta",pts:[{lat:45.4659690,lon:9.1848766},{lat:45.4659127,lon:9.1849032},{lat:45.4654035,lon:9.1851620},{lat:45.4653397,lon:9.1851872}]},
+    {name:"Via Cordusio",pts:[{lat:45.4647349,lon:9.1854664},{lat:45.4648217,lon:9.1855980},{lat:45.4651506,lon:9.1860965}]},
+    {name:"Via Dogana",pts:[{lat:45.4632950,lon:9.1885189},{lat:45.4632950,lon:9.1885364},{lat:45.4632949,lon:9.1885700},{lat:45.4632929,lon:9.1891058}]},
+    {name:"Via Maurizio Gonzaga",pts:[{lat:45.4620275,lon:9.1897677},{lat:45.4620039,lon:9.1897349},{lat:45.4619639,lon:9.1896792},{lat:45.4617204,lon:9.1893215},{lat:45.4613627,lon:9.1887961}]},
+    {name:"Via Gaetano Giardino",pts:[{lat:45.4627117,lon:9.1897074},{lat:45.4627047,lon:9.1895759}]},
+    {name:"Piazza Filippo Meda",pts:[{lat:45.4667277,lon:9.1928607},{lat:45.4667725,lon:9.1929656},{lat:45.4668284,lon:9.1930868}]},
+    {name:"Via Pietro Verri",pts:[{lat:45.4676975,lon:9.1945319},{lat:45.4678327,lon:9.1947598}]},
+    {name:"Via Ulrico Hoepli",pts:[{lat:45.4658886,lon:9.1920361},{lat:45.4659409,lon:9.1920311},{lat:45.4659952,lon:9.1920534},{lat:45.4660332,lon:9.1920784}]},
+    {name:"Via San Paolo",pts:[{lat:45.4665182,lon:9.1930235},{lat:45.4661532,lon:9.1932510},{lat:45.4659957,lon:9.1933436}]},
+    {name:"Via Moneta",pts:[{lat:45.4641678,lon:9.1845736},{lat:45.4641111,lon:9.1846008},{lat:45.4640621,lon:9.1846372},{lat:45.4637298,lon:9.1853479},{lat:45.4637053,lon:9.1853881},{lat:45.4636716,lon:9.1854315},{lat:45.4636451,lon:9.1854493}]},
+    {name:"Via Verziere",pts:[{lat:45.4628633,lon:9.1949750},{lat:45.4629015,lon:9.1952770},{lat:45.4629317,lon:9.1955822}]},
+    {name:"Via Francesco Pecorari",pts:[{lat:45.4627073,lon:9.1923080},{lat:45.4626921,lon:9.1922269},{lat:45.4626583,lon:9.1921359},{lat:45.4625359,lon:9.1918053},{lat:45.4624858,lon:9.1916973},{lat:45.4622201,lon:9.1913177},{lat:45.4621467,lon:9.1912718}]},
+    {name:"Via Flavio Baracchini",pts:[{lat:45.4620304,lon:9.1902546},{lat:45.4620112,lon:9.1902756},{lat:45.4619771,lon:9.1903078},{lat:45.4619318,lon:9.1903664}]},
+    {name:"Via Rastrelli",pts:[{lat:45.4621997,lon:9.1911854},{lat:45.4626525,lon:9.1906919},{lat:45.4626796,lon:9.1906391},{lat:45.4627002,lon:9.1905690}]},
+    {name:"Largo Ildefonso Schuster",pts:[{lat:45.4626917,lon:9.1925345},{lat:45.4627002,lon:9.1924214},{lat:45.4627073,lon:9.1923080}]},
+    {name:"Via delle Ore",pts:[{lat:45.4630686,lon:9.1936408},{lat:45.4630657,lon:9.1936205},{lat:45.4630556,lon:9.1935576},{lat:45.4630047,lon:9.1932596},{lat:45.4628697,lon:9.1927391}]},
+    {name:"Via Rastrelli",pts:[{lat:45.4621467,lon:9.1912718},{lat:45.4620863,lon:9.1913635},{lat:45.4616420,lon:9.1920366}]},
+    {name:"Via Palazzo Reale",pts:[{lat:45.4627073,lon:9.1923080},{lat:45.4626454,lon:9.1923662},{lat:45.4626372,lon:9.1923751},{lat:45.4625569,lon:9.1924313},{lat:45.4620932,lon:9.1927599},{lat:45.4620231,lon:9.1927977}]},
+    {name:"Piazza Santo Stefano",pts:[{lat:45.4625186,lon:9.1941511},{lat:45.4624732,lon:9.1941953},{lat:45.4623261,lon:9.1943367}]},
+    {name:"Via Larga",pts:[{lat:45.4621227,lon:9.1933007},{lat:45.4620729,lon:9.1933502},{lat:45.4619981,lon:9.1934250}]},
+    {name:"Via San Protaso",pts:[{lat:45.4658189,lon:9.1883360},{lat:45.4658295,lon:9.1883174},{lat:45.4658603,lon:9.1882633},{lat:45.4658801,lon:9.1882285},{lat:45.4662302,lon:9.1876319}]},
+    {name:"Piazza Paolo Ferrari",pts:[{lat:45.4668392,lon:9.1886319},{lat:45.4668748,lon:9.1886773},{lat:45.4670179,lon:9.1887546},{lat:45.4671525,lon:9.1889168},{lat:45.4671794,lon:9.1889515}]},
+    {name:"Via San Prospero",pts:[{lat:45.4660668,lon:9.1862834},{lat:45.4660652,lon:9.1862647},{lat:45.4660612,lon:9.1862102},{lat:45.4660186,lon:9.1856363},{lat:45.4659985,lon:9.1853571},{lat:45.4659916,lon:9.1852774}]},
+    {name:"Via Bassano Porrone",pts:[{lat:45.4662302,lon:9.1876319},{lat:45.4663081,lon:9.1877266}]},
+    {name:"Via Clerici",pts:[{lat:45.4664756,lon:9.1876098},{lat:45.4664813,lon:9.1876060},{lat:45.4666011,lon:9.1875234},{lat:45.4668522,lon:9.1873161},{lat:45.4675740,lon:9.1867420},{lat:45.4675853,lon:9.1867324}]},
+    {name:"Via Bigli",pts:[{lat:45.4697573,lon:9.1924634},{lat:45.4697506,lon:9.1924757},{lat:45.4697081,lon:9.1925531},{lat:45.4696920,lon:9.1925826},{lat:45.4695189,lon:9.1928983},{lat:45.4693029,lon:9.1932439},{lat:45.4692218,lon:9.1933720},{lat:45.4691167,lon:9.1934878},{lat:45.4690334,lon:9.1935738},{lat:45.4686660,lon:9.1936752},{lat:45.4683596,lon:9.1939134},{lat:45.4680091,lon:9.1942257},{lat:45.4677474,lon:9.1944842},{lat:45.4677284,lon:9.1945016},{lat:45.4676975,lon:9.1945319}]},
+    {name:"Via degli Omenoni",pts:[{lat:45.4673972,lon:9.1925736},{lat:45.4673849,lon:9.1925426},{lat:45.4673798,lon:9.1925297},{lat:45.4673373,lon:9.1923929},{lat:45.4671716,lon:9.1920092},{lat:45.4671511,lon:9.1919575},{lat:45.4670926,lon:9.1919192},{lat:45.4670665,lon:9.1919032}]},
+    {name:"Piazza Filippo Meda",pts:[{lat:45.4669920,lon:9.1925868},{lat:45.4670094,lon:9.1926269},{lat:45.4670622,lon:9.1927483},{lat:45.4671036,lon:9.1927693},{lat:45.4671286,lon:9.1927584}]},
+    {name:"Piazza Filippo Meda",pts:[{lat:45.4669920,lon:9.1925868},{lat:45.4669798,lon:9.1926446},{lat:45.4669557,lon:9.1926869},{lat:45.4668713,lon:9.1927607}]},
+    {name:"Via Gerolamo Morone",pts:[{lat:45.4684445,lon:9.1910524},{lat:45.4684367,lon:9.1910669},{lat:45.4684034,lon:9.1911323},{lat:45.4682735,lon:9.1913694},{lat:45.4682160,lon:9.1915048},{lat:45.4681919,lon:9.1916377},{lat:45.4681688,lon:9.1917868},{lat:45.4681114,lon:9.1919085},{lat:45.4680272,lon:9.1920459},{lat:45.4678329,lon:9.1922333}]},
+    {name:"Via Agnello",pts:[{lat:45.4655118,lon:9.1936182},{lat:45.4655006,lon:9.1936260},{lat:45.4654871,lon:9.1936312},{lat:45.4654703,lon:9.1936326},{lat:45.4654563,lon:9.1936296},{lat:45.4654424,lon:9.1936217},{lat:45.4654327,lon:9.1936102},{lat:45.4654156,lon:9.1935669},{lat:45.4654046,lon:9.1935434}]},
+    {name:"Corso Giacomo Matteotti",pts:[{lat:45.4669816,lon:9.1937506},{lat:45.4669762,lon:9.1938690},{lat:45.4669294,lon:9.1950837},{lat:45.4669260,lon:9.1951923}]},
+    {name:"Via dell'Ambrosiana",pts:[{lat:45.4636451,lon:9.1854493},{lat:45.4636133,lon:9.1854531},{lat:45.4635855,lon:9.1854432},{lat:45.4635606,lon:9.1854218},{lat:45.4633894,lon:9.1851701},{lat:45.4633685,lon:9.1851398},{lat:45.4632184,lon:9.1850383},{lat:45.4631991,lon:9.1850322}]},
+    {name:"Via dei Bossi",pts:[{lat:45.4675853,lon:9.1867324},{lat:45.4674613,lon:9.1863036},{lat:45.4673637,lon:9.1858865},{lat:45.4673623,lon:9.1858535},{lat:45.4673437,lon:9.1857709}]},
+    {name:"Via Giuseppe Mengoni",pts:[{lat:45.4646992,lon:9.1885490},{lat:45.4648234,lon:9.1885464},{lat:45.4649516,lon:9.1885434}]},
+    {name:"Via Silvio Pellico",pts:[{lat:45.4651406,lon:9.1892536},{lat:45.4649092,lon:9.1892538}]},
+    {name:"Via San Pietro all'Orto",pts:[{lat:45.4669260,lon:9.1951923},{lat:45.4670374,lon:9.1951353},{lat:45.4676485,lon:9.1948555}]},
+    {name:"Via San Pietro all'Orto",pts:[{lat:45.4676485,lon:9.1948555},{lat:45.4676853,lon:9.1946039},{lat:45.4676975,lon:9.1945319}]},
+    {name:"Piazza Armando Diaz",pts:[{lat:45.4627117,lon:9.1897074},{lat:45.4621444,lon:9.1897002},{lat:45.4620591,lon:9.1896989},{lat:45.4620429,lon:9.1897169},{lat:45.4620275,lon:9.1897677}]},
+    {name:"Via Gaetano Giardino",pts:[{lat:45.4627047,lon:9.1895759},{lat:45.4627140,lon:9.1895365},{lat:45.4627053,lon:9.1894861}]},
+    {name:"Via Gaetano Giardino",pts:[{lat:45.4627053,lon:9.1894861},{lat:45.4627168,lon:9.1891618},{lat:45.4627204,lon:9.1889905},{lat:45.4627399,lon:9.1888615},{lat:45.4627494,lon:9.1888034},{lat:45.4627508,lon:9.1887802},{lat:45.4627518,lon:9.1887601},{lat:45.4627514,lon:9.1887400},{lat:45.4627396,lon:9.1886251},{lat:45.4627313,lon:9.1885117}]},
+    {name:"Via Falcone",pts:[{lat:45.4626896,lon:9.1882240},{lat:45.4624576,lon:9.1875533},{lat:45.4623534,lon:9.1872733},{lat:45.4623149,lon:9.1872229}]},
+    {name:"Via Pietro Verri",pts:[{lat:45.4676975,lon:9.1945319},{lat:45.4676744,lon:9.1944931},{lat:45.4672239,lon:9.1937370},{lat:45.4672057,lon:9.1937140},{lat:45.4671836,lon:9.1936972},{lat:45.4671599,lon:9.1936905}]},
+    {name:"Largo Bortolo Belotti",pts:[{lat:45.4663081,lon:9.1877266},{lat:45.4664126,lon:9.1879269}]},
+    {name:"Via Santa Margherita",pts:[{lat:45.4652608,lon:9.1877864},{lat:45.4652737,lon:9.1877942},{lat:45.4655697,lon:9.1880750},{lat:45.4656494,lon:9.1881720},{lat:45.4656950,lon:9.1882274}]},
+    {name:"Largo Claudio Abbado",pts:[{lat:45.4656950,lon:9.1882274},{lat:45.4656911,lon:9.1882433},{lat:45.4656760,lon:9.1883039},{lat:45.4656720,lon:9.1885111},{lat:45.4656716,lon:9.1885469}]},
+    {name:"Via San Dalmazio",pts:[{lat:45.4664126,lon:9.1879269},{lat:45.4664236,lon:9.1879474},{lat:45.4667753,lon:9.1885496}]},
+    {name:"Via Bassano Porrone",pts:[{lat:45.4662302,lon:9.1876319},{lat:45.4662197,lon:9.1875453},{lat:45.4660758,lon:9.1863653},{lat:45.4660687,lon:9.1863016},{lat:45.4660668,lon:9.1862834}]},
+    {name:"Via Filodrammatici",pts:[{lat:45.4671794,lon:9.1889515},{lat:45.4670247,lon:9.1892732},{lat:45.4670113,lon:9.1893010},{lat:45.4669608,lon:9.1893915},{lat:45.4669512,lon:9.1894087}]},
+    {name:"Largo Claudio Abbado",pts:[{lat:45.4656716,lon:9.1885469},{lat:45.4658485,lon:9.1885484},{lat:45.4660659,lon:9.1885520},{lat:45.4660871,lon:9.1885523}]},
+    {name:"Via dell'Unione",pts:[{lat:45.4623149,lon:9.1872229},{lat:45.4622893,lon:9.1872600},{lat:45.4622245,lon:9.1873062},{lat:45.4621492,lon:9.1873532},{lat:45.4620289,lon:9.1874283}]},
+    {name:"Via Armorari",pts:[{lat:45.4642891,lon:9.1860180},{lat:45.4646489,lon:9.1853361}]},
+    {name:"Via Victor Hugo",pts:[{lat:45.4641329,lon:9.1876551},{lat:45.4640786,lon:9.1875692},{lat:45.4640557,lon:9.1875315},{lat:45.4637539,lon:9.1870620},{lat:45.4637361,lon:9.1870196},{lat:45.4637386,lon:9.1869509},{lat:45.4637599,lon:9.1868730},{lat:45.4637924,lon:9.1868031}]},
+    {name:"Via Torino",pts:[{lat:45.4638256,lon:9.1881670},{lat:45.4638003,lon:9.1881926},{lat:45.4637781,lon:9.1881991},{lat:45.4637613,lon:9.1882001},{lat:45.4637317,lon:9.1881989},{lat:45.4637037,lon:9.1881915},{lat:45.4636734,lon:9.1881798},{lat:45.4636198,lon:9.1881507}]},
+    {name:"Via Cesare Beccaria",pts:[{lat:45.4637522,lon:9.1948202},{lat:45.4637388,lon:9.1947863},{lat:45.4637306,lon:9.1947312},{lat:45.4637137,lon:9.1945507},{lat:45.4636984,lon:9.1943616},{lat:45.4636862,lon:9.1942492},{lat:45.4636743,lon:9.1941774},{lat:45.4636587,lon:9.1941092}]},
+    {name:"Via Tommaso Grossi",pts:[{lat:45.4656151,lon:9.1868531},{lat:45.4656144,lon:9.1874282},{lat:45.4656144,lon:9.1879378},{lat:45.4656148,lon:9.1879866},{lat:45.4656227,lon:9.1880602},{lat:45.4656378,lon:9.1881192},{lat:45.4656545,lon:9.1881556},{lat:45.4656950,lon:9.1882274}]},
+    {name:"Via Alessandro Manzoni",pts:[{lat:45.4674472,lon:9.1900080},{lat:45.4674688,lon:9.1900294},{lat:45.4674927,lon:9.1900531},{lat:45.4677584,lon:9.1903404},{lat:45.4680732,lon:9.1906724},{lat:45.4682587,lon:9.1908613},{lat:45.4682956,lon:9.1908986}]},
+    {name:"Via Broletto",pts:[{lat:45.4657231,lon:9.1864363},{lat:45.4657651,lon:9.1864101},{lat:45.4658023,lon:9.1863888},{lat:45.4660207,lon:9.1862998},{lat:45.4660668,lon:9.1862834}]},
+    {name:"Largo Raffaele Mattioli",pts:[{lat:45.4670665,lon:9.1919032},{lat:45.4670707,lon:9.1917920},{lat:45.4670562,lon:9.1916504},{lat:45.4670372,lon:9.1915882},{lat:45.4670107,lon:9.1915256},{lat:45.4669278,lon:9.1913358},{lat:45.4669026,lon:9.1912621},{lat:45.4668901,lon:9.1911854},{lat:45.4668849,lon:9.1911257},{lat:45.4668860,lon:9.1910466},{lat:45.4668943,lon:9.1909886}]},
+    {name:"Piazza della Scala",pts:[{lat:45.4671655,lon:9.1903315},{lat:45.4672859,lon:9.1901464},{lat:45.4673257,lon:9.1900766},{lat:45.4673840,lon:9.1899743},{lat:45.4673917,lon:9.1899608}]},
+    {name:"Via Case Rotte",pts:[{lat:45.4668943,lon:9.1909886},{lat:45.4669136,lon:9.1908926},{lat:45.4669501,lon:9.1907944},{lat:45.4670115,lon:9.1906619}]},
+    {name:"Via Silvio Pellico",pts:[{lat:45.4665899,lon:9.1890074},{lat:45.4665409,lon:9.1890954},{lat:45.4664606,lon:9.1892405},{lat:45.4664201,lon:9.1892707},{lat:45.4656092,lon:9.1892546}]},
+    {name:"Via dell'Unione",pts:[{lat:45.4623149,lon:9.1872229},{lat:45.4625385,lon:9.1869146},{lat:45.4625673,lon:9.1868886},{lat:45.4625809,lon:9.1868758}]},
+    {name:"Piazza Santa Maria Beltrade",pts:[{lat:45.4629370,lon:9.1863282},{lat:45.4628519,lon:9.1864975},{lat:45.4626623,lon:9.1867917},{lat:45.4626441,lon:9.1868196},{lat:45.4625953,lon:9.1868637},{lat:45.4625809,lon:9.1868758}]},
+    {name:"Via delle Asole",pts:[{lat:45.4631929,lon:9.1859616},{lat:45.4631652,lon:9.1860038},{lat:45.4629370,lon:9.1863282}]},
+    {name:"Via Valpetrosa",pts:[{lat:45.4624566,lon:9.1853554},{lat:45.4625528,lon:9.1853240},{lat:45.4625730,lon:9.1853247},{lat:45.4627411,lon:9.1853576}]},
+    {name:"Via Valpetrosa",pts:[{lat:45.4618093,lon:9.1857666},{lat:45.4620041,lon:9.1853214},{lat:45.4620258,lon:9.1852851},{lat:45.4620565,lon:9.1852640},{lat:45.4620888,lon:9.1852619},{lat:45.4621183,lon:9.1852671},{lat:45.4623070,lon:9.1853704},{lat:45.4623984,lon:9.1853774},{lat:45.4624566,lon:9.1853554}]},
+    {name:"Piazza Fontana",pts:[{lat:45.4634853,lon:9.1936094},{lat:45.4633459,lon:9.1936135},{lat:45.4633074,lon:9.1936203},{lat:45.4632862,lon:9.1936261},{lat:45.4632641,lon:9.1936346}]},
+    {name:"Piazza San Sepolcro",pts:[{lat:45.4630952,lon:9.1849642},{lat:45.4629800,lon:9.1851114},{lat:45.4629489,lon:9.1851623},{lat:45.4629251,lon:9.1852322},{lat:45.4629046,lon:9.1853208},{lat:45.4628806,lon:9.1854568},{lat:45.4628667,lon:9.1854833}]},
+    {name:"Largo Claudio Abbado",pts:[{lat:45.4658189,lon:9.1883360},{lat:45.4658146,lon:9.1883308},{lat:45.4657363,lon:9.1882636},{lat:45.4656950,lon:9.1882274}]},
+    {name:"Largo Claudio Abbado",pts:[{lat:45.4658189,lon:9.1883360},{lat:45.4659953,lon:9.1884729},{lat:45.4660603,lon:9.1885291},{lat:45.4660871,lon:9.1885523}]},
+    {name:"Piazza San Sepolcro",pts:[{lat:45.4631991,lon:9.1850322},{lat:45.4631638,lon:9.1850174},{lat:45.4631211,lon:9.1850047},{lat:45.4630952,lon:9.1849642}]},
+    {name:"Largo Jorge Luis Borges",pts:[{lat:45.4627313,lon:9.1885117},{lat:45.4627302,lon:9.1884913},{lat:45.4627262,lon:9.1884192},{lat:45.4627136,lon:9.1883153},{lat:45.4626896,lon:9.1882240}]},
+    {name:"Via Torino",pts:[{lat:45.4637433,lon:9.1885380},{lat:45.4637112,lon:9.1885237},{lat:45.4637027,lon:9.1885151},{lat:45.4636899,lon:9.1884976},{lat:45.4636767,lon:9.1884774}]},
+    {name:"Via Giuseppe Mazzini",pts:[{lat:45.4636767,lon:9.1884774},{lat:45.4636568,lon:9.1884890},{lat:45.4636373,lon:9.1884997},{lat:45.4636005,lon:9.1885151},{lat:45.4635267,lon:9.1885191},{lat:45.4632950,lon:9.1885189}]},
+    {name:"Via Torino",pts:[{lat:45.4636198,lon:9.1881507},{lat:45.4635946,lon:9.1881198},{lat:45.4632343,lon:9.1876777},{lat:45.4631819,lon:9.1876134}]},
+    {name:"Piazza Cordusio",pts:[{lat:45.4654989,lon:9.1864315},{lat:45.4655230,lon:9.1864508},{lat:45.4655498,lon:9.1864844},{lat:45.4655639,lon:9.1865082},{lat:45.4655731,lon:9.1865263},{lat:45.4655824,lon:9.1865521},{lat:45.4655930,lon:9.1865896},{lat:45.4656020,lon:9.1866295},{lat:45.4656071,lon:9.1866633},{lat:45.4656131,lon:9.1867291},{lat:45.4656142,lon:9.1867496},{lat:45.4656144,lon:9.1867693},{lat:45.4656151,lon:9.1868531}]},
+    {name:"Piazza Cordusio",pts:[{lat:45.4656997,lon:9.1864545},{lat:45.4656495,lon:9.1865847},{lat:45.4656392,lon:9.1866275},{lat:45.4656224,lon:9.1867309},{lat:45.4656204,lon:9.1867478},{lat:45.4656179,lon:9.1867850},{lat:45.4656151,lon:9.1868531}]},
+    {name:"Piazza Cordusio",pts:[{lat:45.4654989,lon:9.1864315},{lat:45.4655252,lon:9.1864441},{lat:45.4655508,lon:9.1864524},{lat:45.4655842,lon:9.1864591},{lat:45.4656011,lon:9.1864614},{lat:45.4656182,lon:9.1864619},{lat:45.4656997,lon:9.1864545}]},
+    {name:"Via Orefici",pts:[{lat:45.4650120,lon:9.1864343},{lat:45.4648965,lon:9.1865843}]},
+    {name:"Via San Tomaso",pts:[{lat:45.4671986,lon:9.1845264},{lat:45.4672211,lon:9.1846127},{lat:45.4672951,lon:9.1849084},{lat:45.4673363,lon:9.1850589},{lat:45.4673551,lon:9.1851197},{lat:45.4673717,lon:9.1851716},{lat:45.4673891,lon:9.1852145},{lat:45.4674050,lon:9.1852660},{lat:45.4674274,lon:9.1853474},{lat:45.4674753,lon:9.1855330},{lat:45.4674929,lon:9.1856134},{lat:45.4675108,lon:9.1857022},{lat:45.4675145,lon:9.1857166}]},
+    {name:"Via Broletto",pts:[{lat:45.4660668,lon:9.1862834},{lat:45.4661712,lon:9.1862413},{lat:45.4665512,lon:9.1860897},{lat:45.4669349,lon:9.1859342},{lat:45.4672867,lon:9.1857933},{lat:45.4673437,lon:9.1857709}]},
+    {name:"Via San Clemente",pts:[{lat:45.4630686,lon:9.1936408},{lat:45.4627971,lon:9.1936681}]},
+    {name:"Via San Clemente",pts:[{lat:45.4625355,lon:9.1936621},{lat:45.4624744,lon:9.1936649},{lat:45.4624603,lon:9.1936619},{lat:45.4624469,lon:9.1936554}]},
+    {name:"Piazza Fontana",pts:[{lat:45.4632641,lon:9.1936346},{lat:45.4633152,lon:9.1936544},{lat:45.4633471,lon:9.1936825},{lat:45.4633581,lon:9.1937011},{lat:45.4633706,lon:9.1937335},{lat:45.4633839,lon:9.1937969}]},
+    {name:"Via Torino",pts:[{lat:45.4631819,lon:9.1876134},{lat:45.4631291,lon:9.1875457}]},
+    {name:"Piazza Armando Diaz",pts:[{lat:45.4622878,lon:9.1902681},{lat:45.4624253,lon:9.1902656},{lat:45.4625824,lon:9.1902560},{lat:45.4626563,lon:9.1902528},{lat:45.4627080,lon:9.1902479}]},
+    {name:"Piazza Armando Diaz",pts:[{lat:45.4620275,lon:9.1897677},{lat:45.4620294,lon:9.1899261},{lat:45.4620277,lon:9.1902253},{lat:45.4620304,lon:9.1902546}]},
+    {name:"Piazza Belgioioso",pts:[{lat:45.4678329,lon:9.1922333},{lat:45.4675547,lon:9.1924508},{lat:45.4673972,lon:9.1925736}]},
+    {name:"Piazza Belgioioso",pts:[{lat:45.4671764,lon:9.1927238},{lat:45.4673972,lon:9.1925736}]},
+    {name:"Piazza Filippo Meda",pts:[{lat:45.4671599,lon:9.1936905},{lat:45.4671339,lon:9.1936958},{lat:45.4670213,lon:9.1937473},{lat:45.4670011,lon:9.1937506},{lat:45.4669816,lon:9.1937506}]},
+    {name:"Corso Europa",pts:[{lat:45.4632773,lon:9.1954123},{lat:45.4631200,lon:9.1950913},{lat:45.4630158,lon:9.1948766}]},
+    {name:"Piazza Filippo Meda",pts:[{lat:45.4669632,lon:9.1935987},{lat:45.4669771,lon:9.1936636},{lat:45.4669810,lon:9.1937090},{lat:45.4669816,lon:9.1937506}]},
+    {name:"Via Spadari",pts:[{lat:45.4631819,lon:9.1876134},{lat:45.4631909,lon:9.1876000},{lat:45.4632098,lon:9.1875744}]},
+    {name:"Via Fosse Ardeatine",pts:[{lat:45.4625507,lon:9.1845046},{lat:45.4625434,lon:9.1845472},{lat:45.4624296,lon:9.1852125},{lat:45.4624321,lon:9.1852654},{lat:45.4624566,lon:9.1853554}]},
+    {name:"Via Carlo Cattaneo",pts:[{lat:45.4651409,lon:9.1891662},{lat:45.4651415,lon:9.1888986},{lat:45.4651426,lon:9.1886472},{lat:45.4651426,lon:9.1886320},{lat:45.4651429,lon:9.1885409}]},
+    {name:"Piazza della Scala",pts:[{lat:45.4673917,lon:9.1899608},{lat:45.4674472,lon:9.1900080}]},
+    {name:"Via Alessandro Manzoni",pts:[{lat:45.4682956,lon:9.1908986},{lat:45.4684445,lon:9.1910524}]},
+    {name:"Via Meravigli",pts:[{lat:45.4659889,lon:9.1850369},{lat:45.4659690,lon:9.1848766}]},
+    {name:"Via Santa Margherita",pts:[{lat:45.4665170,lon:9.1889408},{lat:45.4665899,lon:9.1890074}]},
+    {name:"Via Silvio Pellico",pts:[{lat:45.4656092,lon:9.1892546},{lat:45.4656005,lon:9.1892546},{lat:45.4651406,lon:9.1892536}]},
+    {name:"Piazza Cordusio",pts:[{lat:45.4652323,lon:9.1862587},{lat:45.4652409,lon:9.1862747},{lat:45.4652499,lon:9.1862914}]},
+    {name:"Passaggio Centrale",pts:[{lat:45.4645593,lon:9.1863699},{lat:45.4646365,lon:9.1862480}]},
+    {name:"Passaggio Centrale",pts:[{lat:45.4642775,lon:9.1867172},{lat:45.4643484,lon:9.1866293},{lat:45.4643550,lon:9.1866233},{lat:45.4645593,lon:9.1863699}]},
+    {name:"Via Larga",pts:[{lat:45.4630158,lon:9.1948766},{lat:45.4629821,lon:9.1947855}]},
+    {name:"Via Cesare Cantù",pts:[{lat:45.4640142,lon:9.1865190},{lat:45.4640723,lon:9.1865927}]},
+    {name:"Via Gabrio Casati",pts:[{lat:45.4655376,lon:9.1855455},{lat:45.4653576,lon:9.1852593},{lat:45.4653397,lon:9.1851872}]},
+    {name:"Piazza Tommaso Edison",pts:[{lat:45.4645459,lon:9.1851800},{lat:45.4644743,lon:9.1848687}]},
+    {name:"Via San Prospero",pts:[{lat:45.4659916,lon:9.1852774},{lat:45.4659945,lon:9.1851994}]},
+    {name:"Via Cordusio",pts:[{lat:45.4647349,lon:9.1854664},{lat:45.4646489,lon:9.1853361}]},
+    {name:"Via Broletto",pts:[{lat:45.4656997,lon:9.1864545},{lat:45.4657231,lon:9.1864363}]},
+    {name:"Piazza Belgioioso",pts:[{lat:45.4671764,lon:9.1927238},{lat:45.4671286,lon:9.1927584}]},
+    {name:"Piazza Filippo Meda",pts:[{lat:45.4671286,lon:9.1927584},{lat:45.4671764,lon:9.1927238}]},
+    {name:"Via Piazza San Sepolcro",pts:[{lat:45.4628667,lon:9.1854833},{lat:45.4630952,lon:9.1849642}]},
+    {name:"Piazza Fontana",pts:[{lat:45.4630158,lon:9.1948766},{lat:45.4631100,lon:9.1948143}]}
+  ];
+
+  /* ---- Projection: lat/lon → canvas pixel ---- */
+  let W, H, project, roads2d, nodeMap, particles;
+
+  function setupProjection() {
+    let latMin=Infinity,latMax=-Infinity,lonMin=Infinity,lonMax=-Infinity;
+    ROADS.forEach(r => r.pts.forEach(p => {
+      if(p.lat<latMin) latMin=p.lat; if(p.lat>latMax) latMax=p.lat;
+      if(p.lon<lonMin) lonMin=p.lon; if(p.lon>lonMax) lonMax=p.lon;
+    }));
+    /* Correct lon scale for latitude (1 deg lon ≠ 1 deg lat in distance) */
+    const cosLat = Math.cos((latMin+latMax)/2 * Math.PI/180);
+    const lonSpan = lonMax-lonMin, latSpan = latMax-latMin;
+    const PAD = 0.10;
+    /* Scale so the entire network fits with padding on all sides */
+    const scl = Math.min(W*(1-2*PAD)/(lonSpan*cosLat), H*(1-2*PAD)/latSpan);
+    const Sy = scl, Sx = scl * cosLat;
+    const ox = (W - lonSpan*Sx)/2, oy = (H - latSpan*Sy)/2;
+    project = pt => ({
+      x: ox + (pt.lon - lonMin)*Sx,
+      y: H - oy - (pt.lat - latMin)*Sy,  /* invert: lat increases northward */
+    });
+    roads2d = ROADS.map(r => r.pts.map(project));
   }
-  function colorOf(t) {
-    return t === 'male' ? MALE : t === 'female' ? FEMALE : NEUTRAL;
-  }
-  function lerp(a, b, t) { return a + (b - a) * t; }
 
-  let W, H, city;
-
-  function streetPositions(total, count, jitter) {
-    const pos  = [0];
-    const step = total / count;
-    for (let i = 1; i < count; i++) {
-      const base = i * step;
-      const j    = (Math.random() - 0.5) * 2 * jitter * step;
-      const prev = pos[pos.length - 1];
-      pos.push(Math.min(total - step * 0.25, Math.max(prev + step * 0.38, base + j)));
-    }
-    pos.push(total);
-    return pos;
+  /* ---- Graph: which roads connect at each endpoint ---- */
+  function ptKey(pt) {
+    return `${Math.round(pt.lat*5000)},${Math.round(pt.lon*5000)}`;
   }
 
-  function buildCity() {
-    const MAJOR_W = 6, MINOR_W = 2;
-
-    const nH = Math.round(7  + (H / W) * 3);
-    const nV = Math.round(11 + (W / H) * 2);
-    const hPos = streetPositions(H, nH, 0.16);
-    const vPos = streetPositions(W, nV, 0.13);
-
-    const majorH = new Set(), majorV = new Set();
-    for (let i = 1; i < hPos.length - 1; i++) if (Math.random() < 0.30) majorH.add(i);
-    for (let i = 1; i < vPos.length - 1; i++) if (Math.random() < 0.25) majorV.add(i);
-
-    /* Blocks: the rectangle of land between adjacent streets */
-    const blocks = [];
-    for (let r = 0; r < hPos.length - 1; r++) {
-      for (let c = 0; c < vPos.length - 1; c++) {
-        const swT = r === 0             ? 0 : (majorH.has(r)     ? MAJOR_W : MINOR_W);
-        const swB = r === hPos.length-2 ? 0 : (majorH.has(r + 1) ? MAJOR_W : MINOR_W);
-        const swL = c === 0             ? 0 : (majorV.has(c)     ? MAJOR_W : MINOR_W);
-        const swR = c === vPos.length-2 ? 0 : (majorV.has(c + 1) ? MAJOR_W : MINOR_W);
-
-        /* Block edge is the centre of the bounding street */
-        const x1 = vPos[c]     + swL / 2;
-        const y1 = hPos[r]     + swT / 2;
-        const x2 = vPos[c + 1] - swR / 2;
-        const y2 = hPos[r + 1] - swB / 2;
-        if (x2 - x1 < 4 || y2 - y1 < 4) continue;
-
-        const type       = weightedType();
-        const col        = colorOf(type);
-        const tintAlpha  = 0.13 + Math.random() * 0.22;
-
-        blocks.push({
-          x: x1, y: y1, w: x2 - x1, h: y2 - y1,
-          type, targetType: type,
-          cr: col.r, cg: col.g, cb: col.b,
-          tintAlpha, targetTintAlpha: tintAlpha,
-          tp: 1,
-        });
-      }
-    }
-
-    /* Hotspots — small glowing dots on a subset of blocks */
-    const hotspots = [];
-    [...blocks].sort(() => Math.random() - 0.5)
-      .slice(0, Math.floor(blocks.length * 0.10))
-      .forEach(b => {
-        hotspots.push({
-          x: b.x + b.w * (0.25 + Math.random() * 0.5),
-          y: b.y + b.h * (0.25 + Math.random() * 0.5),
-          r: 1.8 + Math.random() * 2.2,
-          col: colorOf(b.type),
-          pulse:  Math.random() * Math.PI * 2,
-          pSpeed: 0.018 + Math.random() * 0.022,
-        });
+  function buildGraph() {
+    nodeMap = {};
+    ROADS.forEach((road, ri) => {
+      const n = road.pts.length;
+      [[road.pts[0],0],[road.pts[n-1],1]].forEach(([pt, atEnd]) => {
+        const k = ptKey(pt);
+        if(!nodeMap[k]) nodeMap[k] = [];
+        nodeMap[k].push({ri, atEnd});
       });
-
-    /* Particles travelling along street lines */
-    const particles = [];
-    for (let i = 1; i < hPos.length - 1; i++) {
-      if (Math.random() > 0.50) continue;
-      particles.push({ axis: 'h', pos: hPos[i], t: Math.random(),
-        speed: (0.0003 + Math.random() * 0.0004) * (Math.random() < 0.5 ? 1 : -1),
-        col: colorOf(weightedType()) });
-    }
-    for (let i = 1; i < vPos.length - 1; i++) {
-      if (Math.random() > 0.42) continue;
-      particles.push({ axis: 'v', pos: vPos[i], t: Math.random(),
-        speed: (0.0003 + Math.random() * 0.0004) * (Math.random() < 0.5 ? 1 : -1),
-        col: colorOf(weightedType()) });
-    }
-
-    city = { hPos, vPos, majorH, majorV, MAJOR_W, MINOR_W, blocks, hotspots, particles };
+    });
   }
 
-  function resize() {
+  /* Length of a road in pixels (for consistent particle speed) */
+  function roadLenPx(ri) {
+    const pts = roads2d[ri];
+    let l = 0;
+    for(let i=1;i<pts.length;i++){
+      const dx=pts[i].x-pts[i-1].x, dy=pts[i].y-pts[i-1].y;
+      l += Math.sqrt(dx*dx+dy*dy);
+    }
+    return Math.max(l, 4);
+  }
+
+  /* Pixel position at parameter t ∈ [0,1] along road ri */
+  function roadPos(ri, t) {
+    const pts = roads2d[ri];
+    if(pts.length===1) return {x:pts[0].x,y:pts[0].y};
+    const sc = t*(pts.length-1);
+    const i  = Math.min(Math.floor(sc), pts.length-2);
+    const f  = sc-i;
+    return { x:pts[i].x+(pts[i+1].x-pts[i].x)*f, y:pts[i].y+(pts[i+1].y-pts[i].y)*f };
+  }
+
+  /* At junction: pick next road+direction, avoiding immediate reversal */
+  function pickNext(ri, arrivedAtEnd) {
+    const pt = arrivedAtEnd===0 ? ROADS[ri].pts[0] : ROADS[ri].pts[ROADS[ri].pts.length-1];
+    const conns = (nodeMap[ptKey(pt)]||[]).filter(c => !(c.ri===ri && c.atEnd===arrivedAtEnd));
+    if(!conns.length) {
+      /* Dead end — reverse */
+      return {ri, forward: arrivedAtEnd===1, t: arrivedAtEnd===1?1:0};
+    }
+    const c = conns[Math.floor(Math.random()*conns.length)];
+    const forward = c.atEnd===0;          /* atEnd=0 → road starts here → go forward */
+    return {ri:c.ri, forward, t: forward?0:1};
+  }
+
+  /* ---- Particles ---- */
+  const SPEED_PX = 1.6;   /* pixels per frame, same for all particles */
+
+  function spawnParticle(gender) {
+    const ri = Math.floor(Math.random()*ROADS.length);
+    return {gender, ri, t:Math.random(), forward:Math.random()<0.5};
+  }
+
+  function stepParticle(p) {
+    const dt = SPEED_PX / roadLenPx(p.ri);
+    p.t += p.forward ? dt : -dt;
+    if(p.forward && p.t>=1) {
+      const n=pickNext(p.ri,1); p.ri=n.ri; p.forward=n.forward; p.t=n.t;
+    } else if(!p.forward && p.t<=0) {
+      const n=pickNext(p.ri,0); p.ri=n.ri; p.forward=n.forward; p.t=n.t;
+    }
+    p.t=Math.max(0,Math.min(1,p.t));
+  }
+
+  /* ---- Resize / init ---- */
+  function init() {
     W = canvas.width  = canvas.offsetWidth;
     H = canvas.height = canvas.offsetHeight;
-    buildCity();
+    setupProjection();
+    buildGraph();
+    particles = [];
+    for(let i=0;i<32;i++) particles.push(spawnParticle('male'));
+    for(let i=0;i<32;i++) particles.push(spawnParticle('female'));
   }
-  window.addEventListener('resize', resize);
-  resize();
+  window.addEventListener('resize', init);
+  init();
 
-  let lastChange = 0;
+  /* ---- Draw loop ---- */
+  function draw() {
+    ctx.clearRect(0,0,W,H);
 
-  function drawFrame(ts) {
-    /* Slowly shift a few block colours every ~2 s */
-    if (ts - lastChange > 2000) {
-      lastChange = ts;
-      for (let k = 0, n = 4 + Math.floor(Math.random() * 6); k < n; k++) {
-        const b = city.blocks[Math.floor(Math.random() * city.blocks.length)];
-        b.targetType      = weightedType();
-        b.targetTintAlpha = 0.13 + Math.random() * 0.22;
-        b.tp = 0;
-      }
-    }
-
-    ctx.clearRect(0, 0, W, H);
-    /* Background = the street surface colour */
+    /* Dark map background */
     ctx.fillStyle = '#0b1120';
-    ctx.fillRect(0, 0, W, H);
+    ctx.fillRect(0,0,W,H);
 
-    const { hPos, vPos, majorH, majorV, MAJOR_W, MINOR_W, blocks, hotspots, particles } = city;
-
-    /* ---- Blocks: base map grey + gender-colour overlay ---- */
-    blocks.forEach(b => {
-      if (b.tp < 1) {
-        b.tp = Math.min(1, b.tp + 0.006);
-        const tg = colorOf(b.targetType);
-        const sp = b.tp * 0.028;
-        b.cr         = lerp(b.cr,         tg.r,             sp);
-        b.cg         = lerp(b.cg,         tg.g,             sp);
-        b.cb         = lerp(b.cb,         tg.b,             sp);
-        b.tintAlpha  = lerp(b.tintAlpha,  b.targetTintAlpha, sp);
-      }
-
-      /* 1 — solid base: slightly lighter than background = "land" */
-      ctx.fillStyle = '#141e30';
-      ctx.fillRect(b.x, b.y, b.w, b.h);
-
-      /* 2 — transparent gender tint on top */
-      const ri = Math.round(b.cr), gi = Math.round(b.cg), bi = Math.round(b.cb);
-      ctx.fillStyle = `rgba(${ri},${gi},${bi},${b.tintAlpha.toFixed(2)})`;
-      ctx.fillRect(b.x, b.y, b.w, b.h);
-    });
-
-    /* ---- Street lines drawn over the blocks ---- */
-    ctx.lineCap = 'butt';
-    for (let i = 1; i < hPos.length - 1; i++) {
-      const major = majorH.has(i);
+    /* Roads: longer = major (brighter, wider) */
+    roads2d.forEach((pts, ri) => {
+      if(pts.length<2) return;
+      const major = roadLenPx(ri) > 70;
       ctx.beginPath();
-      ctx.moveTo(0, hPos[i]);
-      ctx.lineTo(W, hPos[i]);
-      ctx.strokeStyle = major ? 'rgba(215,235,255,0.24)' : 'rgba(175,205,245,0.10)';
-      ctx.lineWidth   = major ? MAJOR_W : MINOR_W;
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i].x, pts[i].y);
+      ctx.strokeStyle = major ? 'rgba(150,185,230,0.45)' : 'rgba(110,150,210,0.22)';
+      ctx.lineWidth   = major ? 2.5 : 1.5;
+      ctx.lineJoin    = 'round';
+      ctx.lineCap     = 'round';
       ctx.stroke();
-    }
-    for (let i = 1; i < vPos.length - 1; i++) {
-      const major = majorV.has(i);
-      ctx.beginPath();
-      ctx.moveTo(vPos[i], 0);
-      ctx.lineTo(vPos[i], H);
-      ctx.strokeStyle = major ? 'rgba(215,235,255,0.24)' : 'rgba(175,205,245,0.10)';
-      ctx.lineWidth   = major ? MAJOR_W : MINOR_W;
-      ctx.stroke();
-    }
-
-    /* ---- Subtle glow at major intersections ---- */
-    majorH.forEach(hi => {
-      majorV.forEach(vi => {
-        const x = vPos[vi], y = hPos[hi];
-        const gr = ctx.createRadialGradient(x, y, 0, x, y, 18);
-        gr.addColorStop(0, 'rgba(215,235,255,0.11)');
-        gr.addColorStop(1, 'rgba(215,235,255,0)');
-        ctx.beginPath(); ctx.arc(x, y, 18, 0, Math.PI * 2);
-        ctx.fillStyle = gr; ctx.fill();
-      });
     });
 
-    /* ---- Activity hotspots ---- */
-    hotspots.forEach(h => {
-      h.pulse += h.pSpeed;
-      const pv    = (Math.sin(h.pulse) + 1) / 2;
-      const glowR = h.r * (3 + pv * 2.5);
-      const gr = ctx.createRadialGradient(h.x, h.y, h.r * 0.3, h.x, h.y, glowR);
-      gr.addColorStop(0, `rgba(${h.col.r},${h.col.g},${h.col.b},${(0.40 * pv).toFixed(2)})`);
-      gr.addColorStop(1, `rgba(${h.col.r},${h.col.g},${h.col.b},0)`);
-      ctx.beginPath(); ctx.arc(h.x, h.y, glowR, 0, Math.PI * 2);
-      ctx.fillStyle = gr; ctx.fill();
-
-      ctx.beginPath(); ctx.arc(h.x, h.y, h.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${h.col.r},${h.col.g},${h.col.b},${(0.70 + pv * 0.30).toFixed(2)})`;
-      ctx.fill();
-    });
-
-    /* ---- Particles along streets ---- */
+    /* Particles */
     particles.forEach(p => {
-      p.t += p.speed;
-      if (p.t > 1) p.t -= 1;
-      if (p.t < 0) p.t += 1;
-      const px = p.axis === 'h' ? p.t * W : p.pos;
-      const py = p.axis === 'h' ? p.pos   : p.t * H;
-      ctx.beginPath(); ctx.arc(px, py, 1.2, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${p.col.r},${p.col.g},${p.col.b},0.70)`;
+      stepParticle(p);
+      const pos = roadPos(p.ri, p.t);
+      const c   = p.gender==='male' ? MALE : FEMALE;
+
+      /* Soft glow */
+      const grd = ctx.createRadialGradient(pos.x,pos.y,0, pos.x,pos.y,6);
+      grd.addColorStop(0, `rgba(${c.r},${c.g},${c.b},0.40)`);
+      grd.addColorStop(1, `rgba(${c.r},${c.g},${c.b},0)`);
+      ctx.beginPath(); ctx.arc(pos.x,pos.y,6,0,Math.PI*2);
+      ctx.fillStyle=grd; ctx.fill();
+
+      /* Core dot */
+      ctx.beginPath(); ctx.arc(pos.x,pos.y,2,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${c.r},${c.g},${c.b},0.95)`;
       ctx.fill();
     });
 
-    requestAnimationFrame(drawFrame);
+    requestAnimationFrame(draw);
   }
 
-  requestAnimationFrame(drawFrame);
+  requestAnimationFrame(draw);
 })();
 
 
