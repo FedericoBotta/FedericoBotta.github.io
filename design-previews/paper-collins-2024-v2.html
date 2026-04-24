@@ -1127,9 +1127,9 @@
      ============================================================ -->
 <script>
 /* ----------------------------------------------------------------
-   SECTION 1: Hero canvas — top-down city street map
-   Irregular block grid, gender-coded fills, building footprints,
-   glowing activity hotspots, particles moving along streets.
+   SECTION 1: Hero canvas — dark choropleth city map
+   Streets as bright lines, blocks as flat dark-grey fills with
+   a transparent gender-colour overlay. No building footprints.
    ---------------------------------------------------------------- */
 (function () {
   const canvas = document.getElementById('hero-canvas');
@@ -1145,127 +1145,96 @@
     if (r < 0.72) return 'female';
     return 'neutral';
   }
-
   function colorOf(t) {
-    if (t === 'male')   return MALE;
-    if (t === 'female') return FEMALE;
-    return NEUTRAL;
+    return t === 'male' ? MALE : t === 'female' ? FEMALE : NEUTRAL;
   }
-
   function lerp(a, b, t) { return a + (b - a) * t; }
 
   let W, H, city;
 
-  /* Build an irregular street-position array along one axis */
-  function buildStreetPositions(total, count, jitterFrac) {
-    const positions = [0];
+  function streetPositions(total, count, jitter) {
+    const pos  = [0];
     const step = total / count;
     for (let i = 1; i < count; i++) {
       const base = i * step;
-      const j    = (Math.random() - 0.5) * 2 * jitterFrac * step;
-      const prev = positions[positions.length - 1];
-      positions.push(
-        Math.min(total - step * 0.3, Math.max(prev + step * 0.4, base + j))
-      );
+      const j    = (Math.random() - 0.5) * 2 * jitter * step;
+      const prev = pos[pos.length - 1];
+      pos.push(Math.min(total - step * 0.25, Math.max(prev + step * 0.38, base + j)));
     }
-    positions.push(total);
-    return positions;
-  }
-
-  /* Small building rectangles packed inside a city block */
-  function genBuildings(bx, by, bw, bh) {
-    if (bw < 16 || bh < 16) return [];
-    const out = [];
-    const pad    = Math.max(3, Math.min(bw, bh) * 0.13);
-    const innerW = bw - 2 * pad;
-    const innerH = bh - 2 * pad;
-    const n = 1 + Math.floor(Math.random() * 4);
-    for (let i = 0; i < n; i++) {
-      const bww = Math.max(4, 3 + Math.random() * innerW * 0.55);
-      const bhh = Math.max(4, 3 + Math.random() * innerH * 0.55);
-      const bxx = bx + pad + Math.random() * Math.max(0, innerW - bww);
-      const byy = by + pad + Math.random() * Math.max(0, innerH - bhh);
-      out.push({ x: bxx, y: byy, w: bww, h: bhh });
-    }
-    return out;
+    pos.push(total);
+    return pos;
   }
 
   function buildCity() {
-    const MAJOR_W = 5, MINOR_W = 2, MARGIN = 1;
+    const MAJOR_W = 6, MINOR_W = 2;
 
-    /* Street grids — more streets on wider/taller canvases */
-    const nH = Math.round(8  + (H / W) * 4);
-    const nV = Math.round(13 + (W / H) * 2);
-    const hPos = buildStreetPositions(H, nH, 0.18);
-    const vPos = buildStreetPositions(W, nV, 0.14);
+    const nH = Math.round(7  + (H / W) * 3);
+    const nV = Math.round(11 + (W / H) * 2);
+    const hPos = streetPositions(H, nH, 0.16);
+    const vPos = streetPositions(W, nV, 0.13);
 
-    /* Mark some streets as major (wider, brighter) */
     const majorH = new Set(), majorV = new Set();
-    for (let i = 1; i < hPos.length - 1; i++) if (Math.random() < 0.28) majorH.add(i);
-    for (let i = 1; i < vPos.length - 1; i++) if (Math.random() < 0.22) majorV.add(i);
+    for (let i = 1; i < hPos.length - 1; i++) if (Math.random() < 0.30) majorH.add(i);
+    for (let i = 1; i < vPos.length - 1; i++) if (Math.random() < 0.25) majorV.add(i);
 
-    /* Blocks = rectangles between adjacent street lines */
+    /* Blocks: the rectangle of land between adjacent streets */
     const blocks = [];
     for (let r = 0; r < hPos.length - 1; r++) {
       for (let c = 0; c < vPos.length - 1; c++) {
-        const swT = (r === 0)              ? 0 : (majorH.has(r)     ? MAJOR_W : MINOR_W);
-        const swB = (r === hPos.length-2)  ? 0 : (majorH.has(r + 1) ? MAJOR_W : MINOR_W);
-        const swL = (c === 0)              ? 0 : (majorV.has(c)     ? MAJOR_W : MINOR_W);
-        const swR = (c === vPos.length-2)  ? 0 : (majorV.has(c + 1) ? MAJOR_W : MINOR_W);
+        const swT = r === 0             ? 0 : (majorH.has(r)     ? MAJOR_W : MINOR_W);
+        const swB = r === hPos.length-2 ? 0 : (majorH.has(r + 1) ? MAJOR_W : MINOR_W);
+        const swL = c === 0             ? 0 : (majorV.has(c)     ? MAJOR_W : MINOR_W);
+        const swR = c === vPos.length-2 ? 0 : (majorV.has(c + 1) ? MAJOR_W : MINOR_W);
 
-        const x1 = vPos[c]     + swL / 2 + MARGIN;
-        const y1 = hPos[r]     + swT / 2 + MARGIN;
-        const x2 = vPos[c + 1] - swR / 2 - MARGIN;
-        const y2 = hPos[r + 1] - swB / 2 - MARGIN;
-        const bw = x2 - x1, bh = y2 - y1;
-        if (bw < 6 || bh < 6) continue;
+        /* Block edge is the centre of the bounding street */
+        const x1 = vPos[c]     + swL / 2;
+        const y1 = hPos[r]     + swT / 2;
+        const x2 = vPos[c + 1] - swR / 2;
+        const y2 = hPos[r + 1] - swB / 2;
+        if (x2 - x1 < 4 || y2 - y1 < 4) continue;
 
-        const type  = weightedType();
-        const col   = colorOf(type);
-        const alpha = 0.12 + Math.random() * 0.28;
+        const type       = weightedType();
+        const col        = colorOf(type);
+        const tintAlpha  = 0.13 + Math.random() * 0.22;
 
         blocks.push({
-          x: x1, y: y1, w: bw, h: bh,
+          x: x1, y: y1, w: x2 - x1, h: y2 - y1,
           type, targetType: type,
           cr: col.r, cg: col.g, cb: col.b,
-          alpha, targetAlpha: alpha,
+          tintAlpha, targetTintAlpha: tintAlpha,
           tp: 1,
-          buildings: genBuildings(x1, y1, bw, bh),
         });
       }
     }
 
-    /* Glowing activity hotspots on a random subset of blocks */
+    /* Hotspots — small glowing dots on a subset of blocks */
     const hotspots = [];
-    const hotN = Math.floor(blocks.length * 0.12);
-    [...blocks].sort(() => Math.random() - 0.5).slice(0, hotN).forEach(b => {
-      hotspots.push({
-        x: b.x + b.w * (0.3 + Math.random() * 0.4),
-        y: b.y + b.h * (0.3 + Math.random() * 0.4),
-        r: 1.8 + Math.random() * 2.5,
-        col: colorOf(b.type),
-        pulse:  Math.random() * Math.PI * 2,
-        pSpeed: 0.018 + Math.random() * 0.025,
+    [...blocks].sort(() => Math.random() - 0.5)
+      .slice(0, Math.floor(blocks.length * 0.10))
+      .forEach(b => {
+        hotspots.push({
+          x: b.x + b.w * (0.25 + Math.random() * 0.5),
+          y: b.y + b.h * (0.25 + Math.random() * 0.5),
+          r: 1.8 + Math.random() * 2.2,
+          col: colorOf(b.type),
+          pulse:  Math.random() * Math.PI * 2,
+          pSpeed: 0.018 + Math.random() * 0.022,
+        });
       });
-    });
 
-    /* Tiny particles that travel along street lines */
+    /* Particles travelling along street lines */
     const particles = [];
     for (let i = 1; i < hPos.length - 1; i++) {
-      if (Math.random() > 0.55) continue;
-      particles.push({
-        axis: 'h', pos: hPos[i], t: Math.random(),
-        speed: (0.00025 + Math.random() * 0.0004) * (Math.random() < 0.5 ? 1 : -1),
-        col: colorOf(weightedType()),
-      });
+      if (Math.random() > 0.50) continue;
+      particles.push({ axis: 'h', pos: hPos[i], t: Math.random(),
+        speed: (0.0003 + Math.random() * 0.0004) * (Math.random() < 0.5 ? 1 : -1),
+        col: colorOf(weightedType()) });
     }
     for (let i = 1; i < vPos.length - 1; i++) {
-      if (Math.random() > 0.45) continue;
-      particles.push({
-        axis: 'v', pos: vPos[i], t: Math.random(),
-        speed: (0.00025 + Math.random() * 0.0004) * (Math.random() < 0.5 ? 1 : -1),
-        col: colorOf(weightedType()),
-      });
+      if (Math.random() > 0.42) continue;
+      particles.push({ axis: 'v', pos: vPos[i], t: Math.random(),
+        speed: (0.0003 + Math.random() * 0.0004) * (Math.random() < 0.5 ? 1 : -1),
+        col: colorOf(weightedType()) });
     }
 
     city = { hPos, vPos, majorH, majorV, MAJOR_W, MINOR_W, blocks, hotspots, particles };
@@ -1276,67 +1245,60 @@
     H = canvas.height = canvas.offsetHeight;
     buildCity();
   }
-
   window.addEventListener('resize', resize);
   resize();
 
   let lastChange = 0;
 
   function drawFrame(ts) {
-    /* Randomly transition a handful of blocks every ~1.8 s */
-    if (ts - lastChange > 1800) {
+    /* Slowly shift a few block colours every ~2 s */
+    if (ts - lastChange > 2000) {
       lastChange = ts;
-      const n = 4 + Math.floor(Math.random() * 7);
-      for (let k = 0; k < n; k++) {
+      for (let k = 0, n = 4 + Math.floor(Math.random() * 6); k < n; k++) {
         const b = city.blocks[Math.floor(Math.random() * city.blocks.length)];
-        b.targetType  = weightedType();
-        b.targetAlpha = 0.12 + Math.random() * 0.28;
+        b.targetType      = weightedType();
+        b.targetTintAlpha = 0.13 + Math.random() * 0.22;
         b.tp = 0;
       }
     }
 
     ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = '#0d1117';
+    /* Background = the street surface colour */
+    ctx.fillStyle = '#0b1120';
     ctx.fillRect(0, 0, W, H);
 
     const { hPos, vPos, majorH, majorV, MAJOR_W, MINOR_W, blocks, hotspots, particles } = city;
 
-    /* ---- City blocks ---- */
+    /* ---- Blocks: base map grey + gender-colour overlay ---- */
     blocks.forEach(b => {
       if (b.tp < 1) {
-        b.tp = Math.min(1, b.tp + 0.007);
+        b.tp = Math.min(1, b.tp + 0.006);
         const tg = colorOf(b.targetType);
-        const sp = b.tp * 0.035;
-        b.cr    = lerp(b.cr,    tg.r, sp);
-        b.cg    = lerp(b.cg,    tg.g, sp);
-        b.cb    = lerp(b.cb,    tg.b, sp);
-        b.alpha = lerp(b.alpha, b.targetAlpha, sp);
+        const sp = b.tp * 0.028;
+        b.cr         = lerp(b.cr,         tg.r,             sp);
+        b.cg         = lerp(b.cg,         tg.g,             sp);
+        b.cb         = lerp(b.cb,         tg.b,             sp);
+        b.tintAlpha  = lerp(b.tintAlpha,  b.targetTintAlpha, sp);
       }
 
-      const r  = Math.round(b.cr), g = Math.round(b.cg), bl = Math.round(b.cb);
-      const a  = b.alpha.toFixed(2);
+      /* 1 — solid base: slightly lighter than background = "land" */
+      ctx.fillStyle = '#141e30';
+      ctx.fillRect(b.x, b.y, b.w, b.h);
 
-      ctx.beginPath();
-      ctx.roundRect(b.x, b.y, b.w, b.h, 2);
-      ctx.fillStyle = `rgba(${r},${g},${bl},${a})`;
-      ctx.fill();
-
-      /* Building footprints inside the block */
-      b.buildings.forEach(bld => {
-        ctx.beginPath();
-        ctx.roundRect(bld.x, bld.y, bld.w, bld.h, 1);
-        ctx.fillStyle = `rgba(${r},${g},${bl},${Math.min(1, b.alpha * 1.9).toFixed(2)})`;
-        ctx.fill();
-      });
+      /* 2 — transparent gender tint on top */
+      const ri = Math.round(b.cr), gi = Math.round(b.cg), bi = Math.round(b.cb);
+      ctx.fillStyle = `rgba(${ri},${gi},${bi},${b.tintAlpha.toFixed(2)})`;
+      ctx.fillRect(b.x, b.y, b.w, b.h);
     });
 
-    /* ---- Street lines ---- */
+    /* ---- Street lines drawn over the blocks ---- */
+    ctx.lineCap = 'butt';
     for (let i = 1; i < hPos.length - 1; i++) {
       const major = majorH.has(i);
       ctx.beginPath();
       ctx.moveTo(0, hPos[i]);
       ctx.lineTo(W, hPos[i]);
-      ctx.strokeStyle = major ? 'rgba(200,230,255,0.18)' : 'rgba(160,200,240,0.08)';
+      ctx.strokeStyle = major ? 'rgba(215,235,255,0.24)' : 'rgba(175,205,245,0.10)';
       ctx.lineWidth   = major ? MAJOR_W : MINOR_W;
       ctx.stroke();
     }
@@ -1345,55 +1307,48 @@
       ctx.beginPath();
       ctx.moveTo(vPos[i], 0);
       ctx.lineTo(vPos[i], H);
-      ctx.strokeStyle = major ? 'rgba(200,230,255,0.18)' : 'rgba(160,200,240,0.08)';
+      ctx.strokeStyle = major ? 'rgba(215,235,255,0.24)' : 'rgba(175,205,245,0.10)';
       ctx.lineWidth   = major ? MAJOR_W : MINOR_W;
       ctx.stroke();
     }
 
-    /* ---- Intersection glow at major crossings ---- */
+    /* ---- Subtle glow at major intersections ---- */
     majorH.forEach(hi => {
       majorV.forEach(vi => {
         const x = vPos[vi], y = hPos[hi];
-        const gr = ctx.createRadialGradient(x, y, 0, x, y, 20);
-        gr.addColorStop(0, 'rgba(200,230,255,0.10)');
-        gr.addColorStop(1, 'rgba(200,230,255,0)');
-        ctx.beginPath();
-        ctx.arc(x, y, 20, 0, Math.PI * 2);
-        ctx.fillStyle = gr;
-        ctx.fill();
+        const gr = ctx.createRadialGradient(x, y, 0, x, y, 18);
+        gr.addColorStop(0, 'rgba(215,235,255,0.11)');
+        gr.addColorStop(1, 'rgba(215,235,255,0)');
+        ctx.beginPath(); ctx.arc(x, y, 18, 0, Math.PI * 2);
+        ctx.fillStyle = gr; ctx.fill();
       });
     });
 
-    /* ---- Hotspots ---- */
+    /* ---- Activity hotspots ---- */
     hotspots.forEach(h => {
       h.pulse += h.pSpeed;
       const pv    = (Math.sin(h.pulse) + 1) / 2;
-      const glowR = h.r * (3.5 + pv * 2.5);
-
+      const glowR = h.r * (3 + pv * 2.5);
       const gr = ctx.createRadialGradient(h.x, h.y, h.r * 0.3, h.x, h.y, glowR);
-      gr.addColorStop(0, `rgba(${h.col.r},${h.col.g},${h.col.b},${(0.45 * pv).toFixed(2)})`);
+      gr.addColorStop(0, `rgba(${h.col.r},${h.col.g},${h.col.b},${(0.40 * pv).toFixed(2)})`);
       gr.addColorStop(1, `rgba(${h.col.r},${h.col.g},${h.col.b},0)`);
-      ctx.beginPath();
-      ctx.arc(h.x, h.y, glowR, 0, Math.PI * 2);
-      ctx.fillStyle = gr;
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(h.x, h.y, glowR, 0, Math.PI * 2);
+      ctx.fillStyle = gr; ctx.fill();
 
-      ctx.beginPath();
-      ctx.arc(h.x, h.y, h.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${h.col.r},${h.col.g},${h.col.b},${(0.65 + pv * 0.35).toFixed(2)})`;
+      ctx.beginPath(); ctx.arc(h.x, h.y, h.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${h.col.r},${h.col.g},${h.col.b},${(0.70 + pv * 0.30).toFixed(2)})`;
       ctx.fill();
     });
 
-    /* ---- Moving particles along streets ---- */
+    /* ---- Particles along streets ---- */
     particles.forEach(p => {
       p.t += p.speed;
       if (p.t > 1) p.t -= 1;
       if (p.t < 0) p.t += 1;
       const px = p.axis === 'h' ? p.t * W : p.pos;
       const py = p.axis === 'h' ? p.pos   : p.t * H;
-      ctx.beginPath();
-      ctx.arc(px, py, 1.3, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${p.col.r},${p.col.g},${p.col.b},0.75)`;
+      ctx.beginPath(); ctx.arc(px, py, 1.2, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${p.col.r},${p.col.g},${p.col.b},0.70)`;
       ctx.fill();
     });
 
