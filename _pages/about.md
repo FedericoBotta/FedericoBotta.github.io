@@ -81,6 +81,25 @@ hero_tags:
 
 ---
 
+## Publication Highlights
+
+<div class="paper-highlights">
+  <div class="paper-card">
+    <div class="paper-card__meta">2025 · Journal of Physics: Complexity</div>
+    <h3 class="paper-card__title">Bus travel time variability and inequalities in healthcare access</h3>
+    <p class="paper-card__summary">We show that where you live shapes how reliably you can reach hospital by bus — and that deprived communities in England face consistently higher travel time uncertainty, compounding existing access inequalities.</p>
+    <a href="/papers/chen-2025.html" class="paper-card__link">Explore the research →</a>
+  </div>
+  <div class="paper-card">
+    <div class="paper-card__meta">2024 · Environment and Planning B</div>
+    <h3 class="paper-card__title">Spatiotemporal gender differences in urban vibrancy</h3>
+    <p class="paper-card__summary">Using millions of app-usage records, we reveal that men and women experience the city differently in time and space — with women less present in public spaces at night and more concentrated in residential areas, reflecting broader patterns of urban inequality.</p>
+    <a href="/papers/collins-2024.html" class="paper-card__link">Explore the research →</a>
+  </div>
+</div>
+
+---
+
 ## Working with Partners
 
 <div class="partners-section">
