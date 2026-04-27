@@ -1,0 +1,8 @@
+# Permanently excluded DOIs
+# ─────────────────────────
+# Add one DOI per line (without the https://doi.org/ prefix) to prevent
+# a paper from ever being proposed again by the auto-update workflow.
+#
+# Example:
+#   10.48550/arxiv.2603.11477
+#
