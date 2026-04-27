@@ -1,0 +1,45 @@
+name: Check for new publications
+
+on:
+  schedule:
+    - cron: '0 8 * * *'   # 08:00 UTC every day
+  workflow_dispatch:        # also runnable manually from the Actions tab
+
+jobs:
+  check-publications:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write        # needed to push the branch
+      pull-requests: write   # needed to open the PR
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Query OpenAlex and update publications list
+        id: check
+        run: python .github/scripts/check_publications.py
+
+      - name: Open pull request for review
+        if: steps.check.outputs.new_papers_found == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # Fixed branch name — if a PR is already open, this adds to it
+          # rather than spamming a new PR for every daily run.
+          branch: publications/auto-update
+          delete-branch: true
+          commit-message: "chore: add new publications found via OpenAlex"
+          title: ${{ env.PR_TITLE }}
+          body: ${{ env.PR_BODY }}
+          labels: publications
+          assignees: FedericoBotta
