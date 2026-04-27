@@ -35,7 +35,7 @@ OPENALEX_URL = (
 
 REPO_ROOT       = Path(__file__).resolve().parents[2]
 PUBLICATIONS_MD = REPO_ROOT / "_pages" / "publications.md"
-EXCLUDED_FILE   = Path(__file__).parent / "excluded_dois.txt"
+EXCLUDED_FILE   = Path(__file__).parent / "excluded_works.txt"
 
 # ── Noise filters ─────────────────────────────────────────────────────────────
 
@@ -192,13 +192,20 @@ def main():
         for d in re.findall(r'doi\.org/([^\s"\'<\n]+)', pub_text)
     }
 
-    # Load permanently excluded DOIs (added by user to skip unwanted papers)
-    excluded_dois: set[str] = set()
+    # Load permanently excluded works (DOIs and/or title substrings).
+    # Lines starting with "10." are treated as DOIs; anything else is a
+    # case-insensitive title substring to match against.
+    excluded_dois:   set[str] = set()
+    excluded_titles: list[str] = []
     if EXCLUDED_FILE.exists():
         for line in EXCLUDED_FILE.read_text().splitlines():
-            line = line.strip().lower()
-            if line and not line.startswith("#"):
-                excluded_dois.add(line)
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            if line.lower().startswith("10."):
+                excluded_dois.add(line.lower())
+            else:
+                excluded_titles.append(line.lower())
 
     # Fetch works from OpenAlex
     headers = {
@@ -230,8 +237,13 @@ def main():
 
         # ── Deduplication ──────────────────────────────────────────────────
 
-        # Permanently excluded by user
+        # Permanently excluded by DOI
         if doi and doi in excluded_dois:
+            continue
+
+        # Permanently excluded by title substring (for papers without a DOI)
+        title_lower = title.lower()
+        if any(excl in title_lower for excl in excluded_titles):
             continue
 
         # DOI already on the page
@@ -290,8 +302,10 @@ def main():
         "The workflow found the following paper(s) in OpenAlex that are not yet on your site.",
         "Please **review the diff**, adjust formatting if needed (year, venue, ★ highlight),",
         "then **Merge** to publish or **Close** to skip.\n",
-        "> **To permanently skip a paper** (so it is never proposed again), add its DOI",
-        "> to `.github/scripts/excluded_dois.txt` before closing this PR.\n",
+        "> **To permanently skip a paper** so it is never proposed again, add an entry",
+        "> to `.github/scripts/excluded_works.txt` before closing this PR:",
+        "> - **Has a DOI** → add the DOI (e.g. `10.48550/arxiv.2603.11477`)",
+        "> - **No DOI** → add a distinctive phrase from the title (e.g. `agrifood campaign`)\n",
         "---\n",
     ]
 
@@ -302,14 +316,26 @@ def main():
         doi       = doi_clean(work)
         citations = work.get("cited_by_count", 0)
         wtype     = "preprint" if is_preprint(work) else work.get("type", "")
+        oa_id     = (work.get("id") or "").replace("https://openalex.org/", "")
+
+        if doi:
+            skip_hint = f"`{doi}` (DOI) — add to `excluded_works.txt` to skip permanently"
+        else:
+            words = title.split()[:4]
+            skip_hint = (
+                f'`{" ".join(words).lower()}` (title fragment) — '
+                f"add to `excluded_works.txt` to skip permanently"
+            )
 
         body_lines += [
             f"### {title}",
             f"- **Year:** {year}",
             f"- **Type:** {wtype}",
             f"- **Venue:** {venue or '(not yet available)'}",
-            *([ f"- **DOI:** https://doi.org/{doi}" ] if doi else []),
+            *([ f"- **DOI:** https://doi.org/{doi}" ] if doi else ["- **DOI:** none"]),
+            f"- **OpenAlex ID:** [{oa_id}](https://openalex.org/{oa_id})",
             f"- **Citations (OpenAlex):** {citations}",
+            f"- **To exclude:** {skip_hint}",
             "",
         ]
 
