@@ -216,46 +216,53 @@ def main():
     works = resp.json().get("results", [])
     print(f"OpenAlex returned {len(works)} records.")
 
-    new_papers = []
+    # ── Phase 1: noise filtering and user exclusions ───────────────────────
 
+    candidates = []
     for work in works:
-        title  = (work.get("title") or "").strip()
-        wtype  = work.get("type", "")
-        doi    = doi_clean(work)
-        src    = source_display(work)
-
-        # ── Noise filters ──────────────────────────────────────────────────
+        title = (work.get("title") or "").strip()
+        wtype = work.get("type", "")
+        doi   = doi_clean(work)
+        src   = source_display(work)
 
         if wtype in SKIP_TYPES:
             continue
-
         if any(s in src for s in SKIP_SOURCE_SUBSTRINGS):
             continue
-
         if any(re.search(p, title, re.IGNORECASE) for p in SKIP_TITLE_PATTERNS):
             continue
-
-        # ── Deduplication ──────────────────────────────────────────────────
-
-        # Permanently excluded by DOI
         if doi and doi in excluded_dois:
             continue
-
-        # Permanently excluded by title substring (for papers without a DOI)
-        title_lower = title.lower()
-        if any(excl in title_lower for excl in excluded_titles):
+        if any(excl in title.lower() for excl in excluded_titles):
             continue
 
-        # DOI already on the page
+        candidates.append(work)
+
+    # ── Phase 2: deduplication ─────────────────────────────────────────────
+    # Sort so works with a DOI come first.  When two OpenAlex records describe
+    # the same paper (e.g. one with a DOI, one without), the DOI version is
+    # seen first and the duplicate is dropped by the title-similarity check.
+    candidates.sort(key=lambda w: (0 if doi_clean(w) else 1))
+
+    # seen_titles grows to include both the page's existing titles *and* any
+    # papers already accepted in this batch, so within-batch duplicates are caught.
+    seen_titles = list(existing_titles)
+    new_papers  = []
+
+    for work in candidates:
+        title = (work.get("title") or "").strip()
+        doi   = doi_clean(work)
+
+        # Already on the page by DOI
         if doi and doi in existing_dois:
             continue
 
-        # Title too similar to something already listed
-        # (catches preprints whose published version is already listed)
-        if any(similarity(title, t) > 0.80 for t in existing_titles):
+        # Already on the page or already in this batch by title similarity
+        if any(similarity(title, t) > 0.80 for t in seen_titles):
             continue
 
         new_papers.append(work)
+        seen_titles.append(title)   # block near-identical titles later in the loop
 
     if not new_papers:
         print("✓ No new papers found — nothing to do.")
