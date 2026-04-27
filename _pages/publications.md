@@ -24,6 +24,14 @@ For citation counts and a full list, see my <a href="https://scholar.google.co.u
 
 <div id="publications-list">
 
+<div class="publication-item" data-year="2026">
+<span class="pub-year">2026</span>
+<span class="pub-title">A scalable framework for correcting public transport timetables using real-time data for accessibility analysis</span> <em>(preprint)</em><br>
+Chen, Z., &amp; Botta, F.<br>
+<span class="pub-venue">arXiv (Cornell University)</span>
+<a href="https://doi.org/10.48550/arxiv.2603.11477" class="pub-badge" target="_blank" rel="noopener">doi</a>
+</div>
+
 <div class="publication-item pub-highlight" data-year="2025">
 <span class="pub-year">2025</span>
 <span class="pub-title">The geography of inequalities in access to healthcare across England: the role of bus travel time variability</span><br>
@@ -55,6 +63,14 @@ Arthur, R., &amp; Botta, F.<br>
 <span class="pub-venue">arXiv:2502.07451</span>
 </div>
 
+<div class="publication-item" data-year="2025">
+<span class="pub-year">2025</span>
+<span class="pub-title">An online picture is worth a thousand words</span><br>
+Botta, F.<br>
+<span class="pub-venue">Edward Elgar Publishing Limited eBooks, 160–171</span>
+<a href="https://doi.org/10.4337/9781802207309.00020" class="pub-badge" target="_blank" rel="noopener">doi</a>
+</div>
+
 <div class="publication-item" data-year="2024">
 <span class="pub-year">2024</span>
 <span class="pub-title">Unveiling social vibrancy in urban spaces with app usage</span> <em>(preprint)</em><br>
@@ -67,6 +83,14 @@ Collins, T., Pacheco, D., Di Clemente, R., &amp; Botta, F.<br>
 <span class="pub-title">Unrestricted Versus Regulated Open Data Governance: A Bibliometric Comparison of SARS-CoV-2 Nucleotide Sequence Databases</span><br>
 Sheehan, N., Botta, F., &amp; Leonelli, S.<br>
 <span class="pub-venue">Data Science Journal, 23(1)</span>
+</div>
+
+<div class="publication-item" data-year="2024">
+<span class="pub-year">2024</span>
+<span class="pub-title">Complex Networks XV</span><br>
+Botta, F., Macedo, M., Barbosa, H., &amp; Menezes, R.<br>
+<span class="pub-venue">Springer proceedings in complexity</span>
+<a href="https://doi.org/10.1007/978-3-031-57515-0" class="pub-badge" target="_blank" rel="noopener">doi</a>
 </div>
 
 <div class="publication-item pub-highlight" data-year="2023">
@@ -84,11 +108,27 @@ Santana, C., Botta, F., Barbosa, H., Privitera, F., Menezes, R., &amp; Di Clemen
 <span class="pub-venue">Nature Human Behaviour, 7(10), 1729–1739</span>
 </div>
 
+<div class="publication-item" data-year="2023">
+<span class="pub-year">2023</span>
+<span class="pub-title">Packaging code for reproducible research in the public sector</span> <em>(preprint)</em><br>
+Botta, F., Lovelace, R., Gilbert, L., &amp; Turrell, A.<br>
+<span class="pub-venue">arXiv (Cornell University)</span>
+<a href="https://doi.org/10.48550/arxiv.2305.16205" class="pub-badge" target="_blank" rel="noopener">doi</a>
+</div>
+
 <div class="publication-item" data-year="2022">
 <span class="pub-year">2022</span>
 <span class="pub-title">Cognitive networks extract insights on COVID-19 vaccines from English and Italian popular tweets</span><br>
 Stella, M., Vitevitch, M. S., &amp; Botta, F.<br>
 <span class="pub-venue">Big Data and Cognitive Computing, 6(2), 52</span>
+</div>
+
+<div class="publication-item" data-year="2022">
+<span class="pub-year">2022</span>
+<span class="pub-title">Cognitive Networks Extract Insights on COVID-19 Vaccines from English and Italian Popular Tweets: Anticipation, Logistics, Conspiracy and Loss of Trust</span><br>
+Stella, M., Vitevitch, M.S., &amp; Botta, F.<br>
+<span class="pub-venue">Big Data and Cognitive Computing, 6(2), 52</span>
+<a href="https://doi.org/10.3390/bdcc6020052" class="pub-badge" target="_blank" rel="noopener">doi</a>
 </div>
 
 <div class="publication-item" data-year="2021">
@@ -110,6 +150,14 @@ Botta, F.<br>
 <span class="pub-title">★ Modelling urban vibrancy with mobile phone and OpenStreetMap data</span><br>
 Botta, F., &amp; Gutiérrez-Roig, M.<br>
 <span class="pub-venue">PLOS ONE, 16(6), e0252015</span>
+</div>
+
+<div class="publication-item" data-year="2021">
+<span class="pub-year">2021</span>
+<span class="pub-title">Cognitive networks identify the content of English and Italian popular posts about COVID-19 vaccines: Anticipation, logistics, conspiracy and loss of trust</span> <em>(preprint)</em><br>
+Stella, M., Vitevitch, M.S., &amp; Botta, F.<br>
+<span class="pub-venue">arXiv (Cornell University)</span>
+<a href="https://doi.org/10.48550/arxiv.2103.15909" class="pub-badge" target="_blank" rel="noopener">doi</a>
 </div>
 
 <div class="publication-item" data-year="2020">
