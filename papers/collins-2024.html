@@ -723,7 +723,44 @@
 </head>
 <body>
 
-<!-- Fixed badge -->
+<!-- ============================================================
+     SITE NAVIGATION
+     ============================================================ -->
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <button><div class="navicon"></div></button>
+        <ul class="visible-links">
+          <li class="masthead__menu-item masthead__menu-item--lg">
+            <a href="/" class="masthead__name-link">
+              <span class="masthead__name">Federico Botta</span>
+              <span class="masthead__subtitle">Senior Lecturer in Data Science · University of Exeter</span>
+            </a>
+          </li>
+          <li class="masthead__menu-item"><a href="/publications/">Publications</a></li>
+          <li class="masthead__menu-item"><a href="/policy/">Policy &amp; Impact</a></li>
+          <li class="masthead__menu-item"><a href="/media/">Media</a></li>
+          <li class="masthead__menu-item"><a href="/publicengagement/">Public Engagement</a></li>
+          <li class="masthead__menu-item"><a href="/cv/">CV</a></li>
+        </ul>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+<!-- pin masthead colours regardless of paper-page palette -->
+<style>
+  .masthead { background: #fff !important; border-bottom: 2px solid #022020 !important; border-top: none !important; padding: 1.1em 0 0.9em !important; box-shadow: none !important; }
+  .masthead a { color: #4b5563 !important; text-decoration: none !important; }
+  .masthead a:hover { color: #006647 !important; }
+  .masthead__name { color: #022020 !important; }
+  .masthead__subtitle { color: #6b7280 !important; }
+  .greedy-nav { background: #fff !important; }
+  .greedy-nav button .navicon,
+  .greedy-nav button .navicon::before,
+  .greedy-nav button .navicon::after { background: #022020 !important; }
+</style>
 
 <!-- ============================================================
      SECTION 1 — HERO
@@ -1593,6 +1630,20 @@
   els.forEach(el => obs.observe(el));
 })();
 </script>
+
+<!-- ============================================================
+     SITE FOOTER
+     ============================================================ -->
+<footer class="page__footer">
+  <footer>
+    <div class="page__footer-copyright">
+      &copy; 2026 Federico Botta &nbsp;&middot;&nbsp;
+      <a href="/">Home</a> &nbsp;&middot;&nbsp;
+      <a href="/publications/">Publications</a> &nbsp;&middot;&nbsp;
+      <a href="/policy/">Policy &amp; Impact</a>
+    </div>
+  </footer>
+</footer>
 
 </body>
 </html>
