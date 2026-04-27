@@ -9,6 +9,11 @@ jobs:
   check-publications:
     runs-on: ubuntu-latest
 
+    # Opt into Node.js 24 for all JavaScript actions (checkout, setup-python,
+    # create-pull-request) to avoid the Node.js 20 deprecation warning.
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     permissions:
       contents: write        # needed to push the branch
       pull-requests: write   # needed to open the PR
