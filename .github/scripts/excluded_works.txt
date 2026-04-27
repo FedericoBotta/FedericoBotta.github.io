@@ -1,0 +1,17 @@
+# Permanently excluded works
+# ───────────────────────────
+# Add one entry per line to prevent a paper from ever being proposed again.
+#
+# Two formats are supported — the script detects which to use automatically:
+#
+#   DOI (for papers that have one):
+#     10.48550/arxiv.2603.11477
+#
+#   Title substring (for papers without a DOI, or when you don't have the DOI
+#   handy — any distinctive phrase from the title works):
+#     agrifood campaign planning
+#     urban analytics series
+#
+# The PR opened by the workflow shows a ready-to-paste "To exclude:" hint
+# for each proposed paper.
+#
