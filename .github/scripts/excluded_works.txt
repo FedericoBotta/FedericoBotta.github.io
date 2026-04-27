@@ -15,3 +15,5 @@
 # The PR opened by the workflow shows a ready-to-paste "To exclude:" hint
 # for each proposed paper.
 #
+10.48550/arxiv.2305.16205
+10.48550/arxiv.2103.15909
