@@ -3,6 +3,9 @@ main:
   - title: "Publications"
     url: /publications/
 
+  - title: "Peer Review"
+    url: /reviewing/
+
   - title: "Policy & Impact"
     url: /policy/
 
