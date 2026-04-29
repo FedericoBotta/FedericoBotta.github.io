@@ -495,6 +495,79 @@ a.stat-item {
   &:visited { color: inherit; }
 }
 
+/* ── Academic Service page ───────────────────────────────────── */
+
+.service-intro {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  color: #4a5568;
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+
+.service-section {
+  margin: 0 0 0.5rem;
+}
+
+.service-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+
+  td {
+    padding: 0.55em 0.75em 0.55em 0;
+    vertical-align: top;
+    border-bottom: 1px solid var(--green-rule);
+    color: var(--green-darkest);
+    line-height: 1.5;
+  }
+
+  tr:last-child td { border-bottom: none; }
+}
+
+.service-period {
+  white-space: nowrap;
+  width: 9em;
+  font-weight: 600;
+  color: var(--green-forest) !important;
+  font-size: 0.8rem;
+  padding-right: 1.5em !important;
+}
+
+.service-role {
+  font-weight: 600;
+  color: var(--green-darkest);
+}
+
+.service-note {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-style: normal;
+}
+
+.service-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+
+  li {
+    padding: 0.5em 0;
+    border-bottom: 1px solid var(--green-rule);
+    color: var(--green-darkest);
+    line-height: 1.5;
+    &:last-child { border-bottom: none; }
+    &::before {
+      content: '·';
+      color: var(--green-mid);
+      margin-right: 0.5em;
+      font-weight: 700;
+    }
+  }
+}
+
 /* ── Peer-review page ────────────────────────────────────────── */
 
 .review-group {
