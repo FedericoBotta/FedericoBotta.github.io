@@ -1,0 +1,122 @@
+# Peer review activity
+# Source of truth: manually curated list below.
+# The daily ORCID check (check_peer_reviews.py) only ever ADDS new entries
+# for journals that appear in ORCID but are not yet in this list.
+# To add manually: append a new entry with name + since year.
+
+journals:
+  - name: PLOS ONE
+    since: 2013
+
+  - name: Europhysics Letters
+    since: 2015
+
+  - name: IEEE Pervasive Computing
+    since: 2016
+  - name: Physica A
+    since: 2016
+  - name: Physics Letters A
+    since: 2016
+
+  - name: Royal Society Open Science
+    since: 2017
+  - name: Scientific Reports
+    since: 2017
+  - name: International Journal of Geo-Information
+    since: 2017
+  - name: Applied Sciences
+    since: 2017
+
+  - name: EPJ Data Science
+    since: 2018
+  - name: Scientific Data
+    since: 2018
+  - name: Computational Social Networks
+    since: 2018
+  - name: Social Networks Analysis and Mining
+    since: 2018
+  - name: Journal of Economic Interaction and Coordination
+    since: 2018
+
+  - name: Journal of the Royal Society Interface
+    since: 2019
+
+  - name: Communications Physics
+    since: 2021
+  - name: Royal Society Philosophical Transactions A
+    since: 2021
+  - name: Applied Network Science
+    since: 2021
+  - name: Complex & Intelligent Systems
+    since: 2021
+
+  - name: Environment and Planning B&#58; Urban Analytics and City Science
+    since: 2022
+  - name: Sustainable Cities and Society
+    since: 2022
+
+  - name: Humanities &amp; Social Sciences Communications
+    since: 2023
+  - name: Computers, Environment and Urban Systems
+    since: 2023
+  - name: Journal of Complex Networks
+    since: 2023
+  - name: Journal of Social Computing
+    since: 2023
+  - name: Journal of Maps
+    since: 2023
+
+  - name: Nature Human Behaviour
+    since: 2024
+  - name: PLOS Global Public Health
+    since: 2024
+  - name: Cities
+    since: 2024
+  - name: Population, Space and Place
+    since: 2024
+  - name: Sociological Methods and Research
+    since: 2024
+
+  - name: Review of Political Economy
+    since: 2025
+  - name: Environmental Research Communications
+    since: 2025
+  - name: Spatial Demography
+    since: 2025
+  - name: Social Science Computer Review
+    since: 2025
+  - name: International Journal of Human-Computer Interaction
+    since: 2025
+  - name: WIREs Data Mining and Knowledge Discovery
+    since: 2025
+  - name: Journal of Physics&#58; Complexity
+    since: 2025
+  - name: Applied Geography
+    since: 2025
+  - name: Journal of Transport Geography
+    since: 2025
+  - name: IEEE Transactions on Affective Computing
+    since: 2025
+  - name: Public Integrity
+    since: 2025
+  - name: Habitat International
+    since: 2025
+  - name: Mass Communication and Society
+    since: 2025
+  - name: Sexual and Relationship Therapy
+    since: 2025
+
+  - name: Network Science
+    since: 2026
+  - name: Journal of Urban Design
+    since: 2026
+  - name: Transportmetrica B&#58; Transport Dynamics
+    since: 2026
+  - name: Annals of the American Association of Geographers
+    since: 2026
+  - name: Journal of Ambient Intelligence and Humanized Computing
+    since: 2026
+  - name: Digital Discovery
+    since: 2026
+  - name: Quality and Quantity
+    since: 2026

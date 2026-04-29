@@ -1,4 +1,4 @@
-name: Check for new publications
+name: Check for new publications and peer-review journals
 
 on:
   schedule:
@@ -6,6 +6,8 @@ on:
   workflow_dispatch:        # also runnable manually from the Actions tab
 
 jobs:
+
+  # ── Job 1: new publications via OpenAlex ────────────────────────────────────
   check-publications:
     runs-on: ubuntu-latest
 
@@ -15,8 +17,8 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     permissions:
-      contents: write        # needed to push the branch
-      pull-requests: write   # needed to open the PR
+      contents: write
+      pull-requests: write
 
     steps:
       - name: Checkout repository
@@ -39,12 +41,50 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          # Fixed branch name — if a PR is already open, this adds to it
-          # rather than spamming a new PR for every daily run.
           branch: publications/auto-update
           delete-branch: true
           commit-message: "chore: add new publications found via OpenAlex"
           title: ${{ env.PR_TITLE }}
           body: ${{ env.PR_BODY }}
           labels: publications
+          assignees: FedericoBotta
+
+  # ── Job 2: new peer-review journals via ORCID ────────────────────────────────
+  check-peer-reviews:
+    runs-on: ubuntu-latest
+
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests pyyaml
+
+      - name: Query ORCID and check for new journals
+        id: check
+        run: python .github/scripts/check_peer_reviews.py
+
+      - name: Open pull request for review
+        if: steps.check.outputs.new_journals_found == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: peer-reviews/auto-update
+          delete-branch: true
+          commit-message: "chore: add new peer-review journal found via ORCID"
+          title: ${{ env.PR_TITLE_REVIEWS }}
+          body: ${{ env.PR_BODY_REVIEWS }}
+          labels: peer-review
           assignees: FedericoBotta
