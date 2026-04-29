@@ -484,6 +484,57 @@ hr {
   font-weight: 500;
 }
 
+/* clickable stat — wraps .stat-item in an <a> without changing appearance */
+a.stat-item {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  &:hover { transform: translateY(-2px); }
+  &:hover .stat-number { color: var(--green-mid); }
+  &:hover .stat-label  { color: var(--green-forest); }
+  &:visited { color: inherit; }
+}
+
+/* ── Peer-review page ────────────────────────────────────────── */
+
+.review-group {
+  margin: 0 0 2rem;
+}
+
+.review-since {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--green-forest);
+  border-bottom: 1px solid var(--green-rule);
+  padding-bottom: 0.4em;
+  margin: 0 0 0.75rem;
+}
+
+.review-journal-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.3em 2em;
+
+  li {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: var(--green-darkest);
+    padding: 0.2em 0;
+    &::before {
+      content: '·';
+      color: var(--green-mid);
+      margin-right: 0.5em;
+      font-weight: 700;
+    }
+  }
+}
+
 /* ── Partners / callout section ─────────────────────────────── */
 
 .partners-section {
