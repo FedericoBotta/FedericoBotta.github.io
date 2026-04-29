@@ -1,0 +1,74 @@
+# Academic service data — editorial roles, conferences, societies, funding panels
+# Peer-review journals are kept separately in peer_review.yml (auto-updated via ORCID)
+
+editorial:
+  - role: Associate Editor
+    journal: EPJ Data Science
+    since: 2026
+    current: true
+
+  - role: Associate Editor
+    journal: Applied Network Science
+    since: 2024
+    current: true
+
+  - role: Academic Editor
+    journal: PLOS ONE
+    since: 2018
+    current: true
+
+  - role: Collection Editor
+    journal: Applied Network Science
+    since: 2025
+    current: false
+    note: "Network Approaches to Urban Inequality: Spatial, Social, and Systemic Perspectives"
+
+  - role: Guest Editor
+    journal: Advances in Complex Systems
+    since: 2024
+    current: false
+
+conferences:
+  - role: General Chair
+    event: Conference on Complex Systems (CCS2024)
+    year: 2024
+
+  - role: Program Chair
+    event: Complenet
+    period: "2022–2023"
+
+societies:
+  - role: Elected member of the Executive Committee
+    organisation: Complex Systems Society
+    period: "2024–2027"
+
+  - role: Elected Council Member
+    organisation: Complex Systems Society
+    period: "2024–2027"
+
+  - role: Elected member of the Steering Committee
+    organisation: Conference on Complex Systems
+    period: "2024–2027"
+
+funding:
+  - name: EPSRC Peer Review College
+    role: Member
+
+  - name: ESRC Reviewer College
+    role: Member
+
+  - name: "ESRC National Capability in Behavioural Research panel"
+    role: Panel member
+    note: "£15m investment"
+
+  - name: ESRC Digital Footprints Accelerator Scheme
+    role: Panel member
+
+  - name: UKRI Policy Fellowships panel
+    role: Panel member
+
+  - name: Smart Data Research UK
+    role: Reviewer
+
+  - name: "International funding schemes (Hong Kong MTR)"
+    role: Reviewer

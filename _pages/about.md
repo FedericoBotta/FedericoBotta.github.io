@@ -65,7 +65,7 @@ hero_tags:
     <span class="stat-number" data-target="3">3</span>
     <span class="stat-label">postdoctoral researchers</span>
   </div>
-  <a href="/reviewing/" class="stat-item">
+  <a href="/service/" class="stat-item">
     <span class="stat-number" data-target="{{ site.data.peer_review.journals | size }}">{{ site.data.peer_review.journals | size }}</span>
     <span class="stat-label">journals reviewed for</span>
   </a>
