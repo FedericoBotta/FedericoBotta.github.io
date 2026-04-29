@@ -57,16 +57,6 @@ funding:
   - name: ESRC Reviewer College
     role: Member
 
-  - name: "ESRC National Capability in Behavioural Research panel"
-    role: Panel member
-    note: "£15m investment"
-
-  - name: ESRC Digital Footprints Accelerator Scheme
-    role: Panel member
-
-  - name: UKRI Policy Fellowships panel
-    role: Panel member
-
   - name: Smart Data Research UK
     role: Reviewer
 
