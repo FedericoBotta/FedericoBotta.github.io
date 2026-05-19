@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hero Option 2 — Activity Ecosystem</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;600;700&display=swap">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #060f09; overflow: hidden; }
+    canvas { display: block; width: 100vw; height: 100vh; }
+
+    .overlay {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 50%;
+      background: linear-gradient(to top, rgba(6,15,9,0.95) 0%, rgba(6,15,9,0.55) 55%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .content {
+      position: fixed;
+      bottom: 4.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      max-width: 760px;
+      padding: 0 1.5rem;
+    }
+
+    .content h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.7rem);
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 0.8rem;
+    }
+
+    .content p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.4);
+      font-style: italic;
+    }
+
+    .badge {
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: rgba(52,211,153,0.15);
+      border: 1px solid rgba(52,211,153,0.35);
+      color: #34d399;
+      padding: 0.3em 1em;
+      border-radius: 100px;
+      margin-bottom: 1rem;
+    }
+
+    .option-label {
+      position: fixed;
+      top: 1.2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(52,211,153,0.7);
+      background: rgba(6,15,9,0.7);
+      padding: 0.4em 1.2em;
+      border-radius: 100px;
+      border: 1px solid rgba(52,211,153,0.2);
+    }
+
+    .desc {
+      position: fixed;
+      bottom: 1.2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="overlay"></div>
+
+<div class="option-label">Option 2 — Activity Ecosystem</div>
+
+<div class="content">
+  <span class="badge">Perspective · PNAS Nexus 2026</span>
+  <h1>Urban vibrancy: An analogy of biodiversity, retail diversity, and activity-based urban diversity measures</h1>
+  <p>Yiu · Pacheco · Di Clemente · Botta</p>
+</div>
+
+<div class="desc">13 activity types as flocking species — diversity creates vibrancy</div>
+
+<script>
+(function () {
+  const canvas = document.getElementById('c');
+  const ctx    = canvas.getContext('2d');
+  let W, H;
+
+  const COLORS = [
+    '#34d399','#fb923c','#60a5fa','#f472b6','#a78bfa',
+    '#fbbf24','#f87171','#6ee7b7','#c084fc','#5eead4',
+    '#fcd34d','#93c5fd','#86efac'
+  ];
+
+  const N_SPECIES = 13;
+  const N_PER     = 18;   // particles per species
+  const MAX_SPD   = 1.5;
+  const RC = 160, RS = 32, RA = 85;
+  const CF = 0.003, AF = 0.04, SF = 0.14, WF = 0.055;
+
+  let particles = [];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function init() {
+    particles = [];
+    for (let s = 0; s < N_SPECIES; s++) {
+      const cx = (0.1 + Math.random() * 0.8) * W;
+      const cy = (0.1 + Math.random() * 0.8) * H;
+      for (let i = 0; i < N_PER; i++) {
+        const a   = Math.random() * Math.PI * 2;
+        const spd = 0.4 + Math.random() * 0.9;
+        particles.push({
+          x:  cx + (Math.random() - 0.5) * 90,
+          y:  cy + (Math.random() - 0.5) * 90,
+          vx: Math.cos(a) * spd,
+          vy: Math.sin(a) * spd,
+          s,
+          r: 3.2 + Math.random() * 2,
+          color: COLORS[s],
+        });
+      }
+    }
+  }
+
+  function tick() {
+    // Faint trail
+    ctx.fillStyle = 'rgba(6,15,9,0.14)';
+    ctx.fillRect(0, 0, W, H);
+
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      let acx = 0, acy = 0, nc = 0;
+      let aax = 0, aay = 0, na = 0;
+      let asx = 0, asy = 0;
+
+      for (let j = 0; j < particles.length; j++) {
+        if (i === j) continue;
+        const q  = particles[j];
+        const dx = q.x - p.x, dy = q.y - p.y;
+        const d  = Math.sqrt(dx * dx + dy * dy);
+
+        if (d < RS) {
+          asx -= dx / (d + 0.1);
+          asy -= dy / (d + 0.1);
+        }
+        if (p.s === q.s) {
+          if (d < RC) { acx += q.x; acy += q.y; nc++; }
+          if (d < RA) { aax += q.vx; aay += q.vy; na++; }
+        }
+      }
+
+      if (nc > 0) { p.vx += (acx / nc - p.x) * CF; p.vy += (acy / nc - p.y) * CF; }
+      if (na > 0) { p.vx += (aax / na - p.vx) * AF; p.vy += (aay / na - p.vy) * AF; }
+      p.vx += asx * SF + (Math.random() - 0.5) * WF;
+      p.vy += asy * SF + (Math.random() - 0.5) * WF;
+
+      const spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+      if (spd > MAX_SPD) { p.vx *= MAX_SPD / spd; p.vy *= MAX_SPD / spd; }
+
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < -20) p.x = W + 20;
+      if (p.x > W + 20) p.x = -20;
+      if (p.y < -20) p.y = H + 20;
+      if (p.y > H + 20) p.y = -20;
+
+      // Soft glow halo
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r * 4, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = 0.06;
+      ctx.fill();
+
+      // Core dot
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = 0.88;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  window.addEventListener('resize', () => { resize(); init(); });
+  resize();
+  init();
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

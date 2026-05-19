@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hero Option 5 — Day-cycle Activity Waves</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;600;700&display=swap">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #060f09; overflow: hidden; }
+    canvas { display: block; width: 100vw; height: 100vh; }
+
+    .overlay {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 38%;
+      background: linear-gradient(to top, rgba(6,15,9,0.97) 0%, rgba(6,15,9,0.55) 55%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .content {
+      position: fixed;
+      bottom: 4.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      max-width: 760px;
+      padding: 0 1.5rem;
+    }
+
+    .content h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.7rem);
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 0.8rem;
+    }
+
+    .content p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.4);
+      font-style: italic;
+    }
+
+    .badge {
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: rgba(52,211,153,0.15);
+      border: 1px solid rgba(52,211,153,0.35);
+      color: #34d399;
+      padding: 0.3em 1em;
+      border-radius: 100px;
+      margin-bottom: 1rem;
+    }
+
+    .option-label {
+      position: fixed;
+      top: 1.2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(52,211,153,0.7);
+      background: rgba(6,15,9,0.7);
+      padding: 0.4em 1.2em;
+      border-radius: 100px;
+      border: 1px solid rgba(52,211,153,0.2);
+    }
+
+    .desc {
+      position: fixed;
+      bottom: 1.2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="overlay"></div>
+
+<div class="option-label">Option 5 — Day-cycle Activity Waves</div>
+
+<div class="content">
+  <span class="badge">Perspective · PNAS Nexus 2026</span>
+  <h1>Urban vibrancy: An analogy of biodiversity, retail diversity, and activity-based urban diversity measures</h1>
+  <p>Yiu · Pacheco · Di Clemente · Botta</p>
+</div>
+
+<div class="desc">13 activity rhythms across a 24-hour city day</div>
+
+<script>
+(function () {
+  const canvas = document.getElementById('c');
+  const ctx    = canvas.getContext('2d');
+  let W, H;
+
+  const COLORS = [
+    '#34d399','#fb923c','#60a5fa','#f472b6','#a78bfa',
+    '#fbbf24','#f87171','#6ee7b7','#c084fc','#5eead4',
+    '#fcd34d','#93c5fd','#86efac'
+  ];
+
+  const NAMES = [
+    'Home','Work','Exercise','Shopping','Eating & Drinking',
+    'Socialising','Performing','Playing','Walking',
+    'Celebrating','Sleeping','Learning','Other'
+  ];
+
+  // Peak times: [[hour, amplitude], ...]
+  const PEAKS = [
+    [[7,0.75],[22,0.80]],         // Home living
+    [[9,0.90],[14,0.65]],         // Working
+    [[7,0.80],[18,0.90]],         // Exercising
+    [[11,0.80],[15,0.70]],        // Shopping
+    [[13,0.75],[19,0.95]],        // Eating & drinking
+    [[19,0.80],[22,0.90]],        // Socialising
+    [[20,0.90],[22,0.60]],        // Performing
+    [[15,0.70],[20,0.80]],        // Playing
+    [[11,0.65],[16,0.70]],        // Walking
+    [[22,0.95],[0,0.65]],         // Celebrating
+    [[3,0.90],[14,0.50]],         // Sleeping
+    [[9,0.85],[13,0.60]],         // Learning
+    [[11,0.60],[19,0.70]],        // Other
+  ];
+
+  // Gaussian sum for activity level at a given hour
+  function level(peaks, hour) {
+    let v = 0;
+    for (const [ph, amp] of peaks) {
+      let diff = Math.abs(hour - ph);
+      if (diff > 12) diff = 24 - diff;   // wrap midnight
+      v += amp * Math.exp(-(diff * diff) / 4.0);
+    }
+    return Math.min(v, 1);
+  }
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  // One full 24-hour cycle every 16 seconds
+  const CYCLE_MS = 16000;
+  let startTs = null;
+
+  function tick(ts) {
+    if (!startTs) startTs = ts;
+    const elapsed = (ts - startTs) % CYCLE_MS;
+    const nowHour = (elapsed / CYCLE_MS) * 24; // 0 – 24
+
+    ctx.fillStyle = '#060f09';
+    ctx.fillRect(0, 0, W, H);
+
+    const padL = 92, padR = 28, padT = 28, padB = 32;
+    const cW   = W - padL - padR;
+    const cH   = H - padT - padB;
+    const laneH = cH / 13;
+    const N_PTS = 240;
+
+    const nowX = padL + (nowHour / 24) * cW;
+
+    // Hour grid lines (behind lanes)
+    for (let h = 0; h <= 24; h += 3) {
+      const x = padL + (h / 24) * cW;
+      ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+      ctx.lineWidth   = 1;
+      ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, padT + cH); ctx.stroke();
+    }
+
+    // Draw each lane
+    for (let s = 0; s < 13; s++) {
+      const laneTop = padT + s * laneH;
+      const laneBot = laneTop + laneH;
+      const baseY   = laneBot - 3;
+      const drawH   = laneH - 8;
+
+      // Compute curve points
+      const pts = [];
+      for (let i = 0; i <= N_PTS; i++) {
+        const h   = (i / N_PTS) * 24;
+        const lv  = level(PEAKS[s], h);
+        const x   = padL + (i / N_PTS) * cW;
+        const y   = baseY - lv * drawH;
+        pts.push([x, y]);
+      }
+
+      // Current activity level (for label brightness)
+      const curLv = level(PEAKS[s], nowHour);
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(padL, laneTop, cW, laneH);
+      ctx.clip();
+
+      // Filled area — full width, subtle
+      ctx.beginPath();
+      ctx.moveTo(padL, baseY);
+      for (const [x, y] of pts) ctx.lineTo(x, y);
+      ctx.lineTo(padL + cW, baseY);
+      ctx.closePath();
+      const fillGrad = ctx.createLinearGradient(0, laneTop, 0, baseY);
+      fillGrad.addColorStop(0, COLORS[s] + '50');
+      fillGrad.addColorStop(1, COLORS[s] + '08');
+      ctx.fillStyle   = fillGrad;
+      ctx.globalAlpha = 0.6;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+
+      // Filled area — left of "now" line, brighter
+      ctx.beginPath();
+      ctx.moveTo(padL, baseY);
+      let crossPt = null;
+      for (let i = 0; i < pts.length; i++) {
+        const [x, y] = pts[i];
+        if (x > nowX) { crossPt = pts[Math.max(0, i - 1)]; break; }
+        ctx.lineTo(x, y);
+      }
+      if (crossPt) {
+        // interpolate to exact nowX
+        const frac = (nowX - crossPt[0]) / (cW / N_PTS);
+        const idx  = Math.floor((nowHour / 24) * N_PTS);
+        const pt   = pts[Math.min(idx, pts.length - 1)];
+        ctx.lineTo(nowX, pt[1]);
+      }
+      ctx.lineTo(nowX, baseY);
+      ctx.closePath();
+      const pastGrad = ctx.createLinearGradient(0, laneTop, 0, baseY);
+      pastGrad.addColorStop(0, COLORS[s] + 'aa');
+      pastGrad.addColorStop(1, COLORS[s] + '18');
+      ctx.fillStyle   = pastGrad;
+      ctx.globalAlpha = 0.85;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+
+      // Curve line
+      ctx.beginPath();
+      for (let i = 0; i < pts.length; i++) {
+        const [x, y] = pts[i];
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = COLORS[s];
+      ctx.lineWidth   = 1.4;
+      ctx.globalAlpha = 0.75;
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+
+      // Dot at "now" position
+      const nowIdx = Math.min(Math.floor((nowHour / 24) * N_PTS), pts.length - 1);
+      const [dotX, dotY] = pts[nowIdx];
+      ctx.beginPath();
+      ctx.arc(dotX, dotY, 3.5, 0, Math.PI * 2);
+      ctx.fillStyle   = COLORS[s];
+      ctx.globalAlpha = 0.9;
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth   = 1.2;
+      ctx.globalAlpha = 0.7;
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+
+      ctx.restore();
+
+      // Lane separator
+      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+      ctx.lineWidth   = 1;
+      ctx.beginPath();
+      ctx.moveTo(padL, laneBot);
+      ctx.lineTo(padL + cW, laneBot);
+      ctx.stroke();
+
+      // Activity label (left margin)
+      ctx.font         = `${curLv > 0.55 ? 'bold ' : ''}10.5px Inter, sans-serif`;
+      ctx.textAlign    = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle    = COLORS[s];
+      ctx.globalAlpha  = 0.4 + curLv * 0.6;
+      ctx.fillText(NAMES[s], padL - 8, laneTop + laneH / 2);
+      ctx.globalAlpha  = 1;
+    }
+
+    // "Now" vertical line
+    const lineGrad = ctx.createLinearGradient(nowX, padT, nowX, padT + cH);
+    lineGrad.addColorStop(0,   'rgba(255,255,255,0.75)');
+    lineGrad.addColorStop(0.6, 'rgba(255,255,255,0.35)');
+    lineGrad.addColorStop(1,   'rgba(255,255,255,0.05)');
+    ctx.strokeStyle = lineGrad;
+    ctx.lineWidth   = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(nowX, padT);
+    ctx.lineTo(nowX, padT + cH);
+    ctx.stroke();
+
+    // Time label above "now" line
+    const hh  = Math.floor(nowHour) % 24;
+    const mm  = Math.floor((nowHour % 1) * 60);
+    const tStr = `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
+    ctx.font         = 'bold 11px Inter, monospace';
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillStyle    = 'rgba(255,255,255,0.8)';
+    ctx.fillText(tStr, nowX, padT - 4);
+
+    // Hour labels along bottom
+    ctx.font         = '9px Inter, sans-serif';
+    ctx.fillStyle    = 'rgba(255,255,255,0.22)';
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'top';
+    for (let h = 0; h <= 24; h += 3) {
+      const x = padL + (h / 24) * cW;
+      ctx.fillText(h === 24 ? '0h' : `${h}h`, x, padT + cH + 6);
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
