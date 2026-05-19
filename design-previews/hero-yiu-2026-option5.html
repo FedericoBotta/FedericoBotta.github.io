@@ -137,18 +137,15 @@
     [[11,0.60],[19,0.70]],        // Other
   ];
 
-  // Gaussian sum for activity level at a given hour, with slow organic noise
-  function level(peaks, hour, s, rt) {
+  // Gaussian sum for activity level at a given hour
+  function level(peaks, hour) {
     let v = 0;
     for (const [ph, amp] of peaks) {
       let diff = Math.abs(hour - ph);
       if (diff > 12) diff = 24 - diff;   // wrap midnight
       v += amp * Math.exp(-(diff * diff) / 4.0);
     }
-    // Slow undulation — each curve breathes independently
-    v += 0.09 * Math.sin(rt * 0.20 + s * 2.1);
-    v += 0.05 * Math.sin(rt * 0.37 + s * 3.7 + hour * 0.18);
-    return Math.max(0.03, Math.min(v, 1));
+    return Math.min(v, 1);
   }
 
   function resize() {
@@ -164,12 +161,11 @@
     if (!startTs) startTs = ts;
     const elapsed = (ts - startTs) % CYCLE_MS;
     const nowHour = (elapsed / CYCLE_MS) * 24; // 0 – 24
-    const rt      = (ts - startTs) / 1000;     // real seconds (for noise)
 
     ctx.fillStyle = '#060f09';
     ctx.fillRect(0, 0, W, H);
 
-    const padL = 92, padR = 28, padT = 50, padB = 32;
+    const padL = 92, padR = 28, padT = 28, padB = 32;
     const cW   = W - padL - padR;
     const cH   = H - padT - padB;
     const laneH = cH / 13;
@@ -196,14 +192,14 @@
       const pts = [];
       for (let i = 0; i <= N_PTS; i++) {
         const h   = (i / N_PTS) * 24;
-        const lv  = level(PEAKS[s], h, s, rt);
+        const lv  = level(PEAKS[s], h);
         const x   = padL + (i / N_PTS) * cW;
         const y   = baseY - lv * drawH;
         pts.push([x, y]);
       }
 
       // Current activity level (for label brightness)
-      const curLv = level(PEAKS[s], nowHour, s, rt);
+      const curLv = level(PEAKS[s], nowHour);
 
       ctx.save();
       ctx.beginPath();
@@ -308,25 +304,15 @@
     ctx.lineTo(nowX, padT + cH);
     ctx.stroke();
 
-    // Time badge above "now" line
-    const hh   = Math.floor(nowHour) % 24;
-    const mm   = Math.floor((nowHour % 1) * 60);
+    // Time label above "now" line
+    const hh  = Math.floor(nowHour) % 24;
+    const mm  = Math.floor((nowHour % 1) * 60);
     const tStr = `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
-    const bW = 58, bH = 26, bR = 7;
-    const bX = nowX - bW / 2, bY = padT - bH - 8;
-
-    // Badge pill background
-    ctx.beginPath();
-    ctx.roundRect(bX, bY, bW, bH, bR);
-    ctx.fillStyle = 'rgba(255,255,255,0.92)';
-    ctx.fill();
-
-    // Badge text
-    ctx.font         = 'bold 15px Inter, monospace';
-    ctx.fillStyle    = '#060f09';
+    ctx.font         = 'bold 11px Inter, monospace';
     ctx.textAlign    = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(tStr, nowX, bY + bH / 2);
+    ctx.textBaseline = 'bottom';
+    ctx.fillStyle    = 'rgba(255,255,255,0.8)';
+    ctx.fillText(tStr, nowX, padT - 4);
 
     // Hour labels along bottom
     ctx.font         = '9px Inter, sans-serif';
