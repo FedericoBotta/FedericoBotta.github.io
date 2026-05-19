@@ -913,105 +913,179 @@
      ============================================================ -->
 <script>
 /* ============================================================
-   HERO CANVAS — animated hex grid (activity diversity)
+   HERO CANVAS — 24-hour activity wave lanes
    ============================================================ */
 (function () {
   const canvas = document.getElementById('hero-canvas');
   const ctx    = canvas.getContext('2d');
+  let W, H;
 
   const COLORS = [
-    '#34d399', '#fb923c', '#60a5fa', '#f472b6', '#a78bfa',
-    '#fbbf24', '#f87171', '#6ee7b7', '#c084fc', '#5eead4',
-    '#fcd34d', '#93c5fd', '#86efac',
+    '#34d399','#fb923c','#60a5fa','#f472b6','#a78bfa',
+    '#fbbf24','#f87171','#6ee7b7','#c084fc','#5eead4',
+    '#fcd34d','#93c5fd','#86efac'
   ];
 
-  const HEX_R = 28; // pointy-top hex radius
-  let W, H, hexes;
+  const NAMES = [
+    'Home','Work','Exercise','Shopping','Eating & Drinking',
+    'Socialising','Performing','Playing','Walking',
+    'Celebrating','Sleeping','Learning','Other'
+  ];
 
-  function hexCorner(cx, cy, r, i) {
-    const a = (Math.PI / 180) * (60 * i - 30);
-    return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
-  }
+  const PEAKS = [
+    [[7,0.75],[22,0.80]],
+    [[9,0.90],[14,0.65]],
+    [[7,0.80],[18,0.90]],
+    [[11,0.80],[15,0.70]],
+    [[13,0.75],[19,0.95]],
+    [[19,0.80],[22,0.90]],
+    [[20,0.90],[22,0.60]],
+    [[15,0.70],[20,0.80]],
+    [[11,0.65],[16,0.70]],
+    [[22,0.95],[0,0.65]],
+    [[3,0.90],[14,0.50]],
+    [[9,0.85],[13,0.60]],
+    [[11,0.60],[19,0.70]],
+  ];
 
-  function drawHex(cx, cy, r, color, alpha) {
-    ctx.beginPath();
-    for (let i = 0; i < 6; i++) {
-      const [x, y] = hexCorner(cx, cy, r - 1.5, i);
-      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  function level(peaks, hour) {
+    let v = 0;
+    for (const [ph, amp] of peaks) {
+      let diff = Math.abs(hour - ph);
+      if (diff > 12) diff = 24 - diff;
+      v += amp * Math.exp(-(diff * diff) / 4.0);
     }
-    ctx.closePath();
-    ctx.globalAlpha = alpha;
-    ctx.fillStyle   = color;
-    ctx.fill();
-    ctx.globalAlpha = Math.min(alpha * 0.4, 0.1);
-    ctx.strokeStyle = '#34d399';
-    ctx.lineWidth   = 0.7;
-    ctx.stroke();
-    ctx.globalAlpha = 1;
-  }
-
-  function buildGrid() {
-    hexes = [];
-    // Pointy-top layout
-    const w = Math.sqrt(3) * HEX_R;  // hex width
-    const h = 2 * HEX_R;             // hex height
-    const vert = h * 0.75;           // vertical stride
-
-    const cols = Math.ceil(W / w) + 2;
-    const rows = Math.ceil(H / vert) + 2;
-
-    for (let row = -1; row < rows; row++) {
-      for (let col = -1; col < cols; col++) {
-        const cx = (col + (row % 2 === 0 ? 0 : 0.5)) * w;
-        const cy = row * vert;
-        hexes.push({
-          cx, cy,
-          color:      COLORS[Math.floor(Math.random() * COLORS.length)],
-          alpha:      0,
-          target:     Math.random() < 0.28 ? 0.2 + Math.random() * 0.45 : 0,
-          speed:      0.007 + Math.random() * 0.013,
-          cooldown:   Math.floor(Math.random() * 200),
-          maxCool:    90 + Math.floor(Math.random() * 220),
-          timer:      0,
-        });
-      }
-    }
+    return Math.min(v, 1);
   }
 
   function resize() {
     W = canvas.width  = canvas.offsetWidth;
     H = canvas.height = canvas.offsetHeight;
-    buildGrid();
   }
 
-  function tick() {
+  const CYCLE_MS = 16000;
+  let startTs = null;
+
+  function tick(ts) {
+    if (!startTs) startTs = ts;
+    const elapsed = (ts - startTs) % CYCLE_MS;
+    const nowHour = (elapsed / CYCLE_MS) * 24;
+
     ctx.fillStyle = '#060f09';
     ctx.fillRect(0, 0, W, H);
 
-    // faint grid overlay
-    ctx.strokeStyle = 'rgba(52,211,153,0.04)';
-    ctx.lineWidth = 0.5;
-    const step = Math.min(W, H) / 14;
-    for (let x = 0; x < W; x += step) {
-      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
-    }
-    for (let y = 0; y < H; y += step) {
-      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+    const padL = 92, padR = 28, padT = 50, padB = 32;
+    const cW   = W - padL - padR;
+    const cH   = H - padT - padB;
+    const laneH = cH / 13;
+    const N_PTS = 240;
+    const nowX  = padL + (nowHour / 24) * cW;
+
+    for (let h = 0; h <= 24; h += 3) {
+      const x = padL + (h / 24) * cW;
+      ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+      ctx.lineWidth   = 1;
+      ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, padT + cH); ctx.stroke();
     }
 
-    hexes.forEach(h => {
-      h.timer++;
-      if (h.timer >= h.cooldown) {
-        h.target   = h.target > 0.05 ? 0 : (0.18 + Math.random() * 0.48);
-        h.cooldown = h.maxCool;
-        h.timer    = 0;
-        if (h.target > 0.05) {
-          h.color = COLORS[Math.floor(Math.random() * COLORS.length)];
-        }
+    for (let s = 0; s < 13; s++) {
+      const laneTop = padT + s * laneH;
+      const laneBot = laneTop + laneH;
+      const baseY   = laneBot - 3;
+      const drawH   = laneH - 8;
+
+      const pts = [];
+      for (let i = 0; i <= N_PTS; i++) {
+        const h  = (i / N_PTS) * 24;
+        const lv = level(PEAKS[s], h);
+        pts.push([padL + (i / N_PTS) * cW, baseY - lv * drawH]);
       }
-      h.alpha += (h.target - h.alpha) * h.speed;
-      if (h.alpha > 0.006) drawHex(h.cx, h.cy, HEX_R, h.color, h.alpha);
-    });
+
+      const curLv = level(PEAKS[s], nowHour);
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(padL, laneTop, cW, laneH);
+      ctx.clip();
+
+      // Subtle full-width fill
+      ctx.beginPath();
+      ctx.moveTo(padL, baseY);
+      for (const [x, y] of pts) ctx.lineTo(x, y);
+      ctx.lineTo(padL + cW, baseY);
+      ctx.closePath();
+      const fillGrad = ctx.createLinearGradient(0, laneTop, 0, baseY);
+      fillGrad.addColorStop(0, COLORS[s] + '50');
+      fillGrad.addColorStop(1, COLORS[s] + '08');
+      ctx.fillStyle = fillGrad; ctx.globalAlpha = 0.6; ctx.fill(); ctx.globalAlpha = 1;
+
+      // Brighter fill left of "now"
+      ctx.beginPath();
+      ctx.moveTo(padL, baseY);
+      for (let i = 0; i < pts.length; i++) {
+        const [x, y] = pts[i];
+        if (x > nowX) break;
+        ctx.lineTo(x, y);
+      }
+      const nowIdx = Math.min(Math.floor((nowHour / 24) * N_PTS), pts.length - 1);
+      ctx.lineTo(nowX, pts[nowIdx][1]);
+      ctx.lineTo(nowX, baseY);
+      ctx.closePath();
+      const pastGrad = ctx.createLinearGradient(0, laneTop, 0, baseY);
+      pastGrad.addColorStop(0, COLORS[s] + 'aa');
+      pastGrad.addColorStop(1, COLORS[s] + '18');
+      ctx.fillStyle = pastGrad; ctx.globalAlpha = 0.85; ctx.fill(); ctx.globalAlpha = 1;
+
+      // Curve line
+      ctx.beginPath();
+      pts.forEach(([x, y], i) => i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y));
+      ctx.strokeStyle = COLORS[s]; ctx.lineWidth = 1.4; ctx.globalAlpha = 0.75; ctx.stroke(); ctx.globalAlpha = 1;
+
+      // Dot at "now"
+      const [dotX, dotY] = pts[nowIdx];
+      ctx.beginPath(); ctx.arc(dotX, dotY, 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = COLORS[s]; ctx.globalAlpha = 0.9; ctx.fill();
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.2; ctx.globalAlpha = 0.7; ctx.stroke(); ctx.globalAlpha = 1;
+
+      ctx.restore();
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(padL, laneBot); ctx.lineTo(padL + cW, laneBot); ctx.stroke();
+
+      ctx.font = `${curLv > 0.55 ? 'bold ' : ''}10.5px Inter, sans-serif`;
+      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      ctx.fillStyle = COLORS[s]; ctx.globalAlpha = 0.4 + curLv * 0.6;
+      ctx.fillText(NAMES[s], padL - 8, laneTop + laneH / 2);
+      ctx.globalAlpha = 1;
+    }
+
+    // "Now" vertical line
+    const lineGrad = ctx.createLinearGradient(nowX, padT, nowX, padT + cH);
+    lineGrad.addColorStop(0,   'rgba(255,255,255,0.75)');
+    lineGrad.addColorStop(0.6, 'rgba(255,255,255,0.35)');
+    lineGrad.addColorStop(1,   'rgba(255,255,255,0.05)');
+    ctx.strokeStyle = lineGrad; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(nowX, padT); ctx.lineTo(nowX, padT + cH); ctx.stroke();
+
+    // Time badge
+    const hh   = Math.floor(nowHour) % 24;
+    const mm   = Math.floor((nowHour % 1) * 60);
+    const tStr = `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`;
+    const bW = 58, bH = 26, bR = 6;
+    const bX = nowX - bW / 2, bY = padT - bH - 6;
+    ctx.beginPath(); ctx.roundRect(bX, bY, bW, bH, bR);
+    ctx.fillStyle = 'rgba(255,255,255,0.92)'; ctx.fill();
+    ctx.font = 'bold 15px Inter, monospace'; ctx.fillStyle = '#060f09';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(tStr, nowX, bY + bH / 2);
+
+    // Hour labels
+    ctx.font = '9px Inter, sans-serif'; ctx.fillStyle = 'rgba(255,255,255,0.22)';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    for (let h = 0; h <= 24; h += 3) {
+      const x = padL + (h / 24) * cW;
+      ctx.fillText(h === 24 ? '0h' : `${h}h`, x, padT + cH + 6);
+    }
 
     requestAnimationFrame(tick);
   }
