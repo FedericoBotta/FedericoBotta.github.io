@@ -75,6 +75,7 @@ hero_tags:
 
 ## Recent Highlights
 
+- **2026** — New perspective paper on urban vibrancy and biodiversity analogy published in *PNAS Nexus*
 - **2025** — Appointed Programme Lead for Exeter's new **MSc in AI for the Environment**
 - **2025** — New research on healthcare access inequalities (*Journal of Physics: Complexity*) and rail journey costs (*Environment and Planning B*)
 - **2024** — General Chair of the **Conference on Complex Systems (CCS2024)**, the world's flagship conference in complex systems science
@@ -88,6 +89,12 @@ hero_tags:
 ## Publication Highlights
 
 <div class="paper-highlights">
+  <div class="paper-card">
+    <div class="paper-card__meta">2026 · PNAS Nexus</div>
+    <h3 class="paper-card__title">Urban vibrancy through the lens of biodiversity</h3>
+    <p class="paper-card__summary">We propose a new framework for measuring urban vibrancy based on activity diversity — drawing on ecological concepts like the Shannon diversity index and carrying capacity — to capture what cities feel like from the ground up, not just what they are zoned for.</p>
+    <a href="/papers/yiu-2026.html" class="paper-card__link">Explore the research →</a>
+  </div>
   <div class="paper-card">
     <div class="paper-card__meta">2025 · Journal of Physics: Complexity</div>
     <h3 class="paper-card__title">Bus travel time variability and inequalities in healthcare access</h3>
