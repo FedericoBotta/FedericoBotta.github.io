@@ -304,15 +304,21 @@
     ctx.lineTo(nowX, padT + cH);
     ctx.stroke();
 
-    // Time label above "now" line
-    const hh  = Math.floor(nowHour) % 24;
-    const mm  = Math.floor((nowHour % 1) * 60);
+    // Time badge above "now" line
+    const hh   = Math.floor(nowHour) % 24;
+    const mm   = Math.floor((nowHour % 1) * 60);
     const tStr = `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
-    ctx.font         = 'bold 11px Inter, monospace';
+    const bW = 58, bH = 26, bR = 6;
+    const bX = nowX - bW / 2, bY = padT - bH - 6;
+    ctx.beginPath();
+    ctx.roundRect(bX, bY, bW, bH, bR);
+    ctx.fillStyle = 'rgba(255,255,255,0.92)';
+    ctx.fill();
+    ctx.font         = 'bold 15px Inter, monospace';
+    ctx.fillStyle    = '#060f09';
     ctx.textAlign    = 'center';
-    ctx.textBaseline = 'bottom';
-    ctx.fillStyle    = 'rgba(255,255,255,0.8)';
-    ctx.fillText(tStr, nowX, padT - 4);
+    ctx.textBaseline = 'middle';
+    ctx.fillText(tStr, nowX, bY + bH / 2);
 
     // Hour labels along bottom
     ctx.font         = '9px Inter, sans-serif';
