@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yiu et al. (2026) — Urban Vibrancy &amp; Biodiversity · PNAS Nexus</title>
+  <link rel="stylesheet" href="https://federicobotta.github.io/assets/css/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap">
+  <style>
+    /* ============================================================
+       PAPER EXPLAINER — Yiu, Pacheco, Di Clemente & Botta
+       PNAS Nexus, Volume 5, Issue 5, 2026
+       Self-contained HTML, no Jekyll
+       ============================================================ */
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --bg-dark:    #060f09;
+      --bg-mid:     #0d2218;
+      --accent:     #34d399;
+      --urban:      #fb923c;
+      --bio:        #86efac;
+      --data:       #7dd3fc;
+      --purple:     #c084fc;
+      --text-light: #d1fae5;
+      --text-muted: #6b9e7a;
+      --white:      #ffffff;
+      --card-bg:    #f0fdf4;
+      --border:     #bbf7d0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #fff;
+      color: #1a2e20;
+      overflow-x: hidden;
+    }
+
+    /* ============================================================
+       HERO
+       ============================================================ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      background: var(--bg-dark);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 5rem;
+    }
+
+    #hero-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: block;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 58%;
+      background: linear-gradient(to top, rgba(6,15,9,0.97) 0%, rgba(6,15,9,0.65) 55%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      max-width: 840px;
+      padding: 0 1.5rem;
+    }
+
+    .hero__badge {
+      display: inline-block;
+      background: rgba(52,211,153,0.15);
+      border: 1px solid rgba(52,211,153,0.35);
+      color: var(--accent);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.3em 1em;
+      border-radius: 100px;
+      margin-bottom: 1.1rem;
+    }
+
+    .hero__journal {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .hero__title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.7rem, 4vw, 2.9rem);
+      font-weight: 400;
+      color: var(--white);
+      line-height: 1.2;
+      margin: 0 0 1.2rem;
+    }
+
+    .hero__authors {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.42);
+      font-style: italic;
+      margin-bottom: 1.8rem;
+    }
+
+    .hero__tagline {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(0.95rem, 2.2vw, 1.22rem);
+      font-style: italic;
+      color: var(--text-light);
+      border-top: 1px solid rgba(52,211,153,0.28);
+      padding-top: 1.2rem;
+      margin-top: 0.5rem;
+      line-height: 1.5;
+    }
+
+    .hero__scroll-hint {
+      position: absolute;
+      bottom: 1.8rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .scroll-arrow {
+      width: 18px; height: 18px;
+      border-right: 2px solid var(--accent);
+      border-bottom: 2px solid var(--accent);
+      transform: rotate(45deg);
+      animation: bounce 1.6s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%,100% { transform: rotate(45deg) translateY(0); opacity: 0.5; }
+      50%      { transform: rotate(45deg) translateY(5px); opacity: 1; }
+    }
+
+    /* ============================================================
+       SHARED
+       ============================================================ */
+    section { padding: 5rem 1.5rem; }
+
+    .container { max-width: 980px; margin: 0 auto; }
+
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 400;
+      color: #0a1a0e;
+      line-height: 1.2;
+      margin: 0 0 0.8rem;
+    }
+
+    .section-title-light {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 400;
+      color: #fff;
+      line-height: 1.2;
+      margin: 0 0 0.8rem;
+    }
+
+    .section-intro {
+      font-size: 1.05rem;
+      color: #3a5a44;
+      line-height: 1.75;
+      max-width: 700px;
+      margin-bottom: 3rem;
+    }
+
+    .section-intro-light {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-width: 700px;
+      margin-bottom: 3rem;
+    }
+
+    .green-section { background: #f0fdf4; }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    /* ============================================================
+       SECTION 2 — THE PROBLEM
+       ============================================================ */
+    .approach-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    @media (max-width: 700px) {
+      .approach-cards { grid-template-columns: 1fr; }
+    }
+
+    .approach-card {
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 1.8rem 1.5rem;
+      background: #fff;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .approach-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+    }
+    .approach-card.dim { opacity: 0.58; }
+    .approach-card.highlight {
+      border-color: var(--accent);
+      background: var(--card-bg);
+    }
+
+    .approach-card__badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.25em 0.8em;
+      border-radius: 100px;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+    .badge-old  { background: #fee2e2; color: #991b1b; }
+    .badge-old2 { background: #fef3c7; color: #78350f; }
+    .badge-new  { background: #dcfce7; color: #14532d; }
+
+    .approach-card__icon { font-size: 2rem; margin-bottom: 0.8rem; display: block; }
+    .approach-card h3 { font-size: 1rem; font-weight: 700; color: #0a1a0e; margin: 0 0 0.5rem; }
+    .approach-card p  { font-size: 0.88rem; color: #4a6a54; line-height: 1.65; margin: 0; }
+
+    .paper-quote {
+      border-left: 4px solid var(--accent);
+      padding: 1.2rem 1.8rem;
+      background: var(--card-bg);
+      border-radius: 0 10px 10px 0;
+      font-size: 1rem;
+      font-style: italic;
+      color: #1a4a2a;
+      line-height: 1.75;
+    }
+    .paper-quote cite {
+      display: block;
+      margin-top: 0.6rem;
+      font-size: 0.78rem;
+      font-style: normal;
+      color: #6b9e7a;
+    }
+
+    /* ============================================================
+       SECTION 3 — THE ANALOGY
+       ============================================================ */
+    .analogy-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      border-radius: 12px 12px 0 0;
+      overflow: hidden;
+      margin-top: 2.5rem;
+      border: 1px solid var(--border);
+      border-bottom: none;
+    }
+
+    .analogy-col-header {
+      padding: 0.9rem 1.2rem;
+      text-align: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .col-eco    { background: #dcfce7; color: #14532d; border-right: 1px solid var(--border); }
+    .col-retail { background: #fef9c3; color: #713f12; border-right: 1px solid var(--border); }
+    .col-urban  { background: #e0f2fe; color: #0c4a6e; }
+
+    .analogy-table {
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 12px 12px;
+      overflow: hidden;
+    }
+
+    .analogy-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      cursor: pointer;
+      transition: background 0.2s;
+      border-bottom: 1px solid var(--border);
+    }
+    .analogy-row:last-child { border-bottom: none; }
+    .analogy-row:hover  { background: #f7fef9; }
+    .analogy-row.active { background: #dcfce7; }
+
+    .analogy-row .row-label {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.75rem 1.2rem 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #0a3a1a;
+      border-bottom: 1px solid rgba(187,247,208,0.5);
+      background: rgba(240,253,244,0.5);
+    }
+    .analogy-row.active .row-label { background: rgba(52,211,153,0.12); }
+
+    .analogy-cell {
+      padding: 0.85rem 1.2rem;
+      font-size: 0.84rem;
+      color: #3a5a44;
+      line-height: 1.6;
+      border-right: 1px solid var(--border);
+    }
+    .analogy-cell:last-child { border-right: none; }
+    .analogy-row.active .analogy-cell { color: #1a3a2a; }
+
+    .analogy-hint {
+      font-size: 0.8rem;
+      color: #6b9e7a;
+      margin-top: 1rem;
+      text-align: right;
+    }
+
+    @media (max-width: 640px) {
+      .analogy-header,
+      .analogy-row { grid-template-columns: 1fr; }
+      .analogy-row .row-label { grid-column: 1; }
+      .analogy-col-header { border-right: none; border-bottom: 1px solid var(--border); }
+      .analogy-cell { border-right: none; border-top: 1px solid var(--border); }
+    }
+
+    /* ============================================================
+       SECTION 4 — TAXONOMY
+       ============================================================ */
+    .taxonomy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 0.9rem;
+      margin-top: 2rem;
+    }
+
+    .act-card {
+      background: #fff;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 1.1rem 0.8rem;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+    .act-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+    }
+    .act-card.active {
+      border-color: var(--act-color, var(--accent));
+      background: #f0fdf4;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.09);
+    }
+
+    .act-card__icon { font-size: 1.8rem; margin-bottom: 0.45rem; display: block; }
+    .act-card__name { font-size: 0.75rem; font-weight: 700; color: #0a1a0e; }
+
+    .act-detail {
+      margin-top: 1.8rem;
+      padding: 1.4rem 1.8rem;
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.4rem;
+      min-height: 80px;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .act-detail__icon { font-size: 2.4rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .act-detail__name { font-weight: 700; font-size: 1rem; color: #0a1a0e; margin-bottom: 0.3rem; }
+    .act-detail__desc { font-size: 0.9rem; color: #3a5a44; line-height: 1.62; }
+
+    /* ============================================================
+       SECTION 5 — CARRYING CAPACITY
+       ============================================================ */
+    .capacity-wrap {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      margin-top: 2.5rem;
+    }
+    @media (max-width: 700px) { .capacity-wrap { grid-template-columns: 1fr; } }
+
+    #capacity-canvas { width: 100%; display: block; border-radius: 12px; }
+
+    .capacity-zones { display: flex; flex-direction: column; gap: 1rem; }
+
+    .zone-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      cursor: pointer;
+      transition: all 0.25s;
+      border-left: 4px solid transparent;
+    }
+    .zone-card:hover { border-left-color: rgba(255,255,255,0.25); }
+    .zone-sparse.active-zone  { background: rgba(125,211,252,0.1); border-left-color: var(--data);  }
+    .zone-optimal.active-zone { background: rgba(52,211,153,0.1);  border-left-color: var(--accent); }
+    .zone-dense.active-zone   { background: rgba(251,146,60,0.1);  border-left-color: var(--urban); }
+
+    .zone-title { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem; }
+    .zone-sparse  .zone-title { color: var(--data);   }
+    .zone-optimal .zone-title { color: var(--accent);  }
+    .zone-dense   .zone-title { color: var(--urban);  }
+    .zone-text { font-size: 0.82rem; color: var(--text-muted); line-height: 1.55; }
+
+    /* ============================================================
+       SECTION 6 — ROADMAP
+       ============================================================ */
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.2rem;
+      margin-top: 2rem;
+    }
+
+    .data-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem 1.3rem;
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .data-card.visible { opacity: 1; transform: none; }
+    .data-card:nth-child(2) { transition-delay: 0.1s; }
+    .data-card:nth-child(3) { transition-delay: 0.2s; }
+    .data-card:nth-child(4) { transition-delay: 0.3s; }
+
+    .data-card__icon { font-size: 1.6rem; margin-bottom: 0.7rem; display: block; }
+    .data-card h3 { font-size: 0.88rem; font-weight: 700; color: #0a1a0e; margin: 0 0 0.4rem; }
+    .data-card p  { font-size: 0.82rem; color: #4a6a54; line-height: 1.6; margin: 0; }
+
+    .challenges-list { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0.8rem; }
+    .challenge-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem 1.2rem;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: #3a5a44;
+    }
+    .challenge-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .challenge-item strong { color: #0a3a1a; }
+
+    /* ============================================================
+       CITATION
+       ============================================================ */
+    .citation-section {
+      background: var(--bg-dark);
+      border-top: 1px solid rgba(52,211,153,0.2);
+    }
+
+    .citation-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(52,211,153,0.2);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-top: 2rem;
+      font-family: 'Inter', monospace;
+      font-size: 0.82rem;
+      color: var(--text-light);
+      line-height: 1.8;
+    }
+
+    .cite-links { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+
+    .cite-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--accent);
+      color: var(--bg-dark);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.55em 1.1em;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .cite-btn:hover { opacity: 0.85; }
+    .cite-btn.secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid rgba(52,211,153,0.4);
+    }
+    .cite-btn.secondary:hover { background: rgba(52,211,153,0.1); }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 480px) {
+      section { padding: 3.5rem 1rem; }
+      .hero { padding-bottom: 3rem; }
+      .taxonomy-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     SITE NAVIGATION
+     ============================================================ -->
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <button><div class="navicon"></div></button>
+        <ul class="visible-links">
+          <li class="masthead__menu-item masthead__menu-item--lg">
+            <a href="/" class="masthead__name-link">
+              <span class="masthead__name">Federico Botta</span>
+              <span class="masthead__subtitle">Senior Lecturer in Data Science · University of Exeter</span>
+            </a>
+          </li>
+          <li class="masthead__menu-item"><a href="/publications/">Publications</a></li>
+          <li class="masthead__menu-item"><a href="/policy/">Policy &amp; Impact</a></li>
+          <li class="masthead__menu-item"><a href="/media/">Media</a></li>
+          <li class="masthead__menu-item"><a href="/publicengagement/">Public Engagement</a></li>
+          <li class="masthead__menu-item"><a href="/cv/">CV</a></li>
+        </ul>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+<style>
+  .masthead { background: #fff !important; border-bottom: 2px solid #022020 !important; border-top: none !important; padding: 1.1em 0 0.9em !important; box-shadow: none !important; }
+  .masthead a { color: #4b5563 !important; text-decoration: none !important; }
+  .masthead a:hover { color: #006647 !important; }
+  .masthead__name { color: #022020 !important; }
+  .masthead__subtitle { color: #6b7280 !important; }
+  .greedy-nav { background: #fff !important; }
+  .greedy-nav button .navicon,
+  .greedy-nav button .navicon::before,
+  .greedy-nav button .navicon::after { background: #022020 !important; }
+</style>
+
+<!-- ============================================================
+     SECTION 1 — HERO
+     ============================================================ -->
+<section class="hero" id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-overlay"></div>
+  <div class="hero__content">
+    <span class="hero__badge">Perspective</span>
+    <p class="hero__journal">PNAS Nexus &middot; Vol 5, Issue 5, 2026 &middot; pgag130</p>
+    <h1 class="hero__title">
+      Urban vibrancy: An analogy of biodiversity, retail diversity,
+      and activity-based urban diversity measures
+    </h1>
+    <p class="hero__authors">
+      Edward C. Y. Yiu &nbsp;&middot;&nbsp; Diogo Pacheco &nbsp;&middot;&nbsp;
+      Riccardo Di Clemente &nbsp;&middot;&nbsp; Federico Botta
+    </p>
+    <p class="hero__tagline">
+      &ldquo;Knowing that a place is &lsquo;commercial&rsquo; or &lsquo;residential&rsquo;
+      does not capture what activities take place there, or when and why people go there.&rdquo;
+    </p>
+  </div>
+  <div class="hero__scroll-hint">
+    <span>Scroll to explore</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 2 — THE PROBLEM
+     ============================================================ -->
+<section style="background:#fff;" id="challenge">
+  <div class="container">
+    <p class="section-label fade-in">The Problem</p>
+    <h2 class="section-title fade-in">Why traditional measures of urban life fall short</h2>
+    <p class="section-intro fade-in">
+      Urban planners and researchers have long tried to quantify how vibrant a city
+      feels — how alive, varied, and energetic its streets and spaces are.
+      Two dominant approaches exist, but both miss something fundamental:
+      <em>what people are actually doing</em>, and how rich and balanced that activity
+      is across time and space.
+    </p>
+
+    <div class="approach-cards fade-in">
+      <div class="approach-card dim">
+        <span class="approach-card__badge badge-old">Traditional</span>
+        <span class="approach-card__icon">👥</span>
+        <h3>Population Density</h3>
+        <p>Counts how many people live or gather somewhere. Treats all presence as
+          equivalent — a rush-hour commuter and a festival-goer register identically,
+          erasing the qualitative texture of city life.</p>
+      </div>
+      <div class="approach-card dim">
+        <span class="approach-card__badge badge-old2">Traditional</span>
+        <span class="approach-card__icon">🗺️</span>
+        <h3>Land-use Mix</h3>
+        <p>Classifies zones as residential, commercial, or industrial. Captures
+          what a space is <em>designated</em> for — not what unfolds within it at
+          any given hour, or why people choose to be there.</p>
+      </div>
+      <div class="approach-card highlight">
+        <span class="approach-card__badge badge-new">Proposed</span>
+        <span class="approach-card__icon">🌈</span>
+        <h3>Activity Diversity</h3>
+        <p>Measures the richness and evenness of distinct human activities —
+          working, shopping, socialising, celebrating, and more — drawn directly
+          from behavioural data rather than planning designations.</p>
+      </div>
+    </div>
+
+    <blockquote class="paper-quote fade-in">
+      &ldquo;Knowing that a place is &lsquo;commercial&rsquo; or &lsquo;residential&rsquo;
+      does not capture what activities take place there or when and why people go there
+      to perform those activities.&rdquo;
+      <cite>&mdash; Yiu, Pacheco, Di Clemente &amp; Botta (2026)</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 3 — THE ECOLOGY ANALOGY
+     ============================================================ -->
+<section class="green-section" id="analogy">
+  <div class="container">
+    <p class="section-label fade-in">The Framework</p>
+    <h2 class="section-title fade-in">Cities as ecosystems</h2>
+    <p class="section-intro fade-in">
+      The paper&rsquo;s central insight is that urban vibrancy behaves remarkably like
+      <strong>biodiversity in ecology</strong>. Both depend on the same five
+      determinants; both can be quantified with diversity indices such as
+      Shannon entropy; and both face a &ldquo;carrying capacity&rdquo; beyond which
+      more is no longer better. By mapping these determinants across three
+      fields &mdash; ecology, retail, and urban planning &mdash; a unified
+      measurement framework emerges. Click any row to explore the parallel.
+    </p>
+
+    <div class="fade-in">
+      <div class="analogy-header">
+        <div class="analogy-col-header col-eco">🌿 &nbsp;Ecology</div>
+        <div class="analogy-col-header col-retail">🏪 &nbsp;Retail</div>
+        <div class="analogy-col-header col-urban">🏙️ &nbsp;Urban</div>
+      </div>
+      <div class="analogy-table" id="analogy-table">
+        <!-- rows injected by JS -->
+      </div>
+    </div>
+    <p class="analogy-hint fade-in">↑ Click a row to highlight it</p>
+
+    <div class="paper-quote fade-in" style="margin-top:2.5rem;background:#fff;">
+      Ecological indices such as the <strong>Shannon diversity index</strong> — originally
+      developed to measure species richness and evenness in habitats — can be repurposed
+      to quantify the richness and evenness of human activities across urban spaces.
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 4 — ACTIVITY TAXONOMY
+     ============================================================ -->
+<section style="background:#fff;" id="taxonomy">
+  <div class="container">
+    <p class="section-label fade-in">Activity Taxonomy</p>
+    <h2 class="section-title fade-in">A new language for urban life</h2>
+    <p class="section-intro fade-in">
+      Rather than labelling spaces by their planning designation, this framework
+      classifies urban behaviour into <strong>13 activity categories</strong>
+      grounded in what people <em>actually do</em> — drawn from mobile phone traces,
+      social media data, and behavioural surveys. Measuring the mix and balance of
+      these activities gives a richer, more dynamic picture of vibrancy than any
+      land-use map can provide. Click an activity to explore.
+    </p>
+
+    <div class="taxonomy-grid fade-in" id="taxonomy-grid">
+      <!-- cards injected by JS -->
+    </div>
+
+    <div class="act-detail fade-in" id="act-detail">
+      <span class="act-detail__icon">👆</span>
+      <div>
+        <div class="act-detail__name">Select an activity above</div>
+        <div class="act-detail__desc">
+          Click any of the 13 activity types to see how it contributes to
+          the measurement of urban vibrancy.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 5 — CARRYING CAPACITY
+     ============================================================ -->
+<section style="background:var(--bg-dark);" id="carrying">
+  <div class="container">
+    <p class="section-label" style="color:var(--accent)">Borrowed from Ecology</p>
+    <h2 class="section-title-light fade-in">The Goldilocks principle for cities</h2>
+    <p class="section-intro-light fade-in">
+      One of ecology&rsquo;s most powerful concepts is
+      <strong style="color:var(--accent)">carrying capacity</strong>: the maximum
+      load an environment can sustain without degrading. The same logic applies to
+      urban spaces &mdash; too little activity feels lifeless, but too much tips a
+      neighbourhood into overcrowding, noise, and decline. Vibrancy is not a
+      monotone function of busyness: it peaks, then falls.
+    </p>
+
+    <div class="capacity-wrap fade-in">
+      <canvas id="capacity-canvas"></canvas>
+
+      <div class="capacity-zones">
+        <div class="zone-card zone-sparse" data-zone="0" onclick="selectZone(0)">
+          <div class="zone-title">Sparse</div>
+          <div class="zone-text">Too few activities, too little diversity. Spaces
+            feel underused — an empty shopping precinct, a dormitory suburb with no
+            amenities. Low vibrancy despite low friction.</div>
+        </div>
+        <div class="zone-card zone-optimal active-zone" data-zone="1" onclick="selectZone(1)">
+          <div class="zone-title">Vibrant Equilibrium</div>
+          <div class="zone-text">A balanced diversity of activities operating at
+            the city&rsquo;s carrying capacity. Multiple uses coexist, temporal rhythms
+            are rich, and the space feels alive without feeling chaotic. This is the
+            policy target.</div>
+        </div>
+        <div class="zone-card zone-dense" data-zone="2" onclick="selectZone(2)">
+          <div class="zone-title">Overcrowded</div>
+          <div class="zone-text">Activity concentrations exceed carrying capacity —
+            congestion, noise, gentrification, and monocultures of tourism erode
+            quality of life. Vibrancy paradoxically collapses.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 6 — ROADMAP
+     ============================================================ -->
+<section class="green-section" id="roadmap">
+  <div class="container">
+    <p class="section-label fade-in">Looking Ahead</p>
+    <h2 class="section-title fade-in">What this framework needs to work</h2>
+    <p class="section-intro fade-in">
+      Turning the biodiversity analogy into a practical urban measurement tool
+      requires new data pipelines, interdisciplinary methods, and careful
+      attention to ethics and representation. The paper maps out both the
+      opportunities and the open challenges.
+    </p>
+
+    <p class="section-label fade-in">Data Sources</p>
+    <div class="roadmap-grid">
+      <div class="data-card">
+        <span class="data-card__icon">📱</span>
+        <h3>Mobile Phone &amp; Social Media</h3>
+        <p>Behavioural traces that reveal where people go and what they do —
+          capturing temporal dynamics invisible to traditional censuses.</p>
+      </div>
+      <div class="data-card">
+        <span class="data-card__icon">🗺️</span>
+        <h3>Geospatial &amp; Mapping Data</h3>
+        <p>OpenStreetMap, points-of-interest databases, and urban geometry
+          to ground activities in physical space and built form.</p>
+      </div>
+      <div class="data-card">
+        <span class="data-card__icon">📷</span>
+        <h3>Street-view Imagery</h3>
+        <p>Visual assessment of built-environment quality and design —
+          a proxy for the structure and design determinant of vibrancy.</p>
+      </div>
+      <div class="data-card">
+        <span class="data-card__icon">📊</span>
+        <h3>Census &amp; Socioeconomic Data</h3>
+        <p>Contextual grounding — essential for understanding how activity
+          diversity intersects with deprivation and demographic inequality.</p>
+      </div>
+    </div>
+
+    <p class="section-label fade-in" style="margin-top:3.5rem;">Key Challenges</p>
+    <div class="challenges-list fade-in">
+      <div class="challenge-item">
+        <span class="challenge-icon">🔒</span>
+        <div>
+          <strong>Privacy &amp; surveillance risks.</strong>
+          Location data is sensitive. Frameworks must ensure individuals cannot
+          be re-identified, and that data collection does not replicate or
+          entrench surveillance infrastructures.
+        </div>
+      </div>
+      <div class="challenge-item">
+        <span class="challenge-icon">⚖️</span>
+        <div>
+          <strong>Representativeness.</strong>
+          Mobile phone and social media data skew toward certain demographics.
+          Any vibrancy measure must correct for the systematic under-representation
+          of older, less connected, or marginalised urban populations.
+        </div>
+      </div>
+      <div class="challenge-item">
+        <span class="challenge-icon">🌍</span>
+        <div>
+          <strong>Cross-context validity.</strong>
+          Does the same taxonomy of 13 activities travel from Auckland to Lagos
+          to London? Building culturally portable measures that hold across
+          urban contexts is a significant open challenge for the field.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 7 — CITATION
+     ============================================================ -->
+<section class="citation-section" style="padding-top:4rem;padding-bottom:4rem;" id="cite">
+  <div class="container">
+    <p class="section-label" style="color:var(--accent)">Citation</p>
+    <h2 class="section-title-light">Full paper</h2>
+
+    <div class="citation-box">
+      Edward Chung Yim Yiu, Diogo Pacheco, Riccardo Di Clemente, and Federico Botta (2026).<br>
+      &ldquo;Urban vibrancy: An analogy of biodiversity, retail diversity, and
+      activity-based urban diversity measures.&rdquo;<br>
+      <em>PNAS Nexus</em>, Volume 5, Issue 5, pgag130.<br>
+      DOI:
+      <a href="https://doi.org/10.1093/pnasnexus/pgag130"
+         style="color:var(--accent);text-decoration:none;"
+         target="_blank" rel="noopener">
+        10.1093/pnasnexus/pgag130
+      </a>
+    </div>
+
+    <div class="cite-links">
+      <a href="https://doi.org/10.1093/pnasnexus/pgag130"
+         class="cite-btn" target="_blank" rel="noopener">
+        Read the paper &rarr;
+      </a>
+      <a href="https://academic.oup.com/pnasnexus/article/5/5/pgag130/8684822"
+         class="cite-btn secondary" target="_blank" rel="noopener">
+        Open access (OUP) &rarr;
+      </a>
+    </div>
+
+    <p style="font-size:0.78rem;color:var(--text-muted);margin-top:2rem;line-height:1.65;">
+      Published open access in <em>PNAS Nexus</em> (Oxford University Press) under CC BY licence.<br>
+      Funded by the International Central Networks and Partnerships Grant; the Lagrange Project
+      (CRT Foundation); and the COLINE DUT European Partnership.
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================
+     SITE FOOTER
+     ============================================================ -->
+<footer class="page__footer">
+  <footer>
+    <div class="page__footer-copyright">
+      &copy; 2026 Federico Botta &nbsp;&middot;&nbsp;
+      <a href="/">Home</a> &nbsp;&middot;&nbsp;
+      <a href="/publications/">Publications</a> &nbsp;&middot;&nbsp;
+      <a href="/policy/">Policy &amp; Impact</a>
+    </div>
+  </footer>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+/* ============================================================
+   HERO CANVAS — animated hex grid (activity diversity)
+   ============================================================ */
+(function () {
+  const canvas = document.getElementById('hero-canvas');
+  const ctx    = canvas.getContext('2d');
+
+  const COLORS = [
+    '#34d399', '#fb923c', '#60a5fa', '#f472b6', '#a78bfa',
+    '#fbbf24', '#f87171', '#6ee7b7', '#c084fc', '#5eead4',
+    '#fcd34d', '#93c5fd', '#86efac',
+  ];
+
+  const HEX_R = 28; // pointy-top hex radius
+  let W, H, hexes;
+
+  function hexCorner(cx, cy, r, i) {
+    const a = (Math.PI / 180) * (60 * i - 30);
+    return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+  }
+
+  function drawHex(cx, cy, r, color, alpha) {
+    ctx.beginPath();
+    for (let i = 0; i < 6; i++) {
+      const [x, y] = hexCorner(cx, cy, r - 1.5, i);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle   = color;
+    ctx.fill();
+    ctx.globalAlpha = Math.min(alpha * 0.4, 0.1);
+    ctx.strokeStyle = '#34d399';
+    ctx.lineWidth   = 0.7;
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+
+  function buildGrid() {
+    hexes = [];
+    // Pointy-top layout
+    const w = Math.sqrt(3) * HEX_R;  // hex width
+    const h = 2 * HEX_R;             // hex height
+    const vert = h * 0.75;           // vertical stride
+
+    const cols = Math.ceil(W / w) + 2;
+    const rows = Math.ceil(H / vert) + 2;
+
+    for (let row = -1; row < rows; row++) {
+      for (let col = -1; col < cols; col++) {
+        const cx = (col + (row % 2 === 0 ? 0 : 0.5)) * w;
+        const cy = row * vert;
+        hexes.push({
+          cx, cy,
+          color:      COLORS[Math.floor(Math.random() * COLORS.length)],
+          alpha:      0,
+          target:     Math.random() < 0.28 ? 0.2 + Math.random() * 0.45 : 0,
+          speed:      0.007 + Math.random() * 0.013,
+          cooldown:   Math.floor(Math.random() * 200),
+          maxCool:    90 + Math.floor(Math.random() * 220),
+          timer:      0,
+        });
+      }
+    }
+  }
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+    buildGrid();
+  }
+
+  function tick() {
+    ctx.fillStyle = '#060f09';
+    ctx.fillRect(0, 0, W, H);
+
+    // faint grid overlay
+    ctx.strokeStyle = 'rgba(52,211,153,0.04)';
+    ctx.lineWidth = 0.5;
+    const step = Math.min(W, H) / 14;
+    for (let x = 0; x < W; x += step) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+    }
+    for (let y = 0; y < H; y += step) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+    }
+
+    hexes.forEach(h => {
+      h.timer++;
+      if (h.timer >= h.cooldown) {
+        h.target   = h.target > 0.05 ? 0 : (0.18 + Math.random() * 0.48);
+        h.cooldown = h.maxCool;
+        h.timer    = 0;
+        if (h.target > 0.05) {
+          h.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+        }
+      }
+      h.alpha += (h.target - h.alpha) * h.speed;
+      if (h.alpha > 0.006) drawHex(h.cx, h.cy, HEX_R, h.color, h.alpha);
+    });
+
+    requestAnimationFrame(tick);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  requestAnimationFrame(tick);
+})();
+
+/* ============================================================
+   SECTION 3 — ANALOGY TABLE
+   ============================================================ */
+const DETERMINANTS = [
+  {
+    icon: '🌍',
+    name: 'Location &amp; Environment',
+    eco:    'Habitat type and climate — the physical setting that determines which species can thrive and co-exist.',
+    retail: 'Site catchment, footfall patterns, and proximity to transport nodes — the dominant determinant of retail success.',
+    urban:  'Neighbourhood context, connectivity, and proximity to other activity-generating land uses.',
+  },
+  {
+    icon: '🏗️',
+    name: 'Structure &amp; Design',
+    eco:    'Ecosystem architecture — vertical layering, microhabitats, and spatial complexity create niches for diverse species.',
+    retail: 'Store layout, frontage width, and spatial organisation of goods — design shapes customer behaviour and dwell time.',
+    urban:  'Built-environment design — street widths, mixed-use buildings, and the quality of public realm and open space.',
+  },
+  {
+    icon: '⚙️',
+    name: 'Maintenance &amp; Management',
+    eco:    'Conservation practices, invasive-species control, and habitat restoration sustain long-term biodiversity.',
+    retail: 'Active tenancy management, business support, and vacancy reduction maintain a healthy and varied tenant mix.',
+    urban:  'City governance, place management, and maintenance of public-space quality sustain activity diversity over time.',
+  },
+  {
+    icon: '🔀',
+    name: 'Diversity',
+    eco:    'Species richness and evenness — measured by indices such as Shannon entropy or Simpson\'s index.',
+    retail: 'Tenant and product mix — the range and balance of retail types determines how well a centre serves different needs.',
+    urban:  'Activity diversity — the richness and evenness of distinct human activities across space and time.',
+  },
+  {
+    icon: '🏛️',
+    name: 'System &amp; Institution',
+    eco:    'Regulatory frameworks, protected-area designations, and international conservation treaties set the governance context.',
+    retail: 'Economic incentives, planning policy, and market structures shape which businesses can survive and thrive.',
+    urban:  'Urban planning policy, civic organisations, and governance frameworks enable or constrain activity diversity.',
+  },
+];
+
+(function buildAnalogy() {
+  const table = document.getElementById('analogy-table');
+  DETERMINANTS.forEach((d, i) => {
+    const row  = document.createElement('div');
+    row.className = 'analogy-row' + (i === 0 ? ' active' : '');
+    row.onclick = () => {
+      document.querySelectorAll('.analogy-row').forEach(r => r.classList.remove('active'));
+      row.classList.add('active');
+    };
+    row.innerHTML = `
+      <div class="row-label"><span>${d.icon}</span>${d.name}</div>
+      <div class="analogy-cell">${d.eco}</div>
+      <div class="analogy-cell">${d.retail}</div>
+      <div class="analogy-cell">${d.urban}</div>
+    `;
+    table.appendChild(row);
+  });
+})();
+
+/* ============================================================
+   SECTION 4 — ACTIVITY TAXONOMY
+   ============================================================ */
+const ACTIVITIES = [
+  { name: 'Working',     icon: '💼', color: '#34d399', desc: 'Offices, co-working spaces, business districts. Professional and commercial activity that anchors daytime urban rhythms.' },
+  { name: 'Shopping',    icon: '🛍️', color: '#fb923c', desc: 'Retail, markets, and commerce — from everyday groceries to specialist boutiques. A major driver of daytime footfall.' },
+  { name: 'Exercising',  icon: '🏃', color: '#60a5fa', desc: 'Sports facilities, gyms, parks, cycling routes. Physical activity that generates distinctive spatial patterns across the city.' },
+  { name: 'Socialising', icon: '👥', color: '#f472b6', desc: 'Bars, cafés, community gathering spaces. Informal social interaction that sustains neighbourhood cohesion and identity.' },
+  { name: 'Learning',    icon: '📚', color: '#a78bfa', desc: 'Schools, universities, libraries, workshops. Educational activities attracting regular, predictable flows across age groups.' },
+  { name: 'Celebrating', icon: '🎉', color: '#fbbf24', desc: 'Events, festivals, ceremonies, entertainment venues. High-intensity activities that temporarily transform urban spaces.' },
+  { name: 'Dining',      icon: '🍽️', color: '#f87171', desc: 'Restaurants, street food, food markets. Eating out as a social and cultural act — a strong driver of evening economy vibrancy.' },
+  { name: 'Commuting',   icon: '🚌', color: '#6ee7b7', desc: 'Transport hubs, station concourses, bus stops. Transient flows that generate activity without constituting a destination in themselves.' },
+  { name: 'Cultural',    icon: '🎭', color: '#c084fc', desc: 'Museums, galleries, theatres, concert halls. Cultural consumption that draws diverse audiences and supports creative industries.' },
+  { name: 'Healthcare',  icon: '🏥', color: '#5eead4', desc: 'Clinics, hospitals, pharmacies, wellness centres. Essential services generating consistent, needs-driven visits throughout the week.' },
+  { name: 'Spiritual',   icon: '🕌', color: '#fcd34d', desc: 'Religious sites, meditation centres, contemplative public spaces. Activities reflecting community identity, heritage, and belief.' },
+  { name: 'Civic',       icon: '🏛️', color: '#93c5fd', desc: 'Government buildings, civic centres, public services. Activities that sustain democratic, institutional, and community life.' },
+  { name: 'Leisure',     icon: '🌳', color: '#86efac', desc: 'Parks, playgrounds, informal recreation. Unstructured time in public space — a vital but often unmeasured component of urban vitality.' },
+];
+
+(function buildTaxonomy() {
+  const grid   = document.getElementById('taxonomy-grid');
+  const detail = document.getElementById('act-detail');
+
+  ACTIVITIES.forEach(a => {
+    const card = document.createElement('div');
+    card.className = 'act-card';
+    card.style.setProperty('--act-color', a.color);
+    card.innerHTML = `<span class="act-card__icon">${a.icon}</span><div class="act-card__name">${a.name}</div>`;
+    card.onclick = () => {
+      document.querySelectorAll('.act-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      detail.style.borderColor = a.color;
+      detail.style.background  = '#f0fdf4';
+      detail.innerHTML = `
+        <span class="act-detail__icon">${a.icon}</span>
+        <div>
+          <div class="act-detail__name" style="color:${a.color}">${a.name}</div>
+          <div class="act-detail__desc">${a.desc}</div>
+        </div>
+      `;
+    };
+    grid.appendChild(card);
+  });
+})();
+
+/* ============================================================
+   SECTION 5 — CARRYING CAPACITY CANVAS
+   ============================================================ */
+(function () {
+  const canvas = document.getElementById('capacity-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  let activeZone = 1;
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = Math.round(W / 1.25);
+    canvas.style.height = H + 'px';
+  }
+
+  // Bell-shaped vibrancy function (peaks at x≈0.42)
+  function vibrancy(x) {
+    return Math.exp(-Math.pow((x - 0.42) / 0.22, 2));
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    const pad = { top: 36, right: 28, bottom: 52, left: 52 };
+    const cW  = W - pad.left - pad.right;
+    const cH  = H - pad.top  - pad.bottom;
+    const pts = 220;
+
+    // Background
+    ctx.fillStyle = '#060f09';
+    ctx.fillRect(0, 0, W, H);
+
+    // Zone definitions: [x0, x1, fill colour, active fill colour]
+    const zones = [
+      { x0: 0,    x1: 0.28, fill: 'rgba(125,211,252,0.09)', activeFill: 'rgba(125,211,252,0.2)'  },
+      { x0: 0.28, x1: 0.62, fill: 'rgba(52,211,153,0.09)',  activeFill: 'rgba(52,211,153,0.22)'  },
+      { x0: 0.62, x1: 1,    fill: 'rgba(251,146,60,0.09)',  activeFill: 'rgba(251,146,60,0.22)'  },
+    ];
+    const zoneColors  = ['#7dd3fc', '#34d399', '#fb923c'];
+    const zoneLabels  = ['Sparse',  'Vibrant', 'Overcrowded'];
+    const zoneMids    = [0.14, 0.45, 0.81];
+
+    // Zone fills (polygon under curve)
+    zones.forEach((z, zi) => {
+      const x1px = pad.left + z.x0 * cW;
+      const x2px = pad.left + z.x1 * cW;
+      const steps = Math.ceil((z.x1 - z.x0) * pts);
+
+      ctx.beginPath();
+      ctx.moveTo(x1px, pad.top + cH);
+      for (let k = 0; k <= steps; k++) {
+        const t  = z.x0 + (z.x1 - z.x0) * (k / steps);
+        const px = pad.left + t * cW;
+        const py = pad.top  + cH * (1 - vibrancy(t));
+        ctx.lineTo(px, py);
+      }
+      ctx.lineTo(x2px, pad.top + cH);
+      ctx.closePath();
+      ctx.fillStyle = zi === activeZone ? z.activeFill : z.fill;
+      ctx.fill();
+
+      // Vertical divider
+      if (zi < 2) {
+        ctx.beginPath();
+        ctx.moveTo(x2px, pad.top);
+        ctx.lineTo(x2px, pad.top + cH);
+        ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+        ctx.lineWidth   = 1;
+        ctx.setLineDash([4, 4]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // Zone labels (bottom of plot area)
+      ctx.font      = zi === activeZone ? 'bold 10px Inter,sans-serif' : '9px Inter,sans-serif';
+      ctx.fillStyle = zoneColors[zi];
+      ctx.globalAlpha = zi === activeZone ? 1 : 0.5;
+      ctx.textAlign   = 'center';
+      ctx.fillText(zoneLabels[zi], pad.left + zoneMids[zi] * cW, pad.top + cH - 8);
+      ctx.globalAlpha = 1;
+    });
+
+    // Main curve
+    ctx.beginPath();
+    for (let i = 0; i <= pts; i++) {
+      const t  = i / pts;
+      const px = pad.left + t * cW;
+      const py = pad.top  + cH * (1 - vibrancy(t));
+      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    }
+    const grad = ctx.createLinearGradient(pad.left, 0, pad.left + cW, 0);
+    grad.addColorStop(0,    '#7dd3fc');
+    grad.addColorStop(0.42, '#34d399');
+    grad.addColorStop(1,    '#fb923c');
+    ctx.strokeStyle = grad;
+    ctx.lineWidth   = 2.8;
+    ctx.lineJoin    = 'round';
+    ctx.stroke();
+
+    // Peak dot
+    const peakX = pad.left + 0.42 * cW;
+    const peakY = pad.top + 2;
+    ctx.beginPath();
+    ctx.arc(peakX, peakY, 6, 0, Math.PI * 2);
+    ctx.fillStyle   = '#34d399';
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth   = 1.5;
+    ctx.stroke();
+
+    // Peak label
+    ctx.font      = 'bold 9.5px Inter,sans-serif';
+    ctx.fillStyle = '#34d399';
+    ctx.textAlign = 'center';
+    ctx.fillText('Optimal', peakX, peakY - 10);
+
+    // Axes
+    ctx.strokeStyle = 'rgba(255,255,255,0.22)';
+    ctx.lineWidth   = 1.5;
+    ctx.beginPath(); ctx.moveTo(pad.left, pad.top);        ctx.lineTo(pad.left,         pad.top + cH); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(pad.left, pad.top + cH);   ctx.lineTo(pad.left + cW,    pad.top + cH); ctx.stroke();
+
+    // Axis arrows
+    ctx.fillStyle = 'rgba(255,255,255,0.22)';
+    ctx.beginPath(); ctx.moveTo(pad.left, pad.top - 2); ctx.lineTo(pad.left - 5, pad.top + 10); ctx.lineTo(pad.left + 5, pad.top + 10); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(pad.left + cW + 2, pad.top + cH); ctx.lineTo(pad.left + cW - 8, pad.top + cH - 5); ctx.lineTo(pad.left + cW - 8, pad.top + cH + 5); ctx.closePath(); ctx.fill();
+
+    // Axis labels
+    ctx.fillStyle = 'rgba(255,255,255,0.45)';
+    ctx.font      = '10px Inter,sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Activity diversity & density →', pad.left + cW / 2, H - 10);
+
+    ctx.save();
+    ctx.translate(13, pad.top + cH / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText('Urban vibrancy →', 0, 0);
+    ctx.restore();
+  }
+
+  window.selectZone = function (zi) {
+    activeZone = zi;
+    document.querySelectorAll('.zone-card').forEach((el, i) => {
+      el.classList.toggle('active-zone', i === zi);
+    });
+    draw();
+  };
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { resize(); draw(); obs.disconnect(); }
+    });
+  }, { threshold: 0.25 });
+
+  obs.observe(canvas);
+  window.addEventListener('resize', () => { resize(); draw(); });
+  resize();
+})();
+
+/* ============================================================
+   DATA CARDS — scroll animation
+   ============================================================ */
+const dcObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); dcObs.unobserve(e.target); }
+  });
+}, { threshold: 0.2 });
+document.querySelectorAll('.data-card').forEach(c => dcObs.observe(c));
+
+/* ============================================================
+   GENERIC FADE-IN OBSERVER
+   ============================================================ */
+const fadeObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); fadeObs.unobserve(e.target); }
+  });
+}, { threshold: 0.14 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+</script>
+
+</body>
+</html>
