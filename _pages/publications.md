@@ -32,6 +32,14 @@ Chen, Z., &amp; Botta, F.<br>
 <a href="https://doi.org/10.48550/arxiv.2603.11477" class="pub-badge" target="_blank" rel="noopener">doi</a>
 </div>
 
+<div class="publication-item" data-year="2026">
+<span class="pub-year">2026</span>
+<span class="pub-title">Urban vibrancy: An analogy of biodiversity, retail diversity, and activity-based urban diversity measures</span><br>
+Yiu, E.C.Y., Pacheco, D., Clemente, R.D., &amp; Botta, F.<br>
+<span class="pub-venue">PNAS Nexus, 5(5)</span>
+<a href="https://doi.org/10.1093/pnasnexus/pgag130" class="pub-badge" target="_blank" rel="noopener">doi</a>
+</div>
+
 <div class="publication-item pub-highlight" data-year="2025">
 <span class="pub-year">2025</span>
 <span class="pub-title">The geography of inequalities in access to healthcare across England: the role of bus travel time variability</span><br>
