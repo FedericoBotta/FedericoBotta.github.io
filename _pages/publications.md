@@ -40,6 +40,14 @@ Yiu, E.C.Y., Pacheco, D., Clemente, R.D., &amp; Botta, F.<br>
 <a href="https://doi.org/10.1093/pnasnexus/pgag130" class="pub-badge" target="_blank" rel="noopener">doi</a>
 </div>
 
+<div class="publication-item" data-year="2026">
+<span class="pub-year">2026</span>
+<span class="pub-title">Understanding Collective Behaviour Using Online Data and Mobile Phones</span><br>
+Botta, F., Preis, T., &amp; Moat, H.S.<br>
+<span class="pub-venue">Cambridge University Press eBooks, 653–674</span>
+<a href="https://doi.org/10.1017/9781108939010.044" class="pub-badge" target="_blank" rel="noopener">doi</a>
+</div>
+
 <div class="publication-item pub-highlight" data-year="2025">
 <span class="pub-year">2025</span>
 <span class="pub-title">The geography of inequalities in access to healthcare across England: the role of bus travel time variability</span><br>
