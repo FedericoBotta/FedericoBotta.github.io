@@ -48,6 +48,14 @@ Botta, F., Preis, T., &amp; Moat, H.S.<br>
 <a href="https://doi.org/10.1017/9781108939010.044" class="pub-badge" target="_blank" rel="noopener">doi</a>
 </div>
 
+<div class="publication-item" data-year="2026">
+<span class="pub-year">2026</span>
+<span class="pub-title">Linking drinking water quality to customer complaints: a data-driven study in the barcelona metropolitan area</span><br>
+Vidal-Lamolla, P., Páez-Izquierdo, A., Carrasco, F., Paraira, M., Ganzer, M., Montes, S., Botta, F., Pacheco, D., Farmani, R., Tobella, J., Martínez, E., Berberana, N., Poch, M., &amp; Molinos‐Senante, M.<br>
+<span class="pub-venue">Applied Water Science</span>
+<a href="https://doi.org/10.1007/s13201-026-02882-2" class="pub-badge" target="_blank" rel="noopener">doi</a>
+</div>
+
 <div class="publication-item pub-highlight" data-year="2025">
 <span class="pub-year">2025</span>
 <span class="pub-title">The geography of inequalities in access to healthcare across England: the role of bus travel time variability</span><br>
