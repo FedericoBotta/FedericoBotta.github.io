@@ -5,6 +5,12 @@ on:
     - cron: '0 8 * * *'   # 08:00 UTC every day
   workflow_dispatch:        # also runnable manually from the Actions tab
 
+# Cancel any in-progress run for the same workflow when a new one starts
+# (e.g. a manual trigger while the scheduled run is still going).
+concurrency:
+  group: update-publications
+  cancel-in-progress: false   # let the current run finish; queue the new one
+
 jobs:
 
   # ── Job 1: new publications via OpenAlex ────────────────────────────────────
