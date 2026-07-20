@@ -12,6 +12,7 @@ only ever ADDS new entries (journals newly credited via ORCID).
 
 import os
 import re
+import time
 import requests
 import yaml
 from difflib import SequenceMatcher
@@ -31,6 +32,20 @@ PEER_REVIEW_YML = REPO_ROOT / "_data" / "peer_review.yml"
 HEADERS = {"User-Agent": f"FedericoBotta-website-bot/1.0 (mailto:{CONTACT_EMAIL})"}
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
+
+def fetch_with_retry(url: str, headers: dict, params: dict = None, timeout: int = 30, max_retries: int = 3) -> requests.Response:
+    """GET with automatic retry on 429 rate-limit responses."""
+    for attempt in range(1, max_retries + 1):
+        resp = requests.get(url, headers=headers, params=params, timeout=timeout)
+        if resp.status_code != 429:
+            resp.raise_for_status()
+            return resp
+        wait = int(resp.headers.get("Retry-After", 60))
+        print(f"Rate limited (429). Waiting {wait}s before retry {attempt}/{max_retries}…")
+        time.sleep(wait)
+    resp.raise_for_status()
+    return resp
+
 
 def normalise(text: str) -> str:
     return re.sub(r"[^\w\s]", "", text.lower()).strip()
@@ -61,12 +76,10 @@ def fetch_orcid_reviews() -> list[dict]:
     Returns a list of dicts: {issn, first_year}
     one per unique ISSN group in the ORCID peer-review record.
     """
-    resp = requests.get(
+    resp = fetch_with_retry(
         ORCID_URL,
         headers={**HEADERS, "Accept": "application/json"},
-        timeout=30,
     )
-    resp.raise_for_status()
     data = resp.json()
 
     results = []
@@ -104,13 +117,11 @@ def resolve_issns(issns: list[str]) -> dict[str, str]:
 
     # OpenAlex accepts up to ~50 ISSNs in one filter
     filter_str = "|".join(issns)
-    resp = requests.get(
+    resp = fetch_with_retry(
         OA_SOURCE,
-        params={"filter": f"issn:{filter_str}", "per-page": 50},
         headers=HEADERS,
-        timeout=30,
+        params={"filter": f"issn:{filter_str}", "per-page": 50},
     )
-    resp.raise_for_status()
     results = resp.json().get("results", [])
 
     mapping: dict[str, str] = {}

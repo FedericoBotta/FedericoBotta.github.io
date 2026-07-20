@@ -15,6 +15,7 @@ import os
 import re
 import sys
 import json
+import time
 import requests
 from difflib import SequenceMatcher
 from pathlib import Path
@@ -155,6 +156,20 @@ def html_entry(work: dict) -> str:
 
 # ── GitHub Actions output helpers ─────────────────────────────────────────────
 
+def fetch_with_retry(url: str, headers: dict, timeout: int = 30, max_retries: int = 3) -> requests.Response:
+    """GET with automatic retry on 429 rate-limit responses."""
+    for attempt in range(1, max_retries + 1):
+        resp = requests.get(url, headers=headers, timeout=timeout)
+        if resp.status_code != 429:
+            resp.raise_for_status()
+            return resp
+        wait = int(resp.headers.get("Retry-After", 60))
+        print(f"Rate limited by OpenAlex (429). Waiting {wait}s before retry {attempt}/{max_retries}…")
+        time.sleep(wait)
+    resp.raise_for_status()
+    return resp
+
+
 def gh_output(key: str, value: str):
     path = os.environ.get("GITHUB_OUTPUT")
     if path:
@@ -211,8 +226,7 @@ def main():
     headers = {
         "User-Agent": f"FedericoBotta-website-bot/1.0 (mailto:{CONTACT_EMAIL})"
     }
-    resp = requests.get(OPENALEX_URL, headers=headers, timeout=30)
-    resp.raise_for_status()
+    resp = fetch_with_retry(OPENALEX_URL, headers)
     works = resp.json().get("results", [])
     print(f"OpenAlex returned {len(works)} records.")
 
