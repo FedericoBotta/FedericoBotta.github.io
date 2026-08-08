@@ -56,6 +56,13 @@ Vidal-Lamolla, P., Páez-Izquierdo, A., Carrasco, F., Paraira, M., Ganzer, M., M
 <a href="https://doi.org/10.1007/s13201-026-02882-2" class="pub-badge" target="_blank" rel="noopener">doi</a>
 </div>
 
+<div class="publication-item" data-year="2026">
+<span class="pub-year">2026</span>
+<span class="pub-title">Aramaic heterograms in Christian-Sogdian texts</span><br>
+Botta, F.<br>
+<span class="pub-venue">Electronic Theses and Dissertations Repository (University of Pisa)</span>
+</div>
+
 <div class="publication-item pub-highlight" data-year="2025">
 <span class="pub-year">2025</span>
 <span class="pub-title">The geography of inequalities in access to healthcare across England: the role of bus travel time variability</span><br>
