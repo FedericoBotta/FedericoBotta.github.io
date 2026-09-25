@@ -64,6 +64,14 @@ Kovalenko, K., Dai, B.X., Fang, F., GUO, Z., Liu, H., Botta, F., Genio, C.I.d., 
 <a href="https://doi.org/10.48550/arxiv.2608.23426" class="pub-badge" target="_blank" rel="noopener">doi</a>
 </div>
 
+<div class="publication-item" data-year="2026">
+<span class="pub-year">2026</span>
+<span class="pub-title">Sample data for rt2gtfs package</span> <em>(preprint)</em><br>
+Chen, Z., &amp; Botta, F.<br>
+<span class="pub-venue">arXiv (Cornell University)</span>
+<a href="https://doi.org/10.5281/zenodo.19889311" class="pub-badge" target="_blank" rel="noopener">doi</a>
+</div>
+
 <div class="publication-item pub-highlight" data-year="2025">
 <span class="pub-year">2025</span>
 <span class="pub-title">The geography of inequalities in access to healthcare across England: the role of bus travel time variability</span><br>
