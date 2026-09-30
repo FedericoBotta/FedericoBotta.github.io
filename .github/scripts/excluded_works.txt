@@ -18,3 +18,4 @@
 10.48550/arxiv.2305.16205
 10.48550/arxiv.2103.15909
 aramaic heterograms in christian-sogdian
+10.5281/zenodo.19889311
