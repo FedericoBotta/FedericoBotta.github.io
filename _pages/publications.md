@@ -64,6 +64,22 @@ Kovalenko, K., Dai, B.X., Fang, F., GUO, Z., Liu, H., Botta, F., Genio, C.I.d., 
 <a href="https://doi.org/10.48550/arxiv.2608.23426" class="pub-badge" target="_blank" rel="noopener">doi</a>
 </div>
 
+<div class="publication-item" data-year="2026">
+<span class="pub-year">2026</span>
+<span class="pub-title">How transport coverage shapes access to opportunities: a national-scale isochrone analysis of bus network accessibility in England</span><br>
+Townley, S., &amp; Botta, F.<br>
+<span class="pub-venue">Frontiers in Big Data, 9</span>
+<a href="https://doi.org/10.3389/fdata.2026.1942887" class="pub-badge" target="_blank" rel="noopener">doi</a>
+</div>
+
+<div class="publication-item" data-year="2026">
+<span class="pub-year">2026</span>
+<span class="pub-title">Towards Urban Tree Species Classification in the UK: A Machine Learning Instance Segmentation Approach to Multimodal Species-Classification Dataset Creation and Algorithms Development</span><br>
+Darkey, S.K., Botta, F., &amp; Fu, Z.<br>
+<span class="pub-venue">IEEE International Geoscience and Remote Sensing Symposium (IGARSS), 1668–1672</span>
+<a href="https://doi.org/10.1109/igarss60577.2026.11731199" class="pub-badge" target="_blank" rel="noopener">doi</a>
+</div>
+
 <div class="publication-item pub-highlight" data-year="2025">
 <span class="pub-year">2025</span>
 <span class="pub-title">The geography of inequalities in access to healthcare across England: the role of bus travel time variability</span><br>
