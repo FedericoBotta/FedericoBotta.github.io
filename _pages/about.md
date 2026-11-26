@@ -90,6 +90,12 @@ hero_tags:
 
 <div class="paper-highlights">
   <div class="paper-card">
+    <div class="paper-card__meta">2026 · Frontiers in Big Data</div>
+    <h3 class="paper-card__title">Bus reach is a small fraction of car reach across most of England</h3>
+    <p class="paper-card__summary">We introduce two new metrics — R<sub>A</sub> and R<sub>D</sub> — that compare what you can reach by bus versus car within 40 minutes, computed for all 33,755 LSOAs in England. In 61% of areas, bus covers less than 1% of the area a car can access; the gap is steepest in rural counties and barely captured by existing deprivation measures.</p>
+    <a href="/papers/townley-2026.html" class="paper-card__link">Explore the research →</a>
+  </div>
+  <div class="paper-card">
     <div class="paper-card__meta">2026 · PNAS Nexus</div>
     <h3 class="paper-card__title">Urban vibrancy through the lens of biodiversity</h3>
     <p class="paper-card__summary">We propose a new framework for measuring urban vibrancy based on activity diversity — drawing on ecological concepts like the Shannon diversity index and carrying capacity — to capture what cities feel like from the ground up, not just what they are zoned for.</p>
