@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Townley &amp; Botta (2026) — Bus Network Accessibility in England</title>
+  <link rel="stylesheet" href="https://federicobotta.github.io/assets/css/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap">
+  <style>
+    /* ============================================================
+       PAPER EXPLAINER — Townley & Botta, Frontiers in Big Data, 2026
+       Self-contained HTML, no Jekyll
+       ============================================================ */
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --bg-dark:    #060d1a;
+      --bg-mid:     #0f1d35;
+      --accent:     #f97316;
+      --bus:        #818cf8;
+      --car:        #f97316;
+      --high:       #34d399;
+      --text-light: #e2e8f0;
+      --text-muted: #94a3b8;
+      --white:      #ffffff;
+      --card-bg:    #f8faff;
+      --border:     #e2e8f0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      color: #1a1f36;
+      overflow-x: hidden;
+    }
+
+    /* ============================================================
+       SECTION 1 — HERO
+       ============================================================ */
+    .hero {
+      position: relative;
+      min-height: 90vh;
+      background: var(--bg-dark);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 5rem;
+    }
+
+    #hero-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: block;
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      max-width: 820px;
+      padding: 0 1.5rem;
+    }
+
+    .hero__journal {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .hero__title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 400;
+      color: var(--white);
+      line-height: 1.25;
+      margin: 0 0 1.2rem;
+    }
+
+    .hero__authors {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 1.8rem;
+    }
+
+    .hero__tagline {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1rem, 2.5vw, 1.35rem);
+      font-style: italic;
+      color: var(--text-light);
+      border-top: 1px solid rgba(249,115,22,0.3);
+      padding-top: 1.2rem;
+      margin-top: 0.5rem;
+    }
+
+    .hero__scroll-hint {
+      position: absolute;
+      bottom: 1.8rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .scroll-arrow {
+      width: 20px; height: 20px;
+      border-right: 2px solid var(--accent);
+      border-bottom: 2px solid var(--accent);
+      transform: rotate(45deg);
+      animation: bounce 1.6s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); opacity: 0.6; }
+      50%       { transform: rotate(45deg) translateY(5px); opacity: 1; }
+    }
+
+    /* ============================================================
+       SHARED SECTION STYLES
+       ============================================================ */
+    section { padding: 5rem 1.5rem; }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 400;
+      color: #0d1a3a;
+      margin: 0 0 0.8rem;
+      line-height: 1.25;
+    }
+
+    .section-intro {
+      font-size: 1.05rem;
+      color: #3a4860;
+      line-height: 1.7;
+      max-width: 680px;
+      margin-bottom: 3rem;
+    }
+
+    .dark-section { background: var(--bg-dark); }
+    .dark-section .section-title { color: var(--white); }
+    .dark-section .section-intro { color: var(--text-muted); }
+
+    /* ============================================================
+       SECTION 2 — THE GAP
+       ============================================================ */
+    .gap-section { background: #fff; }
+
+    .gap-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2.5rem;
+    }
+
+    @media (max-width: 600px) { .gap-stats { grid-template-columns: 1fr; } }
+
+    .gap-stat-card {
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+
+    .gap-stat-card.ra-card {
+      background: linear-gradient(135deg, #fff7ed 0%, #fff3e0 100%);
+      border: 1px solid rgba(249,115,22,0.2);
+    }
+
+    .gap-stat-card.rd-card {
+      background: linear-gradient(135deg, #eef2ff 0%, #e8ecff 100%);
+      border: 1px solid rgba(129,140,248,0.3);
+    }
+
+    .gap-metric-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .ra-card .gap-metric-label { color: #c2410c; }
+    .rd-card .gap-metric-label { color: #4338ca; }
+
+    .gap-big-number {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(3rem, 7vw, 5rem);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .ra-card .gap-big-number { color: var(--accent); }
+    .rd-card .gap-big-number { color: var(--bus); }
+
+    .gap-stat-desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .ra-card .gap-stat-desc { color: #7c3a1a; }
+    .rd-card .gap-stat-desc { color: #3730a3; }
+
+    .gap-note {
+      margin-top: 2.5rem;
+      background: #f8f9ff;
+      border-left: 4px solid var(--bus);
+      padding: 1rem 1.4rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.95rem;
+      color: #2a3050;
+      line-height: 1.65;
+    }
+
+    /* ============================================================
+       SECTION 3 — METRICS EXPLAINER
+       ============================================================ */
+    .metrics-section { background: #f0f4ff; }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 640px) { .metrics-grid { grid-template-columns: 1fr; } }
+
+    .metric-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .metric-card h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin: 0 0 0.3rem;
+    }
+
+    .ra-metric h3 { color: #c2410c; }
+    .rd-metric h3 { color: #4338ca; }
+
+    .metric-formula {
+      font-family: 'Inter', monospace;
+      font-size: 0.85rem;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      margin: 0.8rem 0;
+      display: inline-block;
+    }
+
+    .ra-metric .metric-formula {
+      background: #fff7ed;
+      color: #c2410c;
+      border: 1px solid rgba(249,115,22,0.2);
+    }
+
+    .rd-metric .metric-formula {
+      background: #eef2ff;
+      color: #4338ca;
+      border: 1px solid rgba(129,140,248,0.3);
+    }
+
+    .metric-card p {
+      font-size: 0.95rem;
+      color: #374151;
+      line-height: 1.65;
+      margin: 0.8rem 0 0;
+    }
+
+    .isochrone-vis {
+      margin: 1.2rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ============================================================
+       SECTION 4 — SCALE
+       ============================================================ */
+    .scale-section { background: var(--bg-dark); }
+
+    .stat-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .stat-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(249,115,22,0.2);
+      border-radius: 12px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: border-color 0.3s;
+    }
+
+    .stat-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.3s;
+    }
+
+    .stat-card:hover { border-color: var(--accent); transform: translateY(-3px) !important; }
+
+    .stat-number {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: var(--accent);
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .stat-icon { font-size: 1.5rem; margin-bottom: 0.8rem; }
+
+    /* ============================================================
+       SECTION 5 — URBAN-RURAL DIVIDE
+       ============================================================ */
+    .divide-section { background: #fff; }
+
+    .bar-chart-container { margin-top: 2.5rem; }
+
+    .bar-group { margin-bottom: 2.5rem; }
+
+    .bar-group-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 1rem;
+    }
+
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .bar-row-label {
+      width: 110px;
+      font-size: 0.82rem;
+      color: #4b5563;
+      flex-shrink: 0;
+    }
+
+    .bar-track {
+      flex: 1;
+      height: 36px;
+      background: #f1f5f9;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      padding: 0 0.8rem;
+      transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .bar-fill.urban   { background: var(--high); }
+    .bar-fill.suburban { background: var(--bus); }
+    .bar-fill.rural   { background: rgba(249,115,22,0.75); }
+
+    .bar-fill span {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: white;
+      white-space: nowrap;
+    }
+
+    .bar-scale {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: #9ca3af;
+      margin-top: 0.4rem;
+      padding-left: 118px;
+    }
+
+    .chart-legend {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: #4b5563;
+    }
+
+    .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+
+    .divide-note {
+      margin-top: 2.5rem;
+      background: #f0f4ff;
+      border-left: 4px solid var(--bus);
+      padding: 1rem 1.4rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.95rem;
+      color: #2a3050;
+      line-height: 1.65;
+    }
+
+    /* ============================================================
+       SECTION 6 — REGIONAL INEQUALITIES
+       ============================================================ */
+    .regional-section { background: var(--bg-dark); }
+
+    .regional-charts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      margin-top: 2.5rem;
+    }
+
+    @media (max-width: 700px) { .regional-charts { grid-template-columns: 1fr; } }
+
+    .regional-chart-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(249,115,22,0.15);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .regional-chart-card h3 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-light);
+      margin: 0 0 1.2rem;
+    }
+
+    .area-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .area-label {
+      width: 110px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      text-align: right;
+    }
+
+    .area-bar-track {
+      flex: 1;
+      height: 24px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .area-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      padding: 0 0.5rem;
+      transition: width 1.4s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .area-bar-fill.best  { background: linear-gradient(90deg, var(--high), rgba(52,211,153,0.5)); }
+    .area-bar-fill.worst { background: linear-gradient(90deg, rgba(249,115,22,0.85), rgba(249,115,22,0.3)); }
+
+    .area-bar-fill span {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.9);
+      white-space: nowrap;
+    }
+
+    /* ============================================================
+       SECTION 7 — WHAT DRIVES ACCESS
+       ============================================================ */
+    .drivers-section { background: #fff; }
+
+    .drivers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .driver-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .driver-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .driver-direction {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.3em 0.8em;
+      border-radius: 100px;
+      margin-bottom: 0.8rem;
+    }
+
+    .driver-direction.positive { background: rgba(52,211,153,0.15); color: #065f46; }
+    .driver-direction.weak     { background: rgba(148,163,184,0.2); color: #475569; }
+
+    .driver-card h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem;
+      color: #0d1a3a;
+    }
+
+    .driver-card p {
+      font-size: 0.88rem;
+      color: #374151;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .drivers-note {
+      margin-top: 2.5rem;
+      background: #f8f9ff;
+      border-left: 4px solid var(--bus);
+      padding: 1rem 1.4rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.95rem;
+      color: #2a3050;
+      line-height: 1.65;
+    }
+
+    /* ============================================================
+       SECTION 8 — CITATION
+       ============================================================ */
+    .citation-section {
+      background: var(--bg-dark);
+      border-top: 1px solid rgba(249,115,22,0.2);
+    }
+
+    .citation-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(249,115,22,0.2);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-top: 2rem;
+      font-family: 'Inter', monospace;
+      font-size: 0.82rem;
+      color: var(--text-light);
+      line-height: 1.7;
+    }
+
+    .citation-links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .cite-link {
+      display: inline-flex;
+      align-items: center;
+      background: var(--accent);
+      color: var(--bg-dark);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.55em 1.1em;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .cite-link:hover { opacity: 0.85; }
+
+    .cite-link.secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid rgba(249,115,22,0.4);
+    }
+    .cite-link.secondary:hover { background: rgba(249,115,22,0.1); }
+
+    .cite-note {
+      margin-top: 2rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ============================================================
+       ANIMATIONS
+       ============================================================ */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 480px) {
+      .hero { padding-bottom: 3rem; }
+      section { padding: 3.5rem 1rem; }
+      .stat-cards { grid-template-columns: 1fr 1fr; }
+      .bar-row-label { width: 80px; }
+      .bar-scale { padding-left: 88px; }
+      .area-label { width: 80px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     SITE NAVIGATION
+     ============================================================ -->
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <button><div class="navicon"></div></button>
+        <ul class="visible-links">
+          <li class="masthead__menu-item masthead__menu-item--lg">
+            <a href="/" class="masthead__name-link">
+              <span class="masthead__name">Federico Botta</span>
+              <span class="masthead__subtitle">Senior Lecturer in Data Science &middot; University of Exeter</span>
+            </a>
+          </li>
+          <li class="masthead__menu-item"><a href="/publications/">Publications</a></li>
+          <li class="masthead__menu-item"><a href="/policy/">Policy &amp; Impact</a></li>
+          <li class="masthead__menu-item"><a href="/media/">Media</a></li>
+          <li class="masthead__menu-item"><a href="/publicengagement/">Public Engagement</a></li>
+          <li class="masthead__menu-item"><a href="/cv/">CV</a></li>
+        </ul>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+<!-- pin masthead colours regardless of paper-page palette -->
+<style>
+  .masthead { background: #fff !important; border-bottom: 2px solid #060d1a !important; border-top: none !important; padding: 1.1em 0 0.9em !important; box-shadow: none !important; }
+  .masthead a { color: #4b5563 !important; text-decoration: none !important; }
+  .masthead a:hover { color: #f97316 !important; }
+  .masthead__name { color: #060d1a !important; }
+  .masthead__subtitle { color: #6b7280 !important; }
+  .greedy-nav { background: #fff !important; }
+  .greedy-nav button .navicon,
+  .greedy-nav button .navicon::before,
+  .greedy-nav button .navicon::after { background: #060d1a !important; }
+</style>
+
+  <!-- ============================================================
+       SECTION 1 — HERO
+       ============================================================ -->
+  <section class="hero" id="hero">
+    <canvas id="hero-canvas"></canvas>
+
+    <div class="hero__content">
+      <p class="hero__journal">Frontiers in Big Data &middot; 2026, Vol 9</p>
+      <h1 class="hero__title">
+        How transport coverage shapes access to opportunities: a national-scale
+        isochrone analysis of bus network accessibility in England
+      </h1>
+      <p class="hero__authors">Sam Townley &amp; Federico Botta</p>
+      <p class="hero__tagline">
+        &ldquo;Everywhere in England is 40 minutes away &mdash; by car.
+        By bus, the picture is very different.&rdquo;
+      </p>
+    </div>
+
+    <div class="hero__scroll-hint">
+      <span>Scroll to explore</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 2 — THE GAP
+       ============================================================ -->
+  <section class="gap-section" id="gap">
+    <div class="container">
+      <p class="section-label fade-in">The Accessibility Gap</p>
+      <h2 class="section-title fade-in">Across most of England, bus reach is a small fraction of car reach</h2>
+      <p class="section-intro fade-in">
+        Starting from the same point, a car can reach roughly 20&ndash;30 times more of England
+        than a bus within 40 minutes. For most areas, the bus network covers only a tiny
+        fraction of what a car can access &mdash; measured both by area and by number of
+        actual destinations.
+      </p>
+
+      <div class="gap-stats">
+        <div class="gap-stat-card ra-card fade-in">
+          <p class="gap-metric-label">R<sub>A</sub> &mdash; Area ratio</p>
+          <div class="gap-big-number">61.4%</div>
+          <p class="gap-stat-desc">
+            of LSOAs reach <strong>less than 1%</strong> of the area accessible by car
+            within a 40-minute bus journey
+          </p>
+        </div>
+        <div class="gap-stat-card rd-card fade-in">
+          <p class="gap-metric-label">R<sub>D</sub> &mdash; Destination ratio</p>
+          <div class="gap-big-number">71%</div>
+          <p class="gap-stat-desc">
+            of LSOAs can reach <strong>fewer than 1 in 20</strong> destinations
+            reachable by car in the same time window
+          </p>
+        </div>
+      </div>
+
+      <div class="gap-note fade-in">
+        <strong>Both metrics tell the same story.</strong> Whether you measure raw travel area or count
+        specific destinations (employment centres, education establishments, GP surgeries,
+        and hospitals), bus coverage is a small fraction of what a car provides. This gap is not
+        uniform: it is overwhelmingly concentrated in rural areas and varies sharply by region.
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 3 — THE TWO METRICS
+       ============================================================ -->
+  <section class="metrics-section" id="metrics">
+    <div class="container">
+      <p class="section-label fade-in">The Method</p>
+      <h2 class="section-title fade-in">Two complementary measures of bus accessibility</h2>
+      <p class="section-intro fade-in">
+        The paper introduces two new metrics that compare what you can reach in 40 minutes
+        by bus versus by car, computed for every LSOA in England using real BODS GTFS timetables,
+        r5py routing, and OpenStreetMap data.
+      </p>
+
+      <div class="metrics-grid">
+        <div class="metric-card ra-metric fade-in">
+          <h3>R<sub>A</sub></h3>
+          <p style="font-size:0.85rem;color:#7c3a1a;margin:0 0 0.5rem">Area ratio</p>
+          <span class="metric-formula">bus isochrone area &divide; car isochrone area</span>
+          <div class="isochrone-vis">
+            <svg viewBox="0 0 200 160" width="200" height="160">
+              <!-- car isochrone (orange, large) -->
+              <circle cx="100" cy="80" r="70" fill="rgba(249,115,22,0.12)" stroke="rgba(249,115,22,0.6)" stroke-width="2"/>
+              <!-- car ring labels -->
+              <text x="156" y="38" font-family="Inter,sans-serif" font-size="10" fill="rgba(249,115,22,0.95)" font-weight="600">Car</text>
+              <text x="152" y="51" font-family="Inter,sans-serif" font-size="9"  fill="rgba(249,115,22,0.6)">40 min</text>
+              <!-- bus isochrone (indigo, small) -->
+              <circle cx="100" cy="80" r="18" fill="rgba(129,140,248,0.25)" stroke="rgba(129,140,248,0.85)" stroke-width="2"/>
+              <!-- origin -->
+              <circle cx="100" cy="80" r="4" fill="#818cf8"/>
+              <!-- bus label -->
+              <text x="110" y="68" font-family="Inter,sans-serif" font-size="9" fill="rgba(129,140,248,0.95)" font-weight="600">Bus</text>
+            </svg>
+          </div>
+          <p>
+            Measures how much <em>geographic area</em> you can reach by bus relative to a car.
+            A value of 0.01 means bus covers just 1% of the car&rsquo;s reach &mdash; strongly
+            influenced by network connectivity and route directness.
+          </p>
+        </div>
+
+        <div class="metric-card rd-metric fade-in">
+          <h3>R<sub>D</sub></h3>
+          <p style="font-size:0.85rem;color:#4338ca;margin:0 0 0.5rem">Destination ratio</p>
+          <span class="metric-formula">bus destinations &divide; car destinations</span>
+          <div class="isochrone-vis">
+            <svg viewBox="0 0 200 160" width="200" height="160">
+              <g id="dest-dots"></g>
+              <!-- car isochrone outline -->
+              <circle cx="100" cy="80" r="70" fill="none" stroke="rgba(249,115,22,0.6)" stroke-width="2" stroke-dasharray="4,3"/>
+              <!-- bus isochrone -->
+              <circle cx="100" cy="80" r="18" fill="rgba(129,140,248,0.1)" stroke="rgba(129,140,248,0.85)" stroke-width="2"/>
+              <!-- origin -->
+              <circle cx="100" cy="80" r="4" fill="#818cf8"/>
+              <!-- legend text -->
+              <text x="8"   y="150" font-family="Inter,sans-serif" font-size="8" fill="rgba(249,115,22,0.8)">&#9679; car only</text>
+              <text x="66"  y="150" font-family="Inter,sans-serif" font-size="8" fill="rgba(129,140,248,0.9)">&#9679; bus too</text>
+            </svg>
+          </div>
+          <p>
+            Counts specific <em>destinations</em> within each isochrone across eight Journey Time
+            Statistics types: employment centres (small, medium, large), education establishments
+            (primary, secondary, further), GP surgeries, and hospitals. A value of 0.05 means you
+            can reach 1 in 20 destinations a car user can access in the same time.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 4 — SCALE OF STUDY
+       ============================================================ -->
+  <section class="scale-section dark-section" id="scale">
+    <div class="container">
+      <p class="section-label" style="color:var(--accent)">Scale of the Study</p>
+      <h2 class="section-title" style="color:var(--white);margin-bottom:0.5rem">England-wide &mdash; every small area</h2>
+      <p class="section-intro">
+        Isochrone routing was performed for all 33,755 Lower Super Output Areas in England
+        using r5py and real BODS GTFS timetables alongside OpenStreetMap road data.
+      </p>
+
+      <div class="stat-cards">
+        <div class="stat-card" data-target="33755">
+          <div class="stat-icon">📍</div>
+          <div class="stat-number" data-count>0</div>
+          <div class="stat-label">LSOAs analysed<br>across England</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🚌</div>
+          <div class="stat-number" style="font-size:1.6rem;line-height:1.3">40 min</div>
+          <div class="stat-label">Isochrone radius<br>for both bus and car</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🏢</div>
+          <div class="stat-number" style="font-size:2rem">8</div>
+          <div class="stat-label">Destination types (JTS):<br>employment, education,<br>GP surgeries, hospitals</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🗺️</div>
+          <div class="stat-number" style="font-size:1.5rem">R<sub style="font-size:0.8rem">A</sub> + R<sub style="font-size:0.8rem">D</sub></div>
+          <div class="stat-label">Two new metrics comparing<br>bus reach to car reach</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 5 — URBAN–RURAL DIVIDE
+       ============================================================ -->
+  <section class="divide-section" id="divide">
+    <div class="container">
+      <p class="section-label fade-in">Urban vs Rural</p>
+      <h2 class="section-title fade-in">The bus&ndash;car gap is overwhelmingly a rural problem</h2>
+      <p class="section-intro fade-in">
+        Urban and suburban LSOAs enjoy substantially higher bus accessibility than rural ones.
+        The share of LSOAs where bus coverage falls well below car coverage rises steeply from
+        urban cores to remote rural areas.
+      </p>
+
+      <div class="bar-chart-container fade-in" id="urban-rural-chart">
+        <div class="bar-group">
+          <p class="bar-group-title">Share of LSOAs with R<sub>D</sub> &lt;&nbsp;0.05 (reaching fewer than 1 in 20 car destinations by bus)</p>
+
+          <div class="bar-row">
+            <span class="bar-row-label">Urban major</span>
+            <div class="bar-track">
+              <div class="bar-fill urban" data-width="22" style="width:0%"><span>lower share</span></div>
+            </div>
+          </div>
+          <div class="bar-row">
+            <span class="bar-row-label">Urban minor</span>
+            <div class="bar-track">
+              <div class="bar-fill suburban" data-width="45" style="width:0%"><span>moderate share</span></div>
+            </div>
+          </div>
+          <div class="bar-row">
+            <span class="bar-row-label">Rural town</span>
+            <div class="bar-track">
+              <div class="bar-fill rural" data-width="68" style="width:0%"><span>high share</span></div>
+            </div>
+          </div>
+          <div class="bar-row">
+            <span class="bar-row-label">Rural village</span>
+            <div class="bar-track">
+              <div class="bar-fill rural" data-width="92" style="width:0%"><span>very high share</span></div>
+            </div>
+          </div>
+
+          <div class="bar-scale">
+            <span>0%</span>
+            <span>50%</span>
+            <span>100%</span>
+          </div>
+        </div>
+
+        <div class="chart-legend">
+          <div class="legend-item">
+            <div class="legend-dot" style="background:var(--high)"></div>
+            <span>Urban (major)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:var(--bus)"></div>
+            <span>Urban (minor)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:rgba(249,115,22,0.75)"></div>
+            <span>Rural</span>
+          </div>
+        </div>
+
+        <div class="divide-note fade-in">
+          The urban&ndash;rural gradient is steep and consistent across both R<sub>A</sub> and
+          R<sub>D</sub>. In rural villages, the overwhelming majority of LSOAs have bus coverage
+          far below 5% of car coverage. Even within urban areas the picture is uneven: some
+          city-centre LSOAs record R<sub>D</sub> values above 0.5 while nearby suburban zones
+          fall below 0.1. The chart above shows the direction of the gradient; exact area
+          breakdowns are in the published paper.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 6 — REGIONAL INEQUALITIES
+       ============================================================ -->
+  <section class="regional-section dark-section" id="regional">
+    <div class="container">
+      <p class="section-label" style="color:var(--accent)">Regional Picture</p>
+      <h2 class="section-title" style="color:var(--white);margin-bottom:0.5rem">London leads; the South West and rural East lag furthest behind</h2>
+      <p class="section-intro">
+        London&rsquo;s dense bus network produces the highest median R<sub>D</sub> values in the
+        country. Westminster, Tower Hamlets, and Waltham Forest top national rankings.
+        Plymouth stands out as a notable exception in the generally poor-performing South West.
+      </p>
+
+      <div class="regional-charts">
+        <div class="regional-chart-card fade-in">
+          <h3>Highest median R<sub>D</sub> (best bus access)</h3>
+          <div class="area-row">
+            <span class="area-label">Westminster</span>
+            <div class="area-bar-track">
+              <div class="area-bar-fill best" data-width="94" style="width:0%"><span>very high</span></div>
+            </div>
+          </div>
+          <div class="area-row">
+            <span class="area-label">Tower Hamlets</span>
+            <div class="area-bar-track">
+              <div class="area-bar-fill best" data-width="88" style="width:0%"><span>very high</span></div>
+            </div>
+          </div>
+          <div class="area-row">
+            <span class="area-label">Waltham Forest</span>
+            <div class="area-bar-track">
+              <div class="area-bar-fill best" data-width="62" style="width:0%"><span>high</span></div>
+            </div>
+          </div>
+          <div class="area-row">
+            <span class="area-label">Plymouth</span>
+            <div class="area-bar-track">
+              <div class="area-bar-fill best" data-width="48" style="width:0%"><span>standout</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="regional-chart-card fade-in">
+          <h3>Lowest median R<sub>D</sub> (worst bus access)</h3>
+          <div class="area-row">
+            <span class="area-label">Hertfordshire</span>
+            <div class="area-bar-track">
+              <div class="area-bar-fill worst" data-width="90" style="width:0%"><span>very low</span></div>
+            </div>
+          </div>
+          <div class="area-row">
+            <span class="area-label">Hampshire</span>
+            <div class="area-bar-track">
+              <div class="area-bar-fill worst" data-width="84" style="width:0%"><span>very low</span></div>
+            </div>
+          </div>
+          <div class="area-row">
+            <span class="area-label">Worcestershire</span>
+            <div class="area-bar-track">
+              <div class="area-bar-fill worst" data-width="76" style="width:0%"><span>low</span></div>
+            </div>
+          </div>
+          <div class="area-row">
+            <span class="area-label">Warwickshire</span>
+            <div class="area-bar-track">
+              <div class="area-bar-fill worst" data-width="70" style="width:0%"><span>low</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 7 — WHAT DRIVES ACCESS
+       ============================================================ -->
+  <section class="drivers-section" id="drivers">
+    <div class="container">
+      <p class="section-label fade-in">Regression Findings</p>
+      <h2 class="section-title fade-in">What drives bus accessibility?</h2>
+      <p class="section-intro fade-in">
+        A SARAR spatial regression model &mdash; accounting for spatial autocorrelation in both
+        outcomes and errors &mdash; identifies the factors most strongly associated with an
+        LSOA&rsquo;s R<sub>D</sub> score. Spatial clustering is high: Moran&rsquo;s I&nbsp;=&nbsp;0.66
+        for OLS residuals, confirming that accessibility concentrates geographically.
+      </p>
+
+      <div class="drivers-grid">
+        <div class="driver-card">
+          <span class="driver-direction positive">&#8593; Positive</span>
+          <h3>Car-free household share</h3>
+          <p>
+            The strongest predictor. Areas where more residents do not own a car tend to have
+            better bus services &mdash; likely because demand sustains higher frequencies.
+            Points to a self-reinforcing cycle of access and car ownership.
+          </p>
+        </div>
+
+        <div class="driver-card">
+          <span class="driver-direction positive">&#8593; Positive</span>
+          <h3>Service frequency</h3>
+          <p>
+            Higher frequency expands effective reach. More departures let riders chain
+            journeys and access further destinations within the 40-minute window.
+          </p>
+        </div>
+
+        <div class="driver-card">
+          <span class="driver-direction positive">&#8593; Positive</span>
+          <h3>Urban classification</h3>
+          <p>
+            Urban LSOAs consistently outperform rural ones, independent of other factors.
+            Network density, route coverage, and shorter inter-stop distances compound
+            in city settings.
+          </p>
+        </div>
+
+        <div class="driver-card">
+          <span class="driver-direction weak">&#8212; Weak / Distinct</span>
+          <h3>Deprivation index (IMD)</h3>
+          <p>
+            R<sub>D</sub> correlates only weakly with the Index of Multiple Deprivation
+            (<em>r</em>&nbsp;=&nbsp;0.14). Bus accessibility is a <em>distinct dimension</em>
+            of disadvantage &mdash; not simply a proxy for wider socioeconomic deprivation.
+          </p>
+        </div>
+      </div>
+
+      <div class="drivers-note fade-in">
+        <strong>Policy implication:</strong> Bus accessibility disadvantage is not automatically
+        captured by existing deprivation measures. Areas that rank well on the IMD may still face
+        severe bus&ndash;car gaps. Dedicated metrics like R<sub>A</sub> and R<sub>D</sub> are
+        needed to identify where interventions would have the greatest impact.
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 8 — CITATION
+       ============================================================ -->
+  <section class="citation-section dark-section" id="cite" style="padding-top:4rem;padding-bottom:4rem;">
+    <div class="container">
+      <p class="section-label" style="color:var(--accent)">Citation</p>
+      <h2 class="section-title" style="color:var(--white)">Full paper</h2>
+
+      <div class="citation-box">
+        Sam Townley and Federico Botta (2026).<br>
+        &ldquo;How transport coverage shapes access to opportunities: a national-scale
+        isochrone analysis of bus network accessibility in England.&rdquo;<br>
+        <em>Frontiers in Big Data</em>, Vol 9.<br>
+        DOI:&nbsp;<a href="https://doi.org/10.3389/fdata.2026.1942887"
+                style="color:var(--accent);text-decoration:none;"
+                target="_blank" rel="noopener">
+          10.3389/fdata.2026.1942887
+        </a>
+      </div>
+
+      <div class="citation-links">
+        <a href="https://doi.org/10.3389/fdata.2026.1942887"
+           class="cite-link" target="_blank" rel="noopener">
+          Full paper &rarr;
+        </a>
+        <a href="/publications/" class="cite-link secondary">
+          All publications &rarr;
+        </a>
+      </div>
+
+      <p class="cite-note">
+        Published open access in <em>Frontiers in Big Data</em>, 2026.<br>
+        Sam Townley and Federico Botta are at the University of Exeter.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       JAVASCRIPT
+       ============================================================ -->
+  <script>
+  /* ============================================================
+     HERO CANVAS — radar-pulse: waves activate destination dots
+     Car wave (orange) reaches far; bus wave (indigo) stays small.
+     ============================================================ */
+  (function() {
+    const canvas = document.getElementById('hero-canvas');
+    const ctx    = canvas.getContext('2d');
+    let W, H, dots = [], waves = [], frame = 0;
+
+    const CAR_FRAC = 0.42;   // car isochrone radius as fraction of min(W,H)
+    const BUS_FRAC = 0.115;  // bus isochrone radius as fraction of min(W,H)
+
+    // Seeded PRNG so layout is consistent across redraws
+    let _seed = 7;
+    function rnd() {
+      _seed = (_seed * 1664525 + 1013904223) & 0xffffffff;
+      return (_seed >>> 0) / 0xffffffff;
+    }
+
+    let bgDots = [], majorDots = [];
+
+    function resize() {
+      W = canvas.width  = canvas.offsetWidth;
+      H = canvas.height = canvas.offsetHeight;
+      _seed = 7;
+      buildScene();
+    }
+
+    function buildScene() {
+      // ── Background scatter dots ─────────────────────────────────
+      bgDots = [];
+      for (let i = 0; i < 420; i++) {
+        bgDots.push({
+          x: 0.03 + rnd() * 0.94,
+          y: 0.03 + rnd() * 0.94,
+          s: 1.0 + rnd() * 1.4,
+          base: 0.04 + rnd() * 0.07,
+          glow: 0, isBus: false,
+        });
+      }
+
+      // ── Major destination pins ──────────────────────────────────
+      majorDots = [];
+      for (let i = 0; i < 55; i++) {
+        const angle = rnd() * Math.PI * 2;
+        const frac  = 0.05 + rnd() * 0.95;
+        majorDots.push({
+          fx: 0.5 + Math.cos(angle) * CAR_FRAC * frac * 0.95,
+          fy: 0.5 + Math.sin(angle) * CAR_FRAC * frac * 0.95,
+          s: 2.5 + rnd() * 2.5,
+          glow: 0, isBus: false,
+        });
+      }
+
+      dots  = bgDots;
+      waves = [];
+    }
+
+    function spawnWave() {
+      waves.push({ r: 0, speed: 0.0032 + rnd() * 0.0008, alpha: 1 });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = '#060d1a';
+      ctx.fillRect(0, 0, W, H);
+
+      // Vignette
+      const vg = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, Math.max(W,H) * 0.7);
+      vg.addColorStop(0, 'rgba(6,13,26,0)');
+      vg.addColorStop(1, 'rgba(2,4,10,0.55)');
+      ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
+
+      const cx = W * 0.5, cy = H * 0.5;
+      const sc = Math.min(W, H);
+      const carR = sc * CAR_FRAC;
+      const busR = sc * BUS_FRAC;
+
+      // Fine grid (map-like)
+      ctx.strokeStyle = 'rgba(129,140,248,0.022)'; ctx.lineWidth = 1;
+      const step = sc / 18;
+      for (let x = 0; x < W; x += step) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+      for (let y = 0; y < H; y += step) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+
+      // ── Spawn & update waves ───────────────────────────────────
+      frame++;
+      if (frame % 150 === 1) spawnWave();
+      if (waves.length === 0) spawnWave();
+
+      waves = waves.filter(w => {
+        w.r += w.speed;
+        w.alpha = Math.max(0, 1 - w.r / (CAR_FRAC + 0.06));
+        const wPx  = w.r * sc;
+        const front = sc * 0.028;
+        const allDots = [...bgDots, ...majorDots];
+        allDots.forEach(d => {
+          const px = (d.x  !== undefined ? d.x  : d.fx) * W;
+          const py = (d.y  !== undefined ? d.y  : d.fy) * H;
+          const dist = Math.hypot(px - cx, py - cy);
+          if (dist >= wPx - front && dist <= wPx) {
+            if (dist < busR)      { d.glow = Math.min(1, d.glow + 0.6);  d.isBus = true;  }
+            else if (dist < carR) { d.glow = Math.min(1, d.glow + 0.45); d.isBus = false; }
+          }
+        });
+        return w.r < CAR_FRAC + 0.08;
+      });
+
+      // Decay glow
+      [...bgDots, ...majorDots].forEach(d => { d.glow = Math.max(0, d.glow - 0.007); });
+
+      // ── Background scatter dots ────────────────────────────────
+      bgDots.forEach(d => {
+        const px = d.x * W, py = d.y * H;
+        const dist = Math.hypot(px - cx, py - cy);
+        let r, g, b, a;
+        if      (dist < busR) { r=129; g=140; b=248; a = d.base + d.glow * 0.6; }
+        else if (dist < carR) { r=249; g=115; b=22;  a = d.base * 0.6 + d.glow * 0.5; }
+        else                  { r=129; g=140; b=248;  a = d.base * 0.3; }
+        if (d.glow > 0.08) {
+          ctx.beginPath(); ctx.arc(px, py, d.s * (1 + d.glow * 1.3), 0, Math.PI*2);
+          ctx.fillStyle = d.isBus
+            ? `rgba(129,140,248,${(d.glow*0.18).toFixed(2)})`
+            : `rgba(249,115,22,${(d.glow*0.14).toFixed(2)})`;
+          ctx.fill();
+        }
+        ctx.beginPath(); ctx.arc(px, py, d.s, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(${r},${g},${b},${a.toFixed(2)})`; ctx.fill();
+      });
+
+      // ── Major destination pins ─────────────────────────────────
+      majorDots.forEach(d => {
+        const px = d.fx * W, py = d.fy * H;
+        const dist = Math.hypot(px - cx, py - cy);
+        if (dist > carR * 1.02) return;
+        const inBus = dist < busR;
+        const baseA = inBus ? 0.35 : 0.22;
+        const a     = baseA + d.glow * 0.5;
+        // Outer ring
+        ctx.beginPath(); ctx.arc(px, py, d.s + 1.5, 0, Math.PI*2);
+        ctx.strokeStyle = inBus
+          ? `rgba(129,140,248,${(a * 0.6).toFixed(2)})`
+          : `rgba(249,115,22,${(a * 0.5).toFixed(2)})`;
+        ctx.lineWidth = 1; ctx.stroke();
+        // Core dot
+        ctx.beginPath(); ctx.arc(px, py, d.s, 0, Math.PI*2);
+        ctx.fillStyle = inBus
+          ? `rgba(129,140,248,${a.toFixed(2)})`
+          : `rgba(249,115,22,${a.toFixed(2)})`;
+        ctx.fill();
+        // Activation flash
+        if (d.glow > 0.15) {
+          ctx.beginPath(); ctx.arc(px, py, d.s * (1 + d.glow * 2), 0, Math.PI*2);
+          ctx.fillStyle = inBus
+            ? `rgba(129,140,248,${(d.glow * 0.15).toFixed(2)})`
+            : `rgba(249,115,22,${(d.glow * 0.12).toFixed(2)})`;
+          ctx.fill();
+        }
+      });
+
+      // ── Wave rings ─────────────────────────────────────────────
+      waves.forEach(w => {
+        const wPx = w.r * sc;
+        if (wPx <= carR * 1.08) {
+          ctx.beginPath(); ctx.arc(cx, cy, wPx, 0, Math.PI*2);
+          ctx.strokeStyle = `rgba(249,115,22,${(w.alpha * 0.5).toFixed(2)})`;
+          ctx.lineWidth = 2; ctx.stroke();
+          const gw = ctx.createRadialGradient(cx, cy, Math.max(0,wPx-10), cx, cy, wPx+10);
+          gw.addColorStop(0, 'rgba(249,115,22,0)');
+          gw.addColorStop(0.5, `rgba(249,115,22,${(w.alpha*0.1).toFixed(2)})`);
+          gw.addColorStop(1, 'rgba(249,115,22,0)');
+          ctx.beginPath(); ctx.arc(cx, cy, wPx+10, 0, Math.PI*2);
+          ctx.arc(cx, cy, Math.max(0,wPx-10), 0, Math.PI*2, true);
+          ctx.fillStyle = gw; ctx.fill();
+        }
+        if (wPx <= busR * 1.08) {
+          ctx.beginPath(); ctx.arc(cx, cy, wPx, 0, Math.PI*2);
+          ctx.strokeStyle = `rgba(129,140,248,${(w.alpha * 0.9).toFixed(2)})`;
+          ctx.lineWidth = 2.5; ctx.stroke();
+        }
+      });
+
+      // ── Isochrone boundaries ───────────────────────────────────
+      ctx.setLineDash([6,4]);
+      ctx.beginPath(); ctx.arc(cx, cy, carR, 0, Math.PI*2);
+      ctx.strokeStyle = 'rgba(249,115,22,0.32)'; ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.beginPath(); ctx.arc(cx, cy, busR, 0, Math.PI*2);
+      ctx.strokeStyle = 'rgba(129,140,248,0.75)'; ctx.lineWidth = 2; ctx.stroke();
+
+      // Bus zone glow
+      const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, busR);
+      bg.addColorStop(0, 'rgba(129,140,248,0.09)');
+      bg.addColorStop(1, 'rgba(129,140,248,0)');
+      ctx.beginPath(); ctx.arc(cx, cy, busR, 0, Math.PI*2);
+      ctx.fillStyle = bg; ctx.fill();
+
+      // Origin dot (pulsing)
+      const op = 1 + 0.18 * Math.sin(frame * 0.055);
+      ctx.beginPath(); ctx.arc(cx, cy, 5*op, 0, Math.PI*2); ctx.fillStyle = '#818cf8'; ctx.fill();
+      ctx.beginPath(); ctx.arc(cx, cy, 12*op, 0, Math.PI*2);
+      ctx.strokeStyle = `rgba(129,140,248,${(0.4/op).toFixed(2)})`; ctx.lineWidth = 2; ctx.stroke();
+
+      // Labels
+      const fs = Math.max(11, Math.min(14, W * 0.013));
+      const lx = cx + carR * 0.72, ly = cy - carR * 0.38;
+      ctx.font = `600 ${fs}px Inter, sans-serif`; ctx.textAlign = 'left';
+      ctx.fillStyle = 'rgba(249,115,22,0.95)'; ctx.fillText('Car', lx, ly);
+      ctx.font = `400 ${fs-1}px Inter, sans-serif`;
+      ctx.fillStyle = 'rgba(249,115,22,0.6)'; ctx.fillText('40 min', lx, ly + fs + 3);
+
+      ctx.font = `600 ${fs}px Inter, sans-serif`; ctx.textAlign = 'center';
+      ctx.fillStyle = 'rgba(129,140,248,0.95)'; ctx.fillText('Bus', cx, cy - busR - 10);
+      ctx.font = `400 ${fs-1}px Inter, sans-serif`;
+      ctx.fillStyle = 'rgba(129,140,248,0.6)'; ctx.fillText('40 min', cx, cy - busR - 10 + fs + 3);
+      ctx.textAlign = 'left';
+
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    draw();
+  })();
+
+  /* ============================================================
+     R_D SVG — destination dots
+     ============================================================ */
+  (function() {
+    const g = document.getElementById('dest-dots');
+    if (!g) return;
+    const NS = 'http://www.w3.org/2000/svg';
+
+    let seed = 42;
+    function rand() {
+      seed = (seed * 1664525 + 1013904223) & 0xffffffff;
+      return (seed >>> 0) / 0xffffffff;
+    }
+
+    const cx = 100, cy = 80, carR = 70, busR = 18;
+    const dots = [];
+
+    for (let i = 0; i < 58; i++) {
+      const a = rand() * Math.PI * 2;
+      const r = busR + rand() * (carR - busR);
+      dots.push({ x: cx + Math.cos(a)*r, y: cy + Math.sin(a)*r, inBus: false });
+    }
+    for (let i = 0; i < 8; i++) {
+      const a = rand() * Math.PI * 2;
+      const r = rand() * busR * 0.9;
+      dots.push({ x: cx + Math.cos(a)*r, y: cy + Math.sin(a)*r, inBus: true });
+    }
+
+    dots.forEach(d => {
+      const c = document.createElementNS(NS, 'circle');
+      c.setAttribute('cx',   d.x.toFixed(1));
+      c.setAttribute('cy',   d.y.toFixed(1));
+      c.setAttribute('r',    '2.5');
+      c.setAttribute('fill', d.inBus ? 'rgba(129,140,248,0.9)' : 'rgba(249,115,22,0.5)');
+      g.appendChild(c);
+    });
+  })();
+
+  /* ============================================================
+     INTERSECTION OBSERVER — fade-in
+     ============================================================ */
+  const fadeObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); fadeObserver.unobserve(e.target); }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+
+  /* ============================================================
+     STAT CARD COUNTERS
+     ============================================================ */
+  const statObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const card   = e.target;
+      card.classList.add('visible');
+      const target  = parseInt(card.dataset.target || '0');
+      const countEl = card.querySelector('[data-count]');
+      if (countEl && target) {
+        const t0 = performance.now();
+        (function step(now) {
+          const p = Math.min((now - t0) / 1600, 1);
+          const e = 1 - Math.pow(1 - p, 3);
+          countEl.textContent = Math.round(target * e).toLocaleString();
+          if (p < 1) requestAnimationFrame(step);
+        })(t0);
+      }
+      statObserver.unobserve(card);
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll('.stat-card').forEach(c => statObserver.observe(c));
+
+  /* ============================================================
+     BAR ANIMATIONS
+     ============================================================ */
+  const barObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.querySelectorAll('[data-width]').forEach(bar => {
+        setTimeout(() => { bar.style.width = bar.dataset.width + '%'; }, 100);
+      });
+      barObserver.unobserve(e.target);
+    });
+  }, { threshold: 0.2 });
+
+  const uc = document.getElementById('urban-rural-chart');
+  if (uc) barObserver.observe(uc);
+  document.querySelectorAll('.regional-chart-card').forEach(c => barObserver.observe(c));
+
+  /* ============================================================
+     DRIVER CARD STAGGER
+     ============================================================ */
+  const driverObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.querySelectorAll('.driver-card').forEach((c, i) =>
+        setTimeout(() => c.classList.add('visible'), i * 150)
+      );
+      driverObserver.unobserve(e.target);
+    });
+  }, { threshold: 0.1 });
+
+  const dg = document.querySelector('.drivers-grid');
+  if (dg) driverObserver.observe(dg);
+  </script>
+
+</body>
+</html>
