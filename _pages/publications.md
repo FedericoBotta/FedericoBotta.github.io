@@ -70,6 +70,7 @@ Kovalenko, K., Dai, B.X., Fang, F., GUO, Z., Liu, H., Botta, F., Genio, C.I.d., 
 Townley, S., &amp; Botta, F.<br>
 <span class="pub-venue">Frontiers in Big Data, 9, 1942887</span>
 <a href="https://doi.org/10.3389/fdata.2026.1942887" class="pub-badge" target="_blank" rel="noopener">doi</a>
+<a href="/papers/townley-2026.html" class="pub-badge">explainer</a>
 </div>
 
 <div class="publication-item" data-year="2026">
